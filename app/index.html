@@ -60,7 +60,7 @@ main{padding:18px 0 40px}
 .btn:disabled{background:var(--line);color:var(--muted);cursor:not-allowed}
 .btn.ghost{background:none;border:1.5px solid var(--line);color:var(--ink)}
 .key{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:grid;gap:8px;font-size:14px;color:var(--muted)}
-.key div{display:grid;grid-template-columns:132px minmax(0,1fr);gap:10px;align-items:start}
+.key div{display:grid;grid-template-columns:116px minmax(0,1fr);gap:10px;align-items:start}
 .demo{font-size:13px;color:var(--muted);margin:10px 4px 14px}
 .cards{display:grid;gap:12px}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}
@@ -153,6 +153,16 @@ label .hint{font-weight:400}
 </style>
 </head>
 <body>
+<script>
+// Usage counts with PostHog. Paste the project key (starts with phc_) between the quotes to turn it on; empty means off.
+// Same key goes in both index.html (page) and app/index.html (app).
+window.POSTHOG_KEY = "";
+if (window.POSTHOG_KEY) {
+  !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],Object.defineProperty(u,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e}}),Object.defineProperty(u.people,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(){return u.toString(1)+".people (stub)"}}),o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagResult isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+  posthog.init(window.POSTHOG_KEY, {api_host: "https://us.i.posthog.com", defaults: "2026-08-30",
+    autocapture: false, disable_session_recording: true, persistence: "memory"});
+}
+</script>
 <header><div class="col" id="head"></div></header>
 <main><div class="col" id="view"></div></main>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -208,15 +218,15 @@ const MAJORS = [
 // Invented people and invented employers for a class demo. No real people, no real companies.
 const ALUMNI = [
   {name:"Maya Okafor", year:2015, major:"Finance", job:"Senior Analyst, Corporate Finance", at:"Halvorsen Pike Advisors", city:"Cincinnati, OH",
-   areas:["FA"], offers:["Advice", "Résumé review", "Mock interview", "Internship"],
+   areas:["FA"], offers:["Advice", "Internship"],
    helps:["Finance","Accountancy","Economics (Business)","Economics (Bachelor of Arts)","Actuarial Science"],
    fit:["are curious about finance", "want to learn Excel"], note:"Ask me what a first-year analyst actually does all day."},
   {name:"Daniel Reyes", year:2011, major:"Accountancy", job:"Audit Manager", at:"Corbel & Wainwright CPAs", city:"Columbus, OH",
-   areas:["FA","BM"], offers:["Advice", "Résumé review", "Paid project", "Internship"],
+   areas:["FA","BM"], offers:["Advice", "Paid project", "Internship"],
    helps:["Accountancy","Finance","Economics (Business)","Business Analytics & Information Systems","Management","Entrepreneurship and Innovation"],
    fit:["are thinking about the CPA", "like solving number puzzles"], note:"I can walk you through the CPA path and what busy season is really like."},
   {name:"Priya Nandakumar", year:2018, major:"Actuarial Science", job:"Actuarial Analyst", at:"Lantern Mutual Insurance", city:"Indianapolis, IN",
-   areas:["FA","TE"], offers:["Advice", "Mock interview", "Internship"],
+   areas:["FA","TE"], offers:["Advice", "Internship"],
    helps:["Actuarial Science","Mathematics","Finance","Economics (Bachelor of Arts)","Business Analytics & Information Systems","Computer Science"],
    fit:["like math and probability"], note:"Happy to talk exams, Excel, and how to land an actuarial internship."},
   {name:"Marcus Bell", year:2013, major:"Marketing", job:"Brand Manager", at:"Fernway Home Goods", city:"Cincinnati, OH",
@@ -228,13 +238,13 @@ const ALUMNI = [
    helps:["Entrepreneurship and Innovation","Management","Marketing","Organizational Leadership","Philosophy","Liberal Arts (APEX only)","Economics (Business)"],
    fit:["want to start something", "like a fast pace"], note:"Small team. You'd own a real project from week one."},
   {name:"Kevin Tran", year:2012, major:"International Business", job:"Supply Chain Manager", at:"Arcwick Logistics", city:"Louisville, KY",
-   areas:["BM"], offers:["Advice", "Résumé review", "Internship"],
+   areas:["BM"], offers:["Advice", "Internship"],
    helps:["International Business","Management","Economics (Business)","Business Analytics & Information Systems","Economics, Sustainability and Society","Spanish"],
    fit:["are curious about global trade"], note:"Ask me about logistics careers nobody tells you about."},
   {name:"Hannah Whitfield", year:2016, major:"Communication Studies", job:"Talent Acquisition Lead", at:"Thistlegate Staffing", city:"Chicago, IL",
-   areas:["BM"], offers:["Advice", "Résumé review", "Mock interview"],
+   areas:["BM"], offers:["Advice"],
    helps:["Communication Studies","Organizational Leadership","Management","Psychology","Liberal Arts (APEX only)","Philosophy"],
-   fit:["want help with your résumé", "get nervous in interviews"], note:"I read hundreds of résumés a month. Ask me what makes one stand out."},
+   fit:["want to know what recruiters look for"], note:"I read hundreds of résumés a month. Ask me what makes one stand out."},
   {name:"Rachel Kim", year:2019, major:"Biological Sciences for Business", job:"Product Specialist", at:"Sablewood Diagnostics", city:"Cincinnati, OH",
    areas:["BM","SE"], offers:["Advice", "Job shadow", "Paid project", "Internship"],
    helps:["Biological Sciences for Business","Life Sciences for Business","Biology","Chemistry","Marketing","Economics, Sustainability and Society"],
@@ -248,11 +258,11 @@ const ALUMNI = [
    helps:["Graphic Design","Art","Fine Arts","3D Animation and Immersive Game Design","Marketing","Digital and Strategic Communication","Digital Innovation, Film, and Television"],
    fit:["are building a portfolio"], note:"Send me your portfolio questions. I'll be honest."},
   {name:"Tyler Brooks", year:2016, major:"Computer Science", job:"Gameplay Engineer", at:"Quarry Fox Games", city:"Cleveland, OH",
-   areas:["AME","TE"], offers:["Advice", "Mock interview", "Internship"],
+   areas:["AME","TE"], offers:["Advice", "Internship"],
    helps:["3D Animation and Immersive Game Design","Computer Science","Artificial Intelligence","Art","Mathematics"],
    fit:["love games", "are learning to code"], note:"Games are software first. Ask me how to break in."},
   {name:"Grace Holloway", year:2010, major:"English", job:"Senior Editor", at:"Quillfern Press", city:"Cincinnati, OH",
-   areas:["AME","ST"], offers:["Advice", "Résumé review", "Paid project"],
+   areas:["AME","ST"], offers:["Advice", "Paid project"],
    helps:["English","Classical Humanities","History","Communication Studies","Philosophy","Theology"],
    fit:["love to write"], note:"Writers: ask me how to get paid for it."},
   {name:"Andre Coleman", year:2009, major:"Music", job:"Music Director", at:"Lumen Hall Performing Arts Center", city:"Dayton, OH",
@@ -276,7 +286,7 @@ const ALUMNI = [
    helps:["Health Administration","Management","Liberal Arts (APEX only)","Nursing","Business Analytics & Information Systems","Medical and Health Humanities"],
    fit:["like healthcare and business"], note:"Hospitals are businesses too. I'll show you that side."},
   {name:"Aisha Rahman", year:2017, major:"Psychology", job:"Mental Health Counselor", at:"Lamplit Counseling Collective", city:"Cincinnati, OH",
-   areas:["HC","NSS"], offers:["Advice", "Mock interview"],
+   areas:["HC","NSS"], offers:["Advice"],
    helps:["Psychology","Social Work","Neuroscience","Sociology","Gender & Diversity Studies","Speech, Language and Communicative Behavior"],
    fit:["are thinking about counseling"], note:"Ask me about grad school paths into counseling."},
   {name:"Megan Doyle", year:2016, major:"Speech, Language and Communicative Behavior", job:"Speech-Language Pathologist", at:"Little Lanterns Pediatric Therapy", city:"Dayton, OH",
@@ -284,7 +294,7 @@ const ALUMNI = [
    helps:["Speech, Language and Communicative Behavior","Education: Special","Psychology","Occupational Therapy","Education: P-5 Primary"],
    fit:["are curious about speech therapy"], note:"Curious about speech therapy? Come see a day in the clinic."},
   {name:"Wei Zhang", year:2012, major:"Chemistry", job:"Research Scientist", at:"Kestrelbrook Pharmaceuticals", city:"Cincinnati, OH",
-   areas:["SE","HC"], offers:["Advice", "Résumé review", "Internship"],
+   areas:["SE","HC"], offers:["Advice", "Internship"],
    helps:["Chemistry","Biochemistry","Pharmaceutical Science","Microbiology","Biophysics","Genetics","General Science"],
    fit:["want lab experience"], note:"Lab internships start with one email. Send it."},
   {name:"Olivia Hart", year:2019, major:"Environmental Science", job:"Environmental Consultant", at:"Mossgate Environmental", city:"Columbus, OH",
@@ -296,7 +306,7 @@ const ALUMNI = [
    helps:["Environmental Management","Environmental Science","Economics, Sustainability and Society","Biological Sciences for Business","Life Sciences for Business","Engineering"],
    fit:["care about sustainability"], note:"Companies are hiring for sustainability. Ask me what they look for."},
   {name:"Isaac Feldman", year:2011, major:"Physics", job:"Optical Engineer", at:"Halcyonwood Optics", city:"Dayton, OH",
-   areas:["SE","TE"], offers:["Advice", "Mock interview", "Internship"],
+   areas:["SE","TE"], offers:["Advice", "Internship"],
    helps:["Physics","Applied Physics","Applied Physics (Pre-Engineering)","Biophysics","Engineering","Mathematics"],
    fit:["like physics and building things"], note:"Physics opens more doors than you think. Ask me which ones."},
   {name:"Carmen Delgado", year:2016, major:"Biology", job:"Clinical Research Coordinator", at:"Wrenfield Clinical Research", city:"Cincinnati, OH",
@@ -304,11 +314,11 @@ const ALUMNI = [
    helps:["Biology","Microbiology","Neuroscience","Genetics","General Science","Pharmaceutical Science","Biomedical Sciences (Pre-Med)","Nursing"],
    fit:["want research experience"], note:"Clinical research is a great gap year before med school."},
   {name:"Ethan Kowalski", year:2017, major:"Computer Science", job:"Software Engineer", at:"Parsec Grove Software", city:"Chicago, IL",
-   areas:["TE"], offers:["Advice", "Résumé review", "Mock interview"],
+   areas:["TE"], offers:["Advice"],
    helps:["Computer Science","Artificial Intelligence","Cybersecurity","Mathematics","Business Analytics & Information Systems"],
    fit:["are learning to code"], note:"Ask me how to prep for technical interviews."},
   {name:"Jasmine Wright", year:2018, major:"Business Analytics & Information Systems", job:"Data Analyst", at:"Copperwren Analytics", city:"Cincinnati, OH",
-   areas:["TE","BM"], offers:["Advice", "Résumé review", "Paid project", "Internship"],
+   areas:["TE","BM"], offers:["Advice", "Paid project", "Internship"],
    helps:["Business Analytics & Information Systems","Computer Science","Artificial Intelligence","Economics (Business)","Mathematics","Marketing"],
    fit:["like data", "want to learn SQL or Excel"], note:"Learn a little SQL, then message me."},
   {name:"Rafael Santos", year:2014, major:"Computer Science", job:"Security Analyst", at:"Ironhollow Cyber", city:"Columbus, OH",
@@ -328,7 +338,7 @@ const ALUMNI = [
    helps:["Criminal Justice","Sociology","Psychology","Social Work","Political Science"],
    fit:["are curious about the courts"], note:"Ask me what working in the courts is really like."},
   {name:"Victor Nguyen", year:2012, major:"International Studies", job:"Policy Advisor", at:"Larkmoor Policy Institute", city:"Washington, DC",
-   areas:["LG","NSS"], offers:["Advice", "Résumé review", "Paid project"],
+   areas:["LG","NSS"], offers:["Advice", "Paid project"],
    helps:["International Studies","Political Science","Economics (Bachelor of Arts)","Spanish","History","Gender & Diversity Studies","Sociology"],
    fit:["like policy and research"], note:"I need research help on short projects a few times a year."},
   {name:"Teresa Alvarez", year:2010, major:"Social Work", job:"Program Director", at:"Northside Hearth Family Services", city:"Cincinnati, OH",
@@ -348,7 +358,7 @@ const ALUMNI = [
    helps:["Education: Middle Childhood","Education: P-5 Primary","Education: Special","Mathematics","English","History","Spanish"],
    fit:["are thinking about teaching"], note:"Come sit in on a class before you student-teach."},
   {name:"Robert Chen", year:2009, major:"Mathematics", job:"Assistant Dean of Admissions", at:"Brennock College", city:"Columbus, OH",
-   areas:["ST"], offers:["Advice", "Résumé review", "Mock interview"],
+   areas:["ST"], offers:["Advice"],
    helps:["Mathematics","Classical Humanities","Education: Special","Education: P-5 Primary","Music","English","Spanish"],
    fit:["are curious about jobs at a college"], note:"Ask me about careers in college admissions and student life."},
   {name:"Chris Donovan", year:2014, major:"Sport Management", job:"Director of Ticket Sales", at:"Queen City Kestrels", city:"Cincinnati, OH",
@@ -360,7 +370,7 @@ const ALUMNI = [
    helps:["Exercise Science","Health Science and Wellness","Sport Management","Biomedical Sciences (Pre-Med)","Psychology"],
    fit:["are into fitness and coaching"], note:"I hire student coaches every fall."},
   {name:"Derrick Hayes", year:2019, major:"Sport Marketing", job:"Partnerships Manager", at:"Ninth Inning Partners", city:"Indianapolis, IN",
-   areas:["SF","BM"], offers:["Résumé review", "Paid project", "Internship"],
+   areas:["SF","BM"], offers:["Paid project", "Internship"],
    helps:["Sport Marketing","Sport Management","Marketing","Digital and Strategic Communication","Graphic Design","Entrepreneurship and Innovation"],
    fit:["love sports marketing"], note:"We pay students to help with sponsorship decks."}
 ];
@@ -393,15 +403,13 @@ const MAJOR_AREAS = {
 // What alumni can offer, lightest commitment first. cls sets the tag style.
 const OFFERS = [
   {o:"Advice", d:"A short call to answer your questions.", cls:"t-advice"},
-  {o:"Résumé review", d:"The alum reads your résumé and sends back notes.", cls:"t-advice"},
-  {o:"Mock interview", d:"A practice interview, with feedback after.", cls:"t-advice"},
   {o:"Job shadow", d:"Spend part of a day seeing the alum's work up close.", cls:"t-project"},
   {o:"Paid project", d:"A short paid task, roughly <span style=\"white-space:nowrap\">20–40 hours</span>, done around classes.", cls:"t-project"},
   {o:"Internship", d:"A summer or semester internship where the alum works.", cls:"t-intern"}
 ];
 const ORDER = OFFERS.map(x => x.o);
 const TAG = Object.fromEntries(OFFERS.map(x => [x.o, x.cls]));
-const RESUME_FOR = ["Internship", "Résumé review"];   // requests that need a résumé attached
+const RESUME_FOR = ["Internship"];   // requests that need a résumé attached
 const STUDENT_VIEWS = ["majors", "interests", "alumni", "request", "sent"];
 const ALUM_VIEWS = ["join", "preview", "joined"];
 const AREA = Object.fromEntries(AREAS.map(a => [a.id, a]));
@@ -502,7 +510,7 @@ function welcomeView(){
         <h2>I'm a Xavier alum</h2><p>Raise your hand: say which students you'll help and what you can offer. They'll see your card.</p>
         <button class="btn ghost" data-act="tojoin">Raise your hand</button></section>
     </div>
-    <p class="demo">Class demo with sample alumni. Nothing anyone sends leaves this phone.</p>`;
+    <p class="demo">Class demo with sample alumni. Nothing anyone sends leaves this phone.${window.POSTHOG_KEY ? " It counts which steps people reach, anonymously, to see if it works." : ""}</p>`;
 }
 
 /* ---------- Student side ---------- */
@@ -609,7 +617,7 @@ function updateSend(){
 function drawResume(err){
   const rz = $("rz"); if (!rz) return;
   if (!RESUME_FOR.includes(S.offer)){ rz.innerHTML = ""; return; }
-  const why = S.offer === "Internship" ? "internship requests" : "résumé reviews";
+  const why = "internship requests";
   rz.innerHTML = `<div class="field"><span class="lbl">Your résumé<span class="hint">Required for ${why}. PDF or Word, up to ${MAX_MB} MB.</span></span>
     ${S.resume
       ? `<div class="file">${ico("doc")}<div><b>${esc(S.resume.name)}</b><span>${fileSize(S.resume.size)}</span></div>
