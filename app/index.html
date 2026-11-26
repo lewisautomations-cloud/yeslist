@@ -679,7 +679,7 @@ function requestView(){
     S.last = {alum:a, offer:S.offer, first:S.first.trim(), q:S.q.trim(), tried:S.tried.trim(), ctx,
               resume: RESUME_FOR.includes(S.offer) ? S.resume : null};
     S.requested.add(a.name); a.used = (a.used || 0) + 1;
-    track("send_request", {offer: S.offer, from: S.from, resume: !!S.last.resume}); S.q = ""; S.tried = ""; S.offer = null;
+    track("send_request", {offer: S.offer, from: S.from, resume: !!S.last.resume, tried: !!S.last.tried}); S.q = ""; S.tried = ""; S.offer = null;
     go("sent", true); });
 }
 
