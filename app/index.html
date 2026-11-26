@@ -418,7 +418,7 @@ const AREA = Object.fromEntries(AREAS.map(a => [a.id, a]));
 const MAX_MB = 5, THIS_YEAR = 2026;
 const blankDraft = () => ({name:"", year:"", major:"", job:"", at:"", city:"", areas:[], other:false, otherText:"", helps:[], offers:[], fit:["","",""], note:"", hq:"", cap:3});
 const S = {view:"welcome", search:"", major:null, areas:[], alum:null, from:null, offer:null,
-           first:"", q:"", tried:"", resume:null, last:null, requested:new Set(), draft:blankDraft(), joined:null};
+           first:"", year:"", q:"", tried:"", resume:null, last:null, requested:new Set(), draft:blankDraft(), joined:null};
 const head = document.getElementById("head"), view = document.getElementById("view");
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -456,6 +456,11 @@ function context(){
   if (S.from === "search") return null;
   return S.major ? `${S.major} major` : `Interested in ${S.areas.map(id => AREA[id].label).join(", ")}`;
 }
+const YEARS = ["Freshman", "Sophomore", "Junior", "Senior"];
+// Everything the alum sees about the student besides their name and questions.
+const fullContext = () => [context(), S.year && S.year.toLowerCase()].filter(Boolean).join(", ");
+function drawCtx(){ const el = $("ctx"); if (!el || !S.alum) return; const c = fullContext();
+  el.hidden = !c; el.textContent = c ? `${first(S.alum.name)} will also see: ${c}.` : ""; }
 function valid(v){
   if (["welcome", "majors", "interests", "join"].includes(v)) return true;
   if (v === "alumni") return !!S.major || S.areas.length > 0;
@@ -650,13 +655,15 @@ function drawResume(err){
 function requestView(){
   const a = S.alum, offers = sortOffers(a.offers), one = offers.length === 1;
   if (one) S.offer = offers[0];
-  const ctx = context();
   header(`Send ${first(a.name)} a request`, `Write the questions you want to ask. ${first(a.name)} sees them up front.`);
   view.innerHTML = `<div class="who"><h2>${esc(a.name)}</h2><p>${esc(a.job)} at ${esc(a.at)} · ${esc(a.city)}</p>${tags(offers)}</div>
     <form id="f" novalidate>
       <div class="field"><span class="lbl" id="ol">What are you asking about?${one ? "" : '<span class="hint">Pick one.</span>'}</span>
         <div class="chips" role="radiogroup" aria-labelledby="ol">${offers.map(o =>
           `<button type="button" class="chip" role="radio" data-act="offer" data-v="${esc(o)}" aria-checked="${S.offer === o}">${esc(o)}</button>`).join("")}</div></div>
+      <div class="field"><span class="lbl" id="yl">Your year <span style="font-weight:400;color:var(--muted)">(optional)</span><span class="hint">Every year can ask, and alumni can't filter by year.</span></span>
+        <div class="chips" role="radiogroup" aria-labelledby="yl">${YEARS.map(y =>
+          `<button type="button" class="chip" role="radio" data-act="year" data-v="${y}" aria-checked="${S.year === y}">${y}</button>`).join("")}</div></div>
       <div class="field"><label for="fn">Your first name</label>
         <input type="text" id="fn" maxlength="40" autocomplete="given-name" value="${esc(S.first)}"></div>
       <div class="field"><label for="qs">Your questions for ${esc(first(a.name))}</label>
@@ -666,7 +673,7 @@ function requestView(){
         <textarea id="tr" maxlength="300" style="min-height:96px" placeholder="Example: I read the careers page, applied to two programs and talked to my advisor.">${esc(S.tried)}</textarea>
         <div class="count" id="tc">${S.tried.length} / 300</div></div>
       <div id="rz"></div>
-      ${ctx ? `<p class="ctx">${esc(first(a.name))} will also see: ${esc(ctx)}.</p>` : ""}
+      <p class="ctx" id="ctx"></p>
       <button class="btn" id="send" type="submit">Send request</button>
       <p class="need" id="need"></p>
     </form>`;
@@ -674,12 +681,12 @@ function requestView(){
   const sync = () => { S.first = fn.value; S.q = qs.value; S.tried = tr.value;
     $("qc").textContent = `${S.q.length} / 500`; $("tc").textContent = `${S.tried.length} / 300`; updateSend(); };
   fn.addEventListener("input", sync); qs.addEventListener("input", sync); tr.addEventListener("input", sync);
-  drawResume(); updateSend();
+  drawResume(); updateSend(); drawCtx();
   $("f").addEventListener("submit", e => { e.preventDefault(); if (missing().length) return;
-    S.last = {alum:a, offer:S.offer, first:S.first.trim(), q:S.q.trim(), tried:S.tried.trim(), ctx,
+    S.last = {alum:a, offer:S.offer, first:S.first.trim(), q:S.q.trim(), tried:S.tried.trim(), ctx:fullContext(), fromSearch: S.from === "search",
               resume: RESUME_FOR.includes(S.offer) ? S.resume : null};
     S.requested.add(a.name); a.used = (a.used || 0) + 1;
-    track("send_request", {offer: S.offer, from: S.from, resume: !!S.last.resume, tried: !!S.last.tried}); S.q = ""; S.tried = ""; S.offer = null;
+    track("send_request", {offer: S.offer, from: S.from, resume: !!S.last.resume, tried: !!S.last.tried, year: !!S.year}); S.q = ""; S.tried = ""; S.offer = null;
     go("sent", true); });
 }
 
@@ -695,7 +702,7 @@ function sentView(){
       ${L.resume ? `<dt>Résumé</dt><dd>${esc(L.resume.name)}</dd>` : ""}</dl>
       <p class="q">${esc(L.q)}</p></div>
     <p class="demo">Class demo: nothing was actually sent${L.resume ? ", and your résumé never left this phone" : ""}.</p>
-    <div class="stack"><button class="btn" data-act="toalumni">${L.ctx ? "Back to alumni" : "Back to search"}</button>
+    <div class="stack"><button class="btn" data-act="toalumni">${L.fromSearch ? "Back to search" : "Back to alumni"}</button>
       <button class="btn ghost" data-act="restart">Start over</button></div>`;
 }
 
@@ -853,7 +860,8 @@ document.addEventListener("click", e => {
       interestsView(); { const b = document.querySelector(`.area[data-v="${v}"]`); if (b) b.focus({preventScroll:true}); } break;
     case "show": if (S.areas.length){ track("pick_interests", {areas: S.areas.join(",")}); go("alumni"); } break;
     case "request": track("tap_request", {from: t.dataset.from}); S.alum = ALUMNI.find(a => a.name === v); S.from = t.dataset.from; S.offer = null; go("request"); break;
-    case "offer": S.offer = v; document.querySelectorAll(".chip[role=radio]").forEach(c => c.setAttribute("aria-checked", c.dataset.v === v));
+    case "year": S.year = S.year === v ? "" : v; document.querySelectorAll(".chip[data-act=year]").forEach(c => c.setAttribute("aria-checked", c.dataset.v === S.year)); drawCtx(); break;
+    case "offer": S.offer = v; document.querySelectorAll(".chip[data-act=offer]").forEach(c => c.setAttribute("aria-checked", c.dataset.v === v));
       drawResume(); updateSend(); break;
     case "rmres": S.resume = null; drawResume(); updateSend(); break;
     case "toalumni": history.back(); break;
