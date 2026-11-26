@@ -39,6 +39,9 @@ h1{font-family:var(--serif);font-size:clamp(40px,7vw,62px);line-height:1.04;font
 .lead{font-size:19px;color:var(--soft);max-width:34ch;margin:0 0 26px}
 .cta{display:inline-flex;align-items:center;justify-content:center;min-height:54px;padding:0 28px;border-radius:12px;background:var(--btn);color:var(--onbtn);font-weight:700;font-size:18px;text-decoration:none}
 .cta:hover{background:var(--btnhover)}
+.ctas{display:flex;flex-wrap:wrap;gap:10px}
+.cta.alt{background:var(--mark);color:var(--ink)}.cta.alt:hover{background:var(--mark);filter:brightness(.96)}
+.fit{font-size:13px;margin:0 0 10px;color:var(--soft)}.fit b{color:var(--ink);font-weight:600}
 .fine{font-size:14px;color:var(--muted);margin:12px 0 0}
 .herotext{padding-bottom:0}@media(min-width:860px){.herotext{padding-bottom:48px}}
 /* phone */
@@ -115,7 +118,8 @@ footer p{margin:4px 0}
       <div class="herotext">
         <h1>Alumni who already <span class="mk">said yes</span></h1>
         <p class="lead">A Xavier student picks their major and sees alumni who have offered to help students like them, with advice, a paid project or an internship. Then they send one alum a request with their questions.</p>
-        <a class="cta" href="app/">Try the demo</a>
+        <div class="ctas"><a class="cta" href="app/#students">I'm a student: find alumni</a>
+          <a class="cta alt" href="app/#join">I'm an alum: raise your hand</a></div>
         <p class="fine">Class demo with sample alumni. Nothing a student sends leaves their phone.</p>
       </div>
       <div class="stage" aria-hidden="true">
@@ -130,7 +134,8 @@ footer p{margin:4px 0}
             <p class="j">Senior Analyst, Corporate Finance at Halvorsen Pike Advisors</p>
             <p class="c">Cincinnati, OH</p>
             <p class="n">“Ask me what a first-year analyst actually does all day.”</p>
-            <div class="tags"><span class="tag t-advice">Advice</span><span class="tag t-intern">Internship</span></div>
+            <p class="fit"><b>Good fit if you</b> are curious about finance or want to learn Excel.</p>
+            <div class="tags"><span class="tag t-advice">Advice</span><span class="tag t-advice">Résumé review</span><span class="tag t-intern">Internship</span></div>
             <div class="sbtn">Request</div>
           </div>
           <div class="scard scard2"><strong>Daniel Reyes</strong><p class="m">Class of 2011 · Accountancy</p></div>
@@ -159,9 +164,9 @@ footer p{margin:4px 0}
   <section>
     <h2>How a student uses it</h2>
     <ol class="steps">
-      <li><b>Pick your major.</b><span>Or tap Undecided and pick the areas you're interested in. Or search for a major, a company, a job or a city.</span></li>
+      <li><b>Pick your major.</b><span>Tap "I'm a student," then your major. Or tap Undecided and pick the areas you're interested in. Or search for a major, a company, a job or a city.</span></li>
       <li><b>Read the cards.</b><span>Each alum shows where they work, a short note in their own words, and what they offer.</span></li>
-      <li><b>Tap Request.</b><span>Pick what you're asking about and write your questions. Asking about an internship? Attach your résumé (PDF or Word).</span></li>
+      <li><b>Tap Request.</b><span>Pick what you're asking about and write your questions. Asking about an internship or a résumé review? Attach your résumé (PDF or Word).</span></li>
       <li><b>Tap Send request.</b><span>You'll see a copy of exactly what the alum sees.</span></li>
     </ol>
     <p class="tip">Testing it? Save your résumé to your phone first, in case you ask about an internship.</p>
@@ -171,10 +176,13 @@ footer p{margin:4px 0}
     <h2>What alumni offer</h2>
     <div class="offers">
       <div class="offer"><span class="tag t-advice">Advice</span><p>A short call to answer your questions.</p></div>
+      <div class="offer"><span class="tag t-advice">Résumé review</span><p>The alum reads your résumé and sends back notes.</p></div>
+      <div class="offer"><span class="tag t-advice">Mock interview</span><p>A practice interview, with feedback after.</p></div>
+      <div class="offer"><span class="tag t-project">Job shadow</span><p>Spend part of a day seeing the alum's work up close.</p></div>
       <div class="offer"><span class="tag t-project">Paid project</span><p>A short paid task, roughly <span style="white-space:nowrap">20–40 hours</span>, done around classes.</p></div>
       <div class="offer"><span class="tag t-intern">Internship</span><p>A summer or semester internship where the alum works.</p></div>
     </div>
-    <p class="tip">Each alum offers any mix of the three. Every alum offers at least one.</p>
+    <p class="tip">Each alum offers any mix of the six, and every alum offers at least one. Every alum is open to students in any year.</p>
   </section>
 
   <section>
@@ -192,15 +200,17 @@ footer p{margin:4px 0}
     <h2>For alumni: raising your hand</h2>
     <div class="split">
       <div>
-        <p class="intro" style="margin-bottom:10px">In a real version, an alum would sign up and say:</p>
+        <p class="intro" style="margin-bottom:10px">An alum signs up and says:</p>
         <ul class="raise">
           <li>which majors they'll help (any majors, not only their own),</li>
           <li>the kind of work they do,</li>
-          <li>what they can offer: advice, a paid project, an internship, or a mix,</li>
+          <li>what they can offer, from a short advice call up to an internship,</li>
+          <li>who's a good fit, by interests, never by grades or class year,</li>
           <li>one line in their own words about what students can ask them.</li>
         </ul>
+        <a class="cta alt" href="app/#join">Try the alumni sign-up</a>
       </div>
-      <p class="intro">Students only see alumni who have done this, so every request goes to someone who already said yes. The alumni side is not built yet; this demo uses sample alumni.</p>
+      <p class="intro">Students only see alumni who have done this, so every request goes to someone who already said yes. There's no class-year filter: freshmen through seniors all see every card. In this class demo, a new alum's card shows up on their own phone only, until the page reloads.</p>
     </div>
   </section>
 

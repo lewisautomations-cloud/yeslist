@@ -60,7 +60,7 @@ main{padding:18px 0 40px}
 .btn:disabled{background:var(--line);color:var(--muted);cursor:not-allowed}
 .btn.ghost{background:none;border:1.5px solid var(--line);color:var(--ink)}
 .key{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:grid;gap:8px;font-size:14px;color:var(--muted)}
-.key div{display:grid;grid-template-columns:112px minmax(0,1fr);gap:10px;align-items:start}
+.key div{display:grid;grid-template-columns:132px minmax(0,1fr);gap:10px;align-items:start}
 .demo{font-size:13px;color:var(--muted);margin:10px 4px 14px}
 .cards{display:grid;gap:12px}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}
@@ -121,6 +121,34 @@ input[type=search]::-webkit-search-cancel-button{display:none}
 .file svg{width:22px;height:22px;flex:none;color:var(--sky)}
 .link{background:none;border:0;color:var(--sky);font-weight:700;min-height:44px;padding:0 10px}
 .err{color:light-dark(#B42318,#FF8A80);font-size:14px;margin:6px 0 0}.err:empty{display:none}
+.mode{display:inline-block;font-size:13px;font-weight:600;padding:3px 10px;border-radius:999px;margin:12px 0 0;background:var(--plain);color:var(--ink)}
+.mode.alum{background:var(--mark)}.mode+h1{margin-top:10px}
+.doors{display:grid;gap:14px}
+.door{background:var(--panel);border:1.5px solid var(--line);border-radius:18px;padding:20px}
+.door.alum{border-color:var(--ink)}
+.door h2{font-family:var(--serif);font-size:25px;font-weight:600;margin:12px 0 4px;line-height:1.15}
+.door p{margin:0 0 16px;color:var(--muted)}
+.door .ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;background:var(--plain)}
+.door.alum .ic{background:var(--mark)}.door.alum .btn{background:var(--mark);color:var(--ink);border:0}.door .ic svg{width:24px;height:24px}
+details.key{padding:4px 14px}
+details.key summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;min-height:44px;font-weight:600;color:var(--ink);font-size:15px}
+details.key summary::-webkit-details-marker{display:none}
+details.key summary .chev{transition:transform .15s}details.key[open] summary .chev{transform:rotate(90deg)}
+details.key[open]{padding-bottom:12px}
+.fit{margin:0 0 12px;font-size:14px;color:var(--soft)}.fit b{font-weight:600;color:var(--ink)}
+.two{display:grid;grid-template-columns:104px minmax(0,1fr);gap:10px}
+select{width:100%;font-size:16px;background:var(--panel);border:1.5px solid var(--line);border-radius:12px;padding:12px 10px;min-height:50px;color:var(--ink)}
+.chipset{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.chip[aria-pressed=true],.chip.on{background:var(--solid);color:var(--onsolid);border-color:var(--solid)}
+.chip:disabled{opacity:.45;cursor:not-allowed}
+.chip .xs{width:12px;height:12px;vertical-align:-1px;margin-left:4px}
+.opt{display:flex;gap:12px;align-items:flex-start;font-weight:400;font-size:16px;background:var(--panel);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:8px;cursor:pointer}
+.opt input{width:22px;height:22px;margin:2px 0 0;accent-color:var(--ink);flex:none}
+.opt b{display:block;font-weight:600}.opt small{display:block;color:var(--muted);font-size:14px}
+.opt:has(input:checked){border-color:var(--sky);background:var(--tint)}
+.info{background:var(--tint);border-radius:14px;padding:14px 16px;font-size:15px;margin:0 0 18px}
+.mini{font-size:14px;color:var(--muted);margin:6px 4px}
+label .hint{font-weight:400}
 .need{font-size:14px;color:var(--muted);text-align:center;margin:8px 0 0}.need:empty{display:none}
 </style>
 </head>
@@ -136,6 +164,7 @@ input[type=search]::-webkit-search-cancel-button{display:none}
   <symbol id="x" viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
   <symbol id="doc" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M6 2.8h8l4.2 4.2v14.2H6z"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M14 2.8V7h4.2M9 12h6M9 15.5h6"/></symbol>
   <symbol id="up" viewBox="0 0 20 20"><path d="M10 13V3.5M6 7.5l4-4 4 4M4 13v3.5h12V13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
   <symbol id="check" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 </svg>
 <script>
@@ -179,161 +208,161 @@ const MAJORS = [
 // Invented people and invented employers for a class demo. No real people, no real companies.
 const ALUMNI = [
   {name:"Maya Okafor", year:2015, major:"Finance", job:"Senior Analyst, Corporate Finance", at:"Halvorsen Pike Advisors", city:"Cincinnati, OH",
-   areas:["FA"], offers:["Advice","Internship"],
+   areas:["FA"], offers:["Advice", "Résumé review", "Mock interview", "Internship"],
    helps:["Finance","Accountancy","Economics (Business)","Economics (Bachelor of Arts)","Actuarial Science"],
-   note:"Ask me what a first-year analyst actually does all day."},
+   fit:["are curious about finance", "want to learn Excel"], note:"Ask me what a first-year analyst actually does all day."},
   {name:"Daniel Reyes", year:2011, major:"Accountancy", job:"Audit Manager", at:"Corbel & Wainwright CPAs", city:"Columbus, OH",
-   areas:["FA","BM"], offers:["Advice","Paid project","Internship"],
+   areas:["FA","BM"], offers:["Advice", "Résumé review", "Paid project", "Internship"],
    helps:["Accountancy","Finance","Economics (Business)","Business Analytics & Information Systems","Management","Entrepreneurship and Innovation"],
-   note:"I can walk you through the CPA path and what busy season is really like."},
+   fit:["are thinking about the CPA", "like solving number puzzles"], note:"I can walk you through the CPA path and what busy season is really like."},
   {name:"Priya Nandakumar", year:2018, major:"Actuarial Science", job:"Actuarial Analyst", at:"Lantern Mutual Insurance", city:"Indianapolis, IN",
-   areas:["FA","TE"], offers:["Advice","Internship"],
+   areas:["FA","TE"], offers:["Advice", "Mock interview", "Internship"],
    helps:["Actuarial Science","Mathematics","Finance","Economics (Bachelor of Arts)","Business Analytics & Information Systems","Computer Science"],
-   note:"Happy to talk exams, Excel, and how to land an actuarial internship."},
+   fit:["like math and probability"], note:"Happy to talk exams, Excel, and how to land an actuarial internship."},
   {name:"Marcus Bell", year:2013, major:"Marketing", job:"Brand Manager", at:"Fernway Home Goods", city:"Cincinnati, OH",
-   areas:["BM"], offers:["Advice","Paid project"],
+   areas:["BM"], offers:["Advice", "Job shadow", "Paid project"],
    helps:["Marketing","Management","Communication Studies","Digital and Strategic Communication","Graphic Design","International Business","Sport Marketing"],
-   note:"Bring me a brand you love and we'll talk about why it works."},
+   fit:["love brands and ads"], note:"Bring me a brand you love and we'll talk about why it works."},
   {name:"Sofia Marchetti", year:2017, major:"Entrepreneurship and Innovation", job:"Founder and CEO", at:"Tidewell Coffee Co.", city:"Cincinnati, OH",
-   areas:["BM"], offers:["Paid project","Internship"],
+   areas:["BM"], offers:["Job shadow", "Paid project", "Internship"],
    helps:["Entrepreneurship and Innovation","Management","Marketing","Organizational Leadership","Philosophy","Liberal Arts (APEX only)","Economics (Business)"],
-   note:"Small team. You'd own a real project from week one."},
+   fit:["want to start something", "like a fast pace"], note:"Small team. You'd own a real project from week one."},
   {name:"Kevin Tran", year:2012, major:"International Business", job:"Supply Chain Manager", at:"Arcwick Logistics", city:"Louisville, KY",
-   areas:["BM"], offers:["Advice","Internship"],
+   areas:["BM"], offers:["Advice", "Résumé review", "Internship"],
    helps:["International Business","Management","Economics (Business)","Business Analytics & Information Systems","Economics, Sustainability and Society","Spanish"],
-   note:"Ask me about logistics careers nobody tells you about."},
+   fit:["are curious about global trade"], note:"Ask me about logistics careers nobody tells you about."},
   {name:"Hannah Whitfield", year:2016, major:"Communication Studies", job:"Talent Acquisition Lead", at:"Thistlegate Staffing", city:"Chicago, IL",
-   areas:["BM"], offers:["Advice"],
+   areas:["BM"], offers:["Advice", "Résumé review", "Mock interview"],
    helps:["Communication Studies","Organizational Leadership","Management","Psychology","Liberal Arts (APEX only)","Philosophy"],
-   note:"I read hundreds of résumés a month. Ask me what makes one stand out."},
+   fit:["want help with your résumé", "get nervous in interviews"], note:"I read hundreds of résumés a month. Ask me what makes one stand out."},
   {name:"Rachel Kim", year:2019, major:"Biological Sciences for Business", job:"Product Specialist", at:"Sablewood Diagnostics", city:"Cincinnati, OH",
-   areas:["BM","SE"], offers:["Advice","Paid project","Internship"],
+   areas:["BM","SE"], offers:["Advice", "Job shadow", "Paid project", "Internship"],
    helps:["Biological Sciences for Business","Life Sciences for Business","Biology","Chemistry","Marketing","Economics, Sustainability and Society"],
-   note:"Science plus business is a real job. I can show you where to find it."},
+   fit:["like science and people"], note:"Science plus business is a real job. I can show you where to find it."},
   {name:"Jamal Pierce", year:2014, major:"Digital Innovation, Film, and Television", job:"Producer", at:"Lockhart Lane Media", city:"Cincinnati, OH",
-   areas:["AME"], offers:["Advice","Paid project"],
+   areas:["AME"], offers:["Advice", "Job shadow", "Paid project"],
    helps:["Digital Innovation, Film, and Television","Communication Studies","Digital and Strategic Communication","English","Theatre","Musical Theatre"],
-   note:"I bring students onto shoot days when the budget allows."},
+   fit:["want to work on a set"], note:"I bring students onto shoot days when the budget allows."},
   {name:"Elena Vasquez", year:2018, major:"Graphic Design", job:"Senior Designer", at:"Kitefoil Creative", city:"Columbus, OH",
-   areas:["AME","BM"], offers:["Advice","Paid project","Internship"],
+   areas:["AME","BM"], offers:["Advice", "Paid project", "Internship"],
    helps:["Graphic Design","Art","Fine Arts","3D Animation and Immersive Game Design","Marketing","Digital and Strategic Communication","Digital Innovation, Film, and Television"],
-   note:"Send me your portfolio questions. I'll be honest."},
+   fit:["are building a portfolio"], note:"Send me your portfolio questions. I'll be honest."},
   {name:"Tyler Brooks", year:2016, major:"Computer Science", job:"Gameplay Engineer", at:"Quarry Fox Games", city:"Cleveland, OH",
-   areas:["AME","TE"], offers:["Advice","Internship"],
+   areas:["AME","TE"], offers:["Advice", "Mock interview", "Internship"],
    helps:["3D Animation and Immersive Game Design","Computer Science","Artificial Intelligence","Art","Mathematics"],
-   note:"Games are software first. Ask me how to break in."},
+   fit:["love games", "are learning to code"], note:"Games are software first. Ask me how to break in."},
   {name:"Grace Holloway", year:2010, major:"English", job:"Senior Editor", at:"Quillfern Press", city:"Cincinnati, OH",
-   areas:["AME","ST"], offers:["Advice","Paid project"],
+   areas:["AME","ST"], offers:["Advice", "Résumé review", "Paid project"],
    helps:["English","Classical Humanities","History","Communication Studies","Philosophy","Theology"],
-   note:"Writers: ask me how to get paid for it."},
+   fit:["love to write"], note:"Writers: ask me how to get paid for it."},
   {name:"Andre Coleman", year:2009, major:"Music", job:"Music Director", at:"Lumen Hall Performing Arts Center", city:"Dayton, OH",
-   areas:["AME","ST"], offers:["Advice","Internship"],
+   areas:["AME","ST"], offers:["Advice", "Job shadow", "Internship"],
    helps:["Music","Musical Theatre","Theatre","Fine Arts","Art","Education: P-5 Primary"],
-   note:"Performing and teaching can be one career. Ask me how."},
+   fit:["want to perform or teach music"], note:"Performing and teaching can be one career. Ask me how."},
   {name:"Nicole Adeyemi", year:2012, major:"Nursing", job:"Nurse Manager", at:"Ashmere Regional Hospital", city:"Cincinnati, OH",
-   areas:["HC"], offers:["Advice","Internship"],
+   areas:["HC"], offers:["Advice", "Job shadow", "Internship"],
    helps:["Nursing","Health Administration","Biology","Health Science and Wellness","Psychology","Medical and Health Humanities"],
-   note:"Ask me what clinicals don't teach you."},
+   fit:["are thinking about nursing"], note:"Ask me what clinicals don't teach you."},
   {name:"Samuel Ortiz", year:2008, major:"Biology", job:"Family Physician", at:"Fennimore Family Medicine", city:"Cincinnati, OH",
-   areas:["HC","SE"], offers:["Advice"],
+   areas:["HC","SE"], offers:["Advice", "Job shadow"],
    helps:["Biomedical Sciences (Pre-Med)","Biology","Biochemistry","Neuroscience","Chemistry","Medical and Health Humanities","Genetics"],
-   note:"Pre-med? Ask me what I'd do differently."},
+   fit:["are thinking about med school"], note:"Pre-med? Ask me what I'd do differently."},
   {name:"Lauren Fischer", year:2015, major:"Occupational Therapy", job:"Occupational Therapist", at:"Pinwheel Therapy Group", city:"Louisville, KY",
-   areas:["HC"], offers:["Advice","Internship"],
+   areas:["HC"], offers:["Advice", "Job shadow", "Internship"],
    helps:["Occupational Therapy","Exercise Science","Health Science and Wellness","Psychology","Speech, Language and Communicative Behavior"],
-   note:"I take a student intern every semester."},
+   fit:["are curious about therapy careers"], note:"I take a student intern every semester."},
   {name:"Brian Mensah", year:2014, major:"Health Administration", job:"Director of Clinic Operations", at:"Harrowgate Health Network", city:"Columbus, OH",
-   areas:["HC","BM"], offers:["Advice","Paid project","Internship"],
+   areas:["HC","BM"], offers:["Advice", "Paid project", "Internship"],
    helps:["Health Administration","Management","Liberal Arts (APEX only)","Nursing","Business Analytics & Information Systems","Medical and Health Humanities"],
-   note:"Hospitals are businesses too. I'll show you that side."},
+   fit:["like healthcare and business"], note:"Hospitals are businesses too. I'll show you that side."},
   {name:"Aisha Rahman", year:2017, major:"Psychology", job:"Mental Health Counselor", at:"Lamplit Counseling Collective", city:"Cincinnati, OH",
-   areas:["HC","NSS"], offers:["Advice"],
+   areas:["HC","NSS"], offers:["Advice", "Mock interview"],
    helps:["Psychology","Social Work","Neuroscience","Sociology","Gender & Diversity Studies","Speech, Language and Communicative Behavior"],
-   note:"Ask me about grad school paths into counseling."},
+   fit:["are thinking about counseling"], note:"Ask me about grad school paths into counseling."},
   {name:"Megan Doyle", year:2016, major:"Speech, Language and Communicative Behavior", job:"Speech-Language Pathologist", at:"Little Lanterns Pediatric Therapy", city:"Dayton, OH",
-   areas:["HC","ST"], offers:["Advice","Internship"],
+   areas:["HC","ST"], offers:["Advice", "Job shadow", "Internship"],
    helps:["Speech, Language and Communicative Behavior","Education: Special","Psychology","Occupational Therapy","Education: P-5 Primary"],
-   note:"Curious about speech therapy? Come see a day in the clinic."},
+   fit:["are curious about speech therapy"], note:"Curious about speech therapy? Come see a day in the clinic."},
   {name:"Wei Zhang", year:2012, major:"Chemistry", job:"Research Scientist", at:"Kestrelbrook Pharmaceuticals", city:"Cincinnati, OH",
-   areas:["SE","HC"], offers:["Advice","Internship"],
+   areas:["SE","HC"], offers:["Advice", "Résumé review", "Internship"],
    helps:["Chemistry","Biochemistry","Pharmaceutical Science","Microbiology","Biophysics","Genetics","General Science"],
-   note:"Lab internships start with one email. Send it."},
+   fit:["want lab experience"], note:"Lab internships start with one email. Send it."},
   {name:"Olivia Hart", year:2019, major:"Environmental Science", job:"Environmental Consultant", at:"Mossgate Environmental", city:"Columbus, OH",
-   areas:["SE"], offers:["Paid project","Internship"],
+   areas:["SE"], offers:["Paid project", "Internship"],
    helps:["Environmental Science","Environmental Management","Economics, Sustainability and Society","Biology","Chemistry","Life Sciences for Business"],
-   note:"I have field projects every summer."},
+   fit:["like working outdoors"], note:"I have field projects every summer."},
   {name:"Ben Adler", year:2013, major:"Environmental Management", job:"Sustainability Manager", at:"Harlow & Finch Manufacturing", city:"Cincinnati, OH",
-   areas:["SE","BM"], offers:["Advice","Paid project"],
+   areas:["SE","BM"], offers:["Advice", "Job shadow", "Paid project"],
    helps:["Environmental Management","Environmental Science","Economics, Sustainability and Society","Biological Sciences for Business","Life Sciences for Business","Engineering"],
-   note:"Companies are hiring for sustainability. Ask me what they look for."},
+   fit:["care about sustainability"], note:"Companies are hiring for sustainability. Ask me what they look for."},
   {name:"Isaac Feldman", year:2011, major:"Physics", job:"Optical Engineer", at:"Halcyonwood Optics", city:"Dayton, OH",
-   areas:["SE","TE"], offers:["Advice","Internship"],
+   areas:["SE","TE"], offers:["Advice", "Mock interview", "Internship"],
    helps:["Physics","Applied Physics","Applied Physics (Pre-Engineering)","Biophysics","Engineering","Mathematics"],
-   note:"Physics opens more doors than you think. Ask me which ones."},
+   fit:["like physics and building things"], note:"Physics opens more doors than you think. Ask me which ones."},
   {name:"Carmen Delgado", year:2016, major:"Biology", job:"Clinical Research Coordinator", at:"Wrenfield Clinical Research", city:"Cincinnati, OH",
-   areas:["SE","HC"], offers:["Advice","Paid project","Internship"],
+   areas:["SE","HC"], offers:["Advice", "Paid project", "Internship"],
    helps:["Biology","Microbiology","Neuroscience","Genetics","General Science","Pharmaceutical Science","Biomedical Sciences (Pre-Med)","Nursing"],
-   note:"Clinical research is a great gap year before med school."},
+   fit:["want research experience"], note:"Clinical research is a great gap year before med school."},
   {name:"Ethan Kowalski", year:2017, major:"Computer Science", job:"Software Engineer", at:"Parsec Grove Software", city:"Chicago, IL",
-   areas:["TE"], offers:["Advice"],
+   areas:["TE"], offers:["Advice", "Résumé review", "Mock interview"],
    helps:["Computer Science","Artificial Intelligence","Cybersecurity","Mathematics","Business Analytics & Information Systems"],
-   note:"Ask me how to prep for technical interviews."},
+   fit:["are learning to code"], note:"Ask me how to prep for technical interviews."},
   {name:"Jasmine Wright", year:2018, major:"Business Analytics & Information Systems", job:"Data Analyst", at:"Copperwren Analytics", city:"Cincinnati, OH",
-   areas:["TE","BM"], offers:["Advice","Paid project","Internship"],
+   areas:["TE","BM"], offers:["Advice", "Résumé review", "Paid project", "Internship"],
    helps:["Business Analytics & Information Systems","Computer Science","Artificial Intelligence","Economics (Business)","Mathematics","Marketing"],
-   note:"Learn a little SQL, then message me."},
+   fit:["like data", "want to learn SQL or Excel"], note:"Learn a little SQL, then message me."},
   {name:"Rafael Santos", year:2014, major:"Computer Science", job:"Security Analyst", at:"Ironhollow Cyber", city:"Columbus, OH",
-   areas:["TE","LG"], offers:["Advice","Internship"],
+   areas:["TE","LG"], offers:["Advice", "Job shadow", "Internship"],
    helps:["Cybersecurity","Computer Science","Criminal Justice","Business Analytics & Information Systems","Mathematics"],
-   note:"Cybersecurity needs people from every background. Ask me how I got in."},
+   fit:["are curious about cybersecurity"], note:"Cybersecurity needs people from every background. Ask me how I got in."},
   {name:"Natalie Ross", year:2013, major:"Applied Physics (Pre-Engineering)", job:"Mechanical Engineer", at:"Talonworks Aerospace", city:"Dayton, OH",
-   areas:["TE"], offers:["Advice","Internship"],
+   areas:["TE"], offers:["Advice", "Job shadow", "Internship"],
    helps:["Engineering","Applied Physics (Pre-Engineering)","Applied Physics","Physics","Mathematics"],
-   note:"Ask me what engineers actually build day to day."},
+   fit:["like building things"], note:"Ask me what engineers actually build day to day."},
   {name:"Thomas Greene", year:2007, major:"Political Science", job:"Partner", at:"Ashby Morrow LLP", city:"Cincinnati, OH",
-   areas:["LG"], offers:["Advice","Internship"],
+   areas:["LG"], offers:["Advice", "Job shadow", "Internship"],
    helps:["Political Science","Philosophy","History","Economics (Bachelor of Arts)","Criminal Justice","Classical Humanities","International Studies"],
-   note:"Thinking about law school? Talk to me first."},
+   fit:["are thinking about law school"], note:"Thinking about law school? Talk to me first."},
   {name:"Danielle Moore", year:2015, major:"Criminal Justice", job:"Probation Officer", at:"Ridgemont County Court Services", city:"Dayton, OH",
-   areas:["LG","NSS"], offers:["Advice","Internship"],
+   areas:["LG","NSS"], offers:["Advice", "Job shadow", "Internship"],
    helps:["Criminal Justice","Sociology","Psychology","Social Work","Political Science"],
-   note:"Ask me what working in the courts is really like."},
+   fit:["are curious about the courts"], note:"Ask me what working in the courts is really like."},
   {name:"Victor Nguyen", year:2012, major:"International Studies", job:"Policy Advisor", at:"Larkmoor Policy Institute", city:"Washington, DC",
-   areas:["LG","NSS"], offers:["Advice","Paid project"],
+   areas:["LG","NSS"], offers:["Advice", "Résumé review", "Paid project"],
    helps:["International Studies","Political Science","Economics (Bachelor of Arts)","Spanish","History","Gender & Diversity Studies","Sociology"],
-   note:"I need research help on short projects a few times a year."},
+   fit:["like policy and research"], note:"I need research help on short projects a few times a year."},
   {name:"Teresa Alvarez", year:2010, major:"Social Work", job:"Program Director", at:"Northside Hearth Family Services", city:"Cincinnati, OH",
-   areas:["NSS","HC"], offers:["Advice","Internship"],
+   areas:["NSS","HC"], offers:["Advice", "Job shadow", "Internship"],
    helps:["Social Work","Psychology","Sociology","Nonprofit Management","Spanish","Gender & Diversity Studies"],
-   note:"Our field placements turn into jobs. Ask me how."},
+   fit:["want to help families"], note:"Our field placements turn into jobs. Ask me how."},
   {name:"Michael Osei", year:2014, major:"Theology", job:"Campus Minister", at:"St. Aldric High School", city:"Cincinnati, OH",
-   areas:["NSS","ST"], offers:["Advice","Paid project","Internship"],
+   areas:["NSS","ST"], offers:["Advice", "Paid project", "Internship"],
    helps:["Theology","Philosophy","Classical Humanities","Nonprofit Management","History","Education: Middle Childhood"],
-   note:"Ministry, teaching and nonprofit work overlap more than you'd think."},
+   fit:["care about faith and service"], note:"Ministry, teaching and nonprofit work overlap more than you'd think."},
   {name:"Laura Bennett", year:2016, major:"Organizational Leadership", job:"Director of Development", at:"Wickerline Food Alliance", city:"Cincinnati, OH",
-   areas:["NSS","BM"], offers:["Advice","Paid project","Internship"],
+   areas:["NSS","BM"], offers:["Advice", "Paid project", "Internship"],
    helps:["Nonprofit Management","Organizational Leadership","Communication Studies","Management","Marketing","International Studies"],
-   note:"Fundraising is sales with a mission. I'll teach you both."},
+   fit:["like nonprofits", "want to build sales skills"], note:"Fundraising is sales with a mission. I'll teach you both."},
   {name:"Jessica Turner", year:2011, major:"Education: Middle Childhood", job:"Seventh-Grade Math Teacher", at:"Hollis Grove Middle School", city:"Cincinnati, OH",
-   areas:["ST"], offers:["Advice","Internship"],
+   areas:["ST"], offers:["Advice", "Job shadow", "Internship"],
    helps:["Education: Middle Childhood","Education: P-5 Primary","Education: Special","Mathematics","English","History","Spanish"],
-   note:"Come sit in on a class before you student-teach."},
+   fit:["are thinking about teaching"], note:"Come sit in on a class before you student-teach."},
   {name:"Robert Chen", year:2009, major:"Mathematics", job:"Assistant Dean of Admissions", at:"Brennock College", city:"Columbus, OH",
-   areas:["ST"], offers:["Advice"],
+   areas:["ST"], offers:["Advice", "Résumé review", "Mock interview"],
    helps:["Mathematics","Classical Humanities","Education: Special","Education: P-5 Primary","Music","English","Spanish"],
-   note:"Ask me about careers in college admissions and student life."},
+   fit:["are curious about jobs at a college"], note:"Ask me about careers in college admissions and student life."},
   {name:"Chris Donovan", year:2014, major:"Sport Management", job:"Director of Ticket Sales", at:"Queen City Kestrels", city:"Cincinnati, OH",
-   areas:["SF","BM"], offers:["Advice","Internship"],
+   areas:["SF","BM"], offers:["Advice", "Job shadow", "Internship"],
    helps:["Sport Management","Sport Marketing","Marketing","Management","Communication Studies"],
-   note:"Every front office starts in sales. Ask me why that's a good thing."},
+   fit:["love sports", "are open to sales"], note:"Every front office starts in sales. Ask me why that's a good thing."},
   {name:"Alicia Monroe", year:2017, major:"Exercise Science", job:"Head Strength Coach", at:"Marlow Ridge University Athletics", city:"Dayton, OH",
-   areas:["SF","HC"], offers:["Advice","Internship"],
+   areas:["SF","HC"], offers:["Advice", "Job shadow", "Internship"],
    helps:["Exercise Science","Health Science and Wellness","Sport Management","Biomedical Sciences (Pre-Med)","Psychology"],
-   note:"I hire student coaches every fall."},
+   fit:["are into fitness and coaching"], note:"I hire student coaches every fall."},
   {name:"Derrick Hayes", year:2019, major:"Sport Marketing", job:"Partnerships Manager", at:"Ninth Inning Partners", city:"Indianapolis, IN",
-   areas:["SF","BM"], offers:["Paid project","Internship"],
+   areas:["SF","BM"], offers:["Résumé review", "Paid project", "Internship"],
    helps:["Sport Marketing","Sport Management","Marketing","Digital and Strategic Communication","Graphic Design","Entrepreneurship and Innovation"],
-   note:"We pay students to help with sponsorship decks."}
+   fit:["love sports marketing"], note:"We pay students to help with sponsorship decks."}
 ];
 
 // Where graduates of each major most often work (majors.md, "Interest areas" column).
@@ -361,25 +390,45 @@ const MAJOR_AREAS = {
   "Theatre":["AME"],"Theology":["NSS","ST"]
 };
 
-const OFFER_INFO = [
-  ["Advice", "A short call to answer your questions."],
-  ["Paid project", "A short paid task, roughly <span style=\"white-space:nowrap\">20–40 hours</span>, done around classes."],
-  ["Internship", "A summer or semester internship where the alum works."]
+// What alumni can offer, lightest commitment first. cls sets the tag style.
+const OFFERS = [
+  {o:"Advice", d:"A short call to answer your questions.", cls:"t-advice"},
+  {o:"Résumé review", d:"The alum reads your résumé and sends back notes.", cls:"t-advice"},
+  {o:"Mock interview", d:"A practice interview, with feedback after.", cls:"t-advice"},
+  {o:"Job shadow", d:"Spend part of a day seeing the alum's work up close.", cls:"t-project"},
+  {o:"Paid project", d:"A short paid task, roughly <span style=\"white-space:nowrap\">20–40 hours</span>, done around classes.", cls:"t-project"},
+  {o:"Internship", d:"A summer or semester internship where the alum works.", cls:"t-intern"}
 ];
-const TAG = {"Advice":"t-advice","Paid project":"t-project","Internship":"t-intern"};
+const ORDER = OFFERS.map(x => x.o);
+const TAG = Object.fromEntries(OFFERS.map(x => [x.o, x.cls]));
+const RESUME_FOR = ["Internship", "Résumé review"];   // requests that need a résumé attached
+const STUDENT_VIEWS = ["majors", "interests", "alumni", "request", "sent"];
+const ALUM_VIEWS = ["join", "preview", "joined"];
 const AREA = Object.fromEntries(AREAS.map(a => [a.id, a]));
-const MAX_MB = 5;
-const S = {view:"majors", search:"", major:null, areas:[], alum:null, from:null, offer:null,
-           first:"", q:"", resume:null, last:null, requested:new Set()};
+const MAX_MB = 5, THIS_YEAR = 2026;
+const blankDraft = () => ({name:"", year:"", major:"", job:"", at:"", city:"", areas:[], helps:[], offers:[], fit:["","",""], note:"", hq:""});
+const S = {view:"welcome", search:"", major:null, areas:[], alum:null, from:null, offer:null,
+           first:"", q:"", resume:null, last:null, requested:new Set(), draft:blankDraft(), joined:null};
 const head = document.getElementById("head"), view = document.getElementById("view");
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const ico = (id, cls) => `<svg class="${cls||""}" aria-hidden="true"><use href="#${id}"/></svg>`;
-const first = n => n.split(" ")[0];
-const lastName = n => n.split(" ").slice(-1)[0];
+const first = n => n.trim().split(/\s+/)[0];
+const lastName = n => n.trim().split(/\s+/).slice(-1)[0];
 const byLast = (a, b) => lastName(a.name).localeCompare(lastName(b.name));
-const tags = offers => `<div class="tags">${offers.map(o => `<span class="tag ${TAG[o]}">${esc(o)}</span>`).join("")}</div>`;
+const sortOffers = offers => ORDER.filter(o => offers.includes(o));
+const tags = offers => `<div class="tags">${sortOffers(offers).map(o => `<span class="tag ${TAG[o]}">${esc(o)}</span>`).join("")}</div>`;
 const orList = arr => arr.length < 2 ? arr.join("") : arr.slice(0, -1).join(", ") + " or " + arr[arr.length - 1];
+const andList = arr => arr.length < 2 ? arr.join("") : arr.slice(0, -1).join(", ") + " and " + arr[arr.length - 1];
+const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+// Usage events for the class test. No names, questions or files are ever sent: only which step was reached.
+// Does nothing until an analytics provider is connected (see README).
+const T0 = Date.now();
+function track(event, props = {}){
+  const data = Object.assign({secs: Math.round((Date.now() - T0) / 1000)}, props);
+  try { if (window.posthog && window.posthog.capture) window.posthog.capture(event, data); } catch (e) {}
+  try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({path: "event/" + event, title: event, event: true}); } catch (e) {}
+}
 const fileSize = b => b < 1048576 ? `${Math.max(1, Math.round(b / 1024))} KB` : `${(b / 1048576).toFixed(1)} MB`;
 
 function matches(){
@@ -394,10 +443,12 @@ function context(){
   return S.major ? `${S.major} major` : `Interested in ${S.areas.map(id => AREA[id].label).join(", ")}`;
 }
 function valid(v){
-  if (v === "majors" || v === "interests") return true;
+  if (["welcome", "majors", "interests", "join"].includes(v)) return true;
   if (v === "alumni") return !!S.major || S.areas.length > 0;
   if (v === "request") return !!S.alum;
   if (v === "sent") return !!S.last;
+  if (v === "preview") return needJoin().length === 0;
+  if (v === "joined") return !!S.joined;
   return false;
 }
 function go(v, replace){
@@ -408,27 +459,53 @@ function go(v, replace){
 window.addEventListener("popstate", e => {
   const v = (e.state && e.state.v) || location.hash.slice(1);
   if (valid(v)) { S.view = v; render(); }
-  else go("majors", true);
+  else go("welcome", true);
 });
 
 function header(title, sub){
-  const back = S.view === "majors" ? "<span></span>"
+  const back = S.view === "welcome" ? "<span></span>"
     : `<button class="back" data-act="back">${ico("left")}Back</button>`;
+  const mode = STUDENT_VIEWS.includes(S.view) ? `<span class="mode">For students</span>`
+    : ALUM_VIEWS.includes(S.view) ? `<span class="mode alum">For alumni</span>` : "";
   head.innerHTML = `<div class="bar">${back}<div class="brand">${ico("hand")}<span class="mk">${esc(APP_NAME)}</span><span class="school">at ${esc(SCHOOL)}</span></div></div>
-    <h1>${esc(title)}</h1>${sub ? `<p class="sub">${esc(sub)}</p>` : ""}`;
+    ${mode}<h1>${esc(title)}</h1>${sub ? `<p class="sub">${esc(sub)}</p>` : ""}`;
 }
 
 function card(a, from){
   const done = S.requested.has(a.name);
+  const fit = (a.fit || []).filter(Boolean);
+  const action = from === "preview"
+    ? `<p class="mini" style="margin:0">Students tap Request here to send you their questions.</p>`
+    : `<button class="btn req" data-act="request" data-from="${from}" data-v="${esc(a.name)}" ${done ? "disabled" : ""}>${done ? "Request sent" : "Request"}</button>`;
   return `<article class="card"><h2><span class="mk">${esc(a.name)}</span></h2>
     <p class="meta">Class of ${a.year} · ${esc(a.major)}</p>
     <p class="job">${esc(a.job)} at ${esc(a.at)}</p>
     <p class="city">${ico("pin")}${esc(a.city)}</p>
     <p class="note">“${esc(a.note)}”</p>
+    ${fit.length ? `<p class="fit"><b>Good fit if you</b> ${esc(orList(fit))}.</p>` : ""}
     ${tags(a.offers)}
-    <button class="btn req" data-act="request" data-from="${from}" data-v="${esc(a.name)}" ${done ? "disabled" : ""}>${done ? "Request sent" : "Request"}</button>
+    ${action}
   </article>`;
 }
+const offerKey = () => `<details class="key"><summary>What each offer means${ico("chev","chev")}</summary>${OFFERS.map(x =>
+  `<div><span class="tag ${x.cls}">${esc(x.o)}</span><span>${x.d}</span></div>`).join("")}</details>`;
+const demoLine = `<p class="demo">Sample alumni for a class demo. Every alum is open to students in any year.</p>`;
+
+/* ---------- Start: two doors ---------- */
+function welcomeView(){
+  header(`Welcome to ${APP_NAME}`, "Xavier alumni who already said yes, and the students they want to help.");
+  view.innerHTML = `<div class="doors">
+      <section class="door"><span class="ic">${ico("search")}</span>
+        <h2>I'm a student</h2><p>Find Xavier alumni who already said yes to helping students in your major. No account needed.</p>
+        <button class="btn" data-act="tostudents">Find alumni</button></section>
+      <section class="door alum"><span class="ic">${ico("hand")}</span>
+        <h2>I'm a Xavier alum</h2><p>Raise your hand: say which students you'll help and what you can offer. They'll see your card.</p>
+        <button class="btn ghost" data-act="tojoin">Raise your hand</button></section>
+    </div>
+    <p class="demo">Class demo with sample alumni. Nothing anyone sends leaves this phone.</p>`;
+}
+
+/* ---------- Student side ---------- */
 const majorRow = m => `<button class="row" data-act="major" data-v="${esc(m)}"><span>${esc(m)}</span>${ico("chev","chev")}</button>`;
 const undecidedRow = `<button class="undecided" data-act="undecided"><div><b>Undecided</b><span>Pick your interests instead</span></div>${ico("chev","chev")}</button>`;
 
@@ -457,20 +534,18 @@ function drawResults(){
   const toks = q.split(/\s+/);
   const hit = text => { const h = text.toLowerCase(); return toks.every(t => h.includes(t)); };
   const ms = MAJORS.filter(hit);
-  const as = ALUMNI.filter(a => hit([a.name, a.major, a.job, a.at, a.city, ...a.offers,
+  const as = ALUMNI.filter(a => hit([a.name, a.major, a.job, a.at, a.city, ...a.offers, ...(a.fit || []),
     ...a.areas.map(id => AREA[id].label)].join(" "))).sort(byLast);
   const und = hit("undecided interests");
   if (!ms.length && !as.length && !und){
     res.innerHTML = `<div class="empty">Nothing matches “${esc(S.search.trim())}”. Try a major, a company, a job like “analyst”, a city, or “internship”.</div>`;
     return;
   }
-  const count = [ms.length && `${ms.length} ${ms.length === 1 ? "major" : "majors"}`,
-                 as.length && `${as.length} ${as.length === 1 ? "alum" : "alumni"}`].filter(Boolean).join(" and ");
+  const count = [ms.length && plural(ms.length, "major", "majors"), as.length && plural(as.length, "alum", "alumni")].filter(Boolean).join(" and ");
   res.innerHTML = (count ? `<p class="rcount">${count} match</p>` : "")
     + (und ? `<div style="margin-top:12px">${undecidedRow}</div>` : "")
     + (ms.length ? `<div class="letter">Majors</div><div class="list">${ms.map(majorRow).join("")}</div>` : "")
-    + (as.length ? `<div class="letter">Alumni</div><p class="demo" style="margin-top:0">Sample alumni for a class demo.</p>
-        <div class="cards">${as.map(a => card(a, "search")).join("")}</div>` : "");
+    + (as.length ? `<div class="letter">Alumni</div>${demoLine}<div class="cards">${as.map(a => card(a, "search")).join("")}</div>` : "");
 }
 
 function interestsView(){
@@ -484,15 +559,12 @@ function interestsView(){
 
 // When a major has fewer than this many alumni, also show alumni in related fields.
 const FEW = 3;
-const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
-
 function related(major, exclude){
   const areas = MAJOR_AREAS[major] || [];
   const score = a => a.areas.filter(x => areas.includes(x)).length * 2 + (a.areas.includes(areas[0]) ? 1 : 0);
   return ALUMNI.filter(a => !exclude.includes(a) && a.areas.some(x => areas.includes(x)))
     .sort((a, b) => score(b) - score(a) || byLast(a, b));
 }
-
 function alumniView(){
   const list = matches();
   let sub, more = [], areaNames = [];
@@ -516,9 +588,7 @@ function alumniView(){
     <div class="cards">${shown.map(a => card(a, "list")).join("")}</div>` : "";
   const empty = !list.length && !more.length
     ? `<div class="empty">No alumni match yet. Go back and pick another option.</div>` : "";
-  view.innerHTML = `<div class="key" aria-label="What each offer means">${OFFER_INFO.map(([o, d]) =>
-      `<div><span class="tag ${TAG[o]}">${o}</span><span>${d}</span></div>`).join("")}</div>
-    <p class="demo">Sample alumni for a class demo.</p>
+  view.innerHTML = `${offerKey()}${demoLine}
     ${list.length ? `<div class="cards">${list.map(a => card(a, "list")).join("")}</div>` : ""}
     ${moreBlock}${empty}`;
 }
@@ -528,7 +598,7 @@ function missing(){
   if (!S.offer) m.push("what you're asking about");
   if (!S.first.trim()) m.push("your first name");
   if (!S.q.trim()) m.push("your questions");
-  if (S.offer === "Internship" && !S.resume) m.push("your résumé");
+  if (RESUME_FOR.includes(S.offer) && !S.resume) m.push("your résumé");
   return m;
 }
 function updateSend(){
@@ -538,8 +608,9 @@ function updateSend(){
 }
 function drawResume(err){
   const rz = $("rz"); if (!rz) return;
-  if (S.offer !== "Internship"){ rz.innerHTML = ""; return; }
-  rz.innerHTML = `<div class="field"><span class="lbl">Your résumé<span class="hint">Required for internship requests. PDF or Word, up to ${MAX_MB} MB.</span></span>
+  if (!RESUME_FOR.includes(S.offer)){ rz.innerHTML = ""; return; }
+  const why = S.offer === "Internship" ? "internship requests" : "résumé reviews";
+  rz.innerHTML = `<div class="field"><span class="lbl">Your résumé<span class="hint">Required for ${why}. PDF or Word, up to ${MAX_MB} MB.</span></span>
     ${S.resume
       ? `<div class="file">${ico("doc")}<div><b>${esc(S.resume.name)}</b><span>${fileSize(S.resume.size)}</span></div>
          <button type="button" class="link" data-act="rmres">Remove</button></div>`
@@ -557,14 +628,14 @@ function drawResume(err){
 }
 
 function requestView(){
-  const a = S.alum, one = a.offers.length === 1;
-  if (one) S.offer = a.offers[0];
+  const a = S.alum, offers = sortOffers(a.offers), one = offers.length === 1;
+  if (one) S.offer = offers[0];
   const ctx = context();
   header(`Send ${first(a.name)} a request`, `Write the questions you want to ask. ${first(a.name)} sees them up front.`);
-  view.innerHTML = `<div class="who"><h2>${esc(a.name)}</h2><p>${esc(a.job)} at ${esc(a.at)} · ${esc(a.city)}</p>${tags(a.offers)}</div>
+  view.innerHTML = `<div class="who"><h2>${esc(a.name)}</h2><p>${esc(a.job)} at ${esc(a.at)} · ${esc(a.city)}</p>${tags(offers)}</div>
     <form id="f" novalidate>
       <div class="field"><span class="lbl" id="ol">What are you asking about?${one ? "" : '<span class="hint">Pick one.</span>'}</span>
-        <div class="chips" role="radiogroup" aria-labelledby="ol">${a.offers.map(o =>
+        <div class="chips" role="radiogroup" aria-labelledby="ol">${offers.map(o =>
           `<button type="button" class="chip" role="radio" data-act="offer" data-v="${esc(o)}" aria-checked="${S.offer === o}">${esc(o)}</button>`).join("")}</div></div>
       <div class="field"><label for="fn">Your first name</label>
         <input type="text" id="fn" maxlength="40" autocomplete="given-name" value="${esc(S.first)}"></div>
@@ -582,16 +653,17 @@ function requestView(){
   drawResume(); updateSend();
   $("f").addEventListener("submit", e => { e.preventDefault(); if (missing().length) return;
     S.last = {alum:a, offer:S.offer, first:S.first.trim(), q:S.q.trim(), ctx,
-              resume: S.offer === "Internship" ? S.resume : null};
-    S.requested.add(a.name); S.q = ""; S.offer = null;
+              resume: RESUME_FOR.includes(S.offer) ? S.resume : null};
+    S.requested.add(a.name); track("send_request", {offer: S.offer, from: S.from, resume: !!S.last.resume}); S.q = ""; S.offer = null;
     go("sent", true); });
 }
 
+const tick = `<div class="done"><svg viewBox="0 0 76 76" aria-hidden="true"><circle class="ring" cx="38" cy="38" r="34" fill="none" stroke-width="4"/>
+  <path class="tick" d="M24 39l9 9 19-20" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`;
 function sentView(){
   const L = S.last;
   header(`Request sent to ${L.alum.name}`, `Here's a copy of what ${first(L.alum.name)} sees.`);
-  view.innerHTML = `<div class="done"><svg viewBox="0 0 76 76" aria-hidden="true"><circle class="ring" cx="38" cy="38" r="34" fill="none" stroke-width="4"/>
-      <path class="tick" d="M24 39l9 9 19-20" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  view.innerHTML = `${tick}
     <div class="copy"><dl><dt>To</dt><dd>${esc(L.alum.name)}, ${esc(L.alum.job)} at ${esc(L.alum.at)}</dd>
       <dt>From</dt><dd>${esc(L.first)}</dd><dt>Asking about</dt><dd>${esc(L.offer)}</dd>
       ${L.ctx ? `<dt>Also sent</dt><dd>${esc(L.ctx)}</dd>` : ""}
@@ -602,33 +674,154 @@ function sentView(){
       <button class="btn ghost" data-act="restart">Start over</button></div>`;
 }
 
+/* ---------- Alumni side: raise your hand ---------- */
+function needJoin(){
+  const d = S.draft, m = [], y = Number(d.year);
+  if (!d.name.trim()) m.push("your name");
+  if (!/^\d{4}$/.test(d.year.trim()) || y < 1950 || y > THIS_YEAR) m.push("a class year like 2016");
+  if (!d.major) m.push("the major you graduated with");
+  if (!d.job.trim()) m.push("your job title");
+  if (!d.at.trim()) m.push("your employer");
+  if (!d.city.trim()) m.push("your city");
+  if (!d.areas.length) m.push("the kind of work you do");
+  if (!d.helps.length) m.push("at least one major you'll help");
+  if (!d.offers.length) m.push("at least one thing you can offer");
+  if (!d.note.trim()) m.push("a line for students");
+  return m;
+}
+function draftAlum(){
+  const d = S.draft;
+  return {name:d.name.trim().replace(/\s+/g, " "), year:Number(d.year), major:d.major, job:d.job.trim(), at:d.at.trim(), city:d.city.trim(),
+          areas:d.areas.slice(), helps:d.helps.slice(), offers:sortOffers(d.offers),
+          fit:d.fit.map(x => x.trim()).filter(Boolean), note:d.note.trim(), mine:true};
+}
+const txt = (id, label, val, attrs = "") => `<div class="field"><label for="${id}">${label}</label>
+  <input type="text" id="${id}" value="${esc(val)}" ${attrs}></div>`;
+
+function joinView(){
+  const d = S.draft;
+  header("Raise your hand", "Tell Xavier students who you'll help and what you can give. They see your card and send you their questions.");
+  view.innerHTML = `<form id="jf" novalidate>
+    ${txt("jn", "Your name", d.name, 'maxlength="60" autocomplete="name"')}
+    <div class="two">
+      ${txt("jy", "Class year", d.year, 'maxlength="4" inputmode="numeric" placeholder="2016"')}
+      <div class="field"><label for="jm">Major you graduated with</label>
+        <select id="jm"><option value="">Pick one</option>${MAJORS.map(m => `<option ${d.major === m ? "selected" : ""}>${esc(m)}</option>`).join("")}</select></div>
+    </div>
+    ${txt("jt", "Job title", d.job, 'maxlength="60" placeholder="Senior Analyst"')}
+    ${txt("je", "Employer", d.at, 'maxlength="60"')}
+    ${txt("jc", "City", d.city, 'maxlength="40" placeholder="Cincinnati, OH"')}
+    <div class="field"><span class="lbl">What kind of work do you do?<span class="hint">Pick up to 3. Undecided students find you this way.</span></span>
+      <div class="chipset" id="ja"></div></div>
+    <div class="field"><span class="lbl">Which majors will you help?<span class="hint">Any majors, not only your own. Students in these majors see your card.</span></span>
+      <div class="chipset" id="jhs"></div>
+      <input type="text" id="jhq" placeholder="Add a major" autocomplete="off" value="${esc(d.hq)}">
+      <div id="jhr"></div></div>
+    <div class="field"><span class="lbl">What can you offer?<span class="hint">Pick any. Students ask for one at a time.</span></span>
+      ${OFFERS.map(x => `<label class="opt"><input type="checkbox" data-offer="${esc(x.o)}" ${d.offers.includes(x.o) ? "checked" : ""}>
+        <span><b>${esc(x.o)}</b><small>${x.d}</small></span></label>`).join("")}</div>
+    <div class="field"><span class="lbl">Good fit if you…<span class="hint">Optional. Up to 3 short phrases about interests, not grades or class year.</span></span>
+      ${[0,1,2].map(i => `<input type="text" class="fitin" data-i="${i}" maxlength="40" value="${esc(d.fit[i])}" placeholder="${["are curious about finance","want to learn Excel","love sports"][i]}" aria-label="Good fit phrase ${i + 1}" style="margin-bottom:8px">`).join("")}</div>
+    <div class="field"><label for="jo">One line for students<span class="hint">What they can ask you about, in your own words.</span></label>
+      <input type="text" id="jo" maxlength="90" value="${esc(d.note)}" placeholder="Ask me how I got from Xavier to my first job."></div>
+    <p class="info"><b>Open to every year.</b> YesList doesn't let alumni pick which class years can ask. Freshmen through seniors all see your card.</p>
+    <button class="btn" id="jp" type="submit">Preview my card</button>
+    <p class="need" id="jneed"></p>
+  </form>`;
+  const bind = (id, key) => $(id).addEventListener("input", e => { S.draft[key] = e.target.value; updateJoin(); });
+  bind("jn", "name"); bind("jy", "year"); bind("jt", "job"); bind("je", "at"); bind("jc", "city"); bind("jo", "note");
+  $("jm").addEventListener("change", e => { d.major = e.target.value; if (d.major && !d.helps.includes(d.major)) d.helps.push(d.major); drawHelps(); updateJoin(); });
+  $("jhq").addEventListener("input", e => { d.hq = e.target.value; drawHelps(); });
+  view.querySelectorAll("[data-offer]").forEach(c => c.addEventListener("change", () => {
+    d.offers = [...view.querySelectorAll("[data-offer]:checked")].map(x => x.dataset.offer); updateJoin(); }));
+  view.querySelectorAll(".fitin").forEach(c => c.addEventListener("input", () => { d.fit[+c.dataset.i] = c.value; }));
+  $("jf").addEventListener("submit", e => { e.preventDefault(); if (!needJoin().length){ track("alum_preview", {majors: S.draft.helps.length, offers: S.draft.offers.join(",")}); go("preview"); } });
+  drawAreas(); drawHelps(); updateJoin();
+}
+function drawAreas(){
+  const d = S.draft;
+  $("ja").innerHTML = AREAS.map(a => `<button type="button" class="chip" data-act="jarea" data-v="${a.id}" aria-pressed="${d.areas.includes(a.id)}"
+    ${!d.areas.includes(a.id) && d.areas.length >= 3 ? "disabled" : ""}>${esc(a.label)}</button>`).join("");
+}
+function drawHelps(){
+  const d = S.draft, q = d.hq.trim().toLowerCase();
+  $("jhs").innerHTML = d.helps.length
+    ? d.helps.map(m => `<button type="button" class="chip on" data-act="rmhelp" data-v="${esc(m)}" aria-label="Remove ${esc(m)}">${esc(m)} ${ico("x","xs")}</button>`).join("")
+    : `<p class="mini" style="margin:0">None yet. Search below or pick from the suggestions.</p>`;
+  let list, label;
+  if (q){ list = MAJORS.filter(m => !d.helps.includes(m) && m.toLowerCase().includes(q)).slice(0, 8); label = list.length ? "" : "No major matches that."; }
+  else { list = MAJORS.filter(m => !d.helps.includes(m) && (MAJOR_AREAS[m] || []).some(x => d.areas.includes(x))).slice(0, 6);
+         label = list.length ? "Suggested from the work you picked" : (d.areas.length ? "" : "Pick the kind of work you do to see suggestions."); }
+  $("jhr").innerHTML = (label ? `<p class="mini">${label}</p>` : "")
+    + (list.length ? `<div class="list">${list.map(m => `<button type="button" class="row" data-act="addhelp" data-v="${esc(m)}"><span>${esc(m)}</span>${ico("plus","chev")}</button>`).join("")}</div>` : "");
+}
+function updateJoin(){
+  const m = needJoin(), b = $("jp"); if (!b) return;
+  b.disabled = m.length > 0;
+  $("jneed").textContent = m.length ? `Still needed: ${m.join(", ")}.` : "";
+}
+
+function previewView(){
+  const a = draftAlum(), names = a.helps;
+  header("Here's your card", "This is exactly what students see.");
+  view.innerHTML = `<div class="cards">${card(a, "preview")}</div>
+    <p class="mini" style="margin:14px 4px">Students in ${plural(names.length, "major", "majors")} will see you: ${esc(andList(names.slice(0, 4)))}${names.length > 4 ? ` and ${names.length - 4} more` : ""}. Undecided students who pick ${esc(orList(a.areas.map(id => AREA[id].label)))} will too.</p>
+    <div class="stack"><button class="btn" data-act="addme">Add me to ${esc(APP_NAME)}</button>
+      <button class="btn ghost" data-act="back">Edit</button></div>`;
+}
+function joinedView(){
+  const a = S.joined;
+  header("You're on the list", `Students in ${plural(a.helps.length, "major", "majors")} can now send you requests.`);
+  view.innerHTML = `${tick}
+    <p class="mini" style="text-align:center;margin:0 4px 18px">Class demo: you're on the list only on this phone, until the page reloads.</p>
+    <div class="stack"><button class="btn" data-act="seeasstudent">See your card as a student</button>
+      <button class="btn ghost" data-act="home">Back to start</button></div>`;
+}
+
 function render(){
   document.title = `${APP_NAME} at ${SCHOOL}`;
-  ({majors:majorsView, interests:interestsView, alumni:alumniView, request:requestView, sent:sentView}[S.view] || majorsView)();
+  ({welcome:welcomeView, majors:majorsView, interests:interestsView, alumni:alumniView, request:requestView, sent:sentView,
+    join:joinView, preview:previewView, joined:joinedView}[S.view] || welcomeView)();
 }
 
 document.addEventListener("click", e => {
   const t = e.target.closest("[data-act]"); if (!t) return;
-  const v = t.dataset.v;
+  const v = t.dataset.v, d = S.draft;
   switch (t.dataset.act){
     case "back": history.back(); break;
+    case "tostudents": track("door_student"); go("majors"); break;
+    case "tojoin": track("door_alum"); go("join"); break;
+    case "home": S.joined = null; go("welcome", true); break;
     case "clear": S.search = ""; $("sq").value = ""; drawResults(); $("sq").focus(); break;
-    case "undecided": S.major = null; go("interests"); break;
-    case "major": S.major = v; S.areas = []; go("alumni"); break;
+    case "undecided": track("pick_undecided"); S.major = null; go("interests"); break;
+    case "major": track("pick_major", {major: v}); S.major = v; S.areas = []; go("alumni"); break;
     case "area": S.areas = S.areas.includes(v) ? S.areas.filter(x => x !== v) : AREAS.map(a => a.id).filter(id => id === v || S.areas.includes(id));
       interestsView(); { const b = document.querySelector(`.area[data-v="${v}"]`); if (b) b.focus({preventScroll:true}); } break;
-    case "show": if (S.areas.length) go("alumni"); break;
-    case "request": S.alum = ALUMNI.find(a => a.name === v); S.from = t.dataset.from; S.offer = null; go("request"); break;
-    case "offer": S.offer = v; document.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-checked", c.dataset.v === v));
+    case "show": if (S.areas.length){ track("pick_interests", {areas: S.areas.join(",")}); go("alumni"); } break;
+    case "request": track("tap_request", {from: t.dataset.from}); S.alum = ALUMNI.find(a => a.name === v); S.from = t.dataset.from; S.offer = null; go("request"); break;
+    case "offer": S.offer = v; document.querySelectorAll(".chip[role=radio]").forEach(c => c.setAttribute("aria-checked", c.dataset.v === v));
       drawResume(); updateSend(); break;
     case "rmres": S.resume = null; drawResume(); updateSend(); break;
     case "toalumni": history.back(); break;
     case "restart": S.major = null; S.areas = []; S.alum = null; S.last = null; S.search = ""; go("majors", true); break;
+    case "jarea": d.areas = d.areas.includes(v) ? d.areas.filter(x => x !== v) : (d.areas.length < 3 ? AREAS.map(a => a.id).filter(id => id === v || d.areas.includes(id)) : d.areas);
+      drawAreas(); drawHelps(); updateJoin(); { const b = document.querySelector(`[data-act=jarea][data-v="${v}"]`); if (b) b.focus({preventScroll:true}); } break;
+    case "addhelp": if (!d.helps.includes(v)) d.helps.push(v); d.hq = ""; $("jhq").value = ""; drawHelps(); updateJoin(); break;
+    case "rmhelp": d.helps = d.helps.filter(m => m !== v); drawHelps(); updateJoin(); break;
+    case "addme": { const a = draftAlum(); const i = ALUMNI.findIndex(x => x.name === a.name);
+      if (i >= 0) ALUMNI[i] = a; else ALUMNI.push(a);
+      S.joined = a; S.draft = blankDraft(); track("alum_added", {majors: a.helps.length}); go("joined", true); } break;
+    case "seeasstudent": S.major = S.joined.helps[0]; S.areas = []; S.search = ""; go("alumni"); break;
   }
 });
 
-history.replaceState({v:"majors"}, "", "#majors");
-render();
+// Start screen, or a deep link: #join for alumni, #students (or #majors) for students.
+const start = location.hash.slice(1);
+history.replaceState({v:"welcome"}, "", "#welcome");
+track("open", {entry: start || "welcome"});
+if (start === "join") go("join");
+else if (start === "students" || start === "majors") go("majors");
+else render();
 }
 </script>
 </body>
