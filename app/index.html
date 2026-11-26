@@ -136,7 +136,7 @@ details.key summary::-webkit-details-marker{display:none}
 details.key summary .chev{transition:transform .15s}details.key[open] summary .chev{transform:rotate(90deg)}
 details.key[open]{padding-bottom:12px}
 .fit{margin:0 0 12px;font-size:14px;color:var(--soft)}.fit b{font-weight:600;color:var(--ink)}
-.two{display:grid;grid-template-columns:104px minmax(0,1fr);gap:10px}
+.yr input{max-width:140px}
 select{width:100%;font-size:16px;background:var(--panel);border:1.5px solid var(--line);border-radius:12px;padding:12px 10px;min-height:50px;color:var(--ink)}
 .chipset{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
 .chip[aria-pressed=true],.chip.on{background:var(--solid);color:var(--onsolid);border-color:var(--solid)}
@@ -414,7 +414,7 @@ const STUDENT_VIEWS = ["majors", "interests", "alumni", "request", "sent"];
 const ALUM_VIEWS = ["join", "preview", "joined"];
 const AREA = Object.fromEntries(AREAS.map(a => [a.id, a]));
 const MAX_MB = 5, THIS_YEAR = 2026;
-const blankDraft = () => ({name:"", year:"", major:"", job:"", at:"", city:"", areas:[], helps:[], offers:[], fit:["","",""], note:"", hq:""});
+const blankDraft = () => ({name:"", year:"", major:"", job:"", at:"", city:"", areas:[], other:false, otherText:"", helps:[], offers:[], fit:["","",""], note:"", hq:""});
 const S = {view:"welcome", search:"", major:null, areas:[], alum:null, from:null, offer:null,
            first:"", q:"", resume:null, last:null, requested:new Set(), draft:blankDraft(), joined:null};
 const head = document.getElementById("head"), view = document.getElementById("view");
@@ -488,6 +488,7 @@ function card(a, from){
   return `<article class="card"><h2><span class="mk">${esc(a.name)}</span></h2>
     <p class="meta">Class of ${a.year} · ${esc(a.major)}</p>
     <p class="job">${esc(a.job)} at ${esc(a.at)}</p>
+    ${a.field ? `<p class="meta" style="margin:2px 0 0">Field: ${esc(a.field)}</p>` : ""}
     <p class="city">${ico("pin")}${esc(a.city)}</p>
     <p class="note">“${esc(a.note)}”</p>
     ${fit.length ? `<p class="fit"><b>Good fit if you</b> ${esc(orList(fit))}.</p>` : ""}
@@ -542,7 +543,7 @@ function drawResults(){
   const toks = q.split(/\s+/);
   const hit = text => { const h = text.toLowerCase(); return toks.every(t => h.includes(t)); };
   const ms = MAJORS.filter(hit);
-  const as = ALUMNI.filter(a => hit([a.name, a.major, a.job, a.at, a.city, ...a.offers, ...(a.fit || []),
+  const as = ALUMNI.filter(a => hit([a.name, a.major, a.job, a.at, a.city, a.field || "", ...a.offers, ...(a.fit || []),
     ...a.areas.map(id => AREA[id].label)].join(" "))).sort(byLast);
   const und = hit("undecided interests");
   if (!ms.length && !as.length && !und){
@@ -687,11 +688,12 @@ function needJoin(){
   const d = S.draft, m = [], y = Number(d.year);
   if (!d.name.trim()) m.push("your name");
   if (!/^\d{4}$/.test(d.year.trim()) || y < 1950 || y > THIS_YEAR) m.push("a class year like 2016");
-  if (!d.major) m.push("the major you graduated with");
+  if (!d.major.trim()) m.push("the major you graduated with");
   if (!d.job.trim()) m.push("your job title");
   if (!d.at.trim()) m.push("your employer");
   if (!d.city.trim()) m.push("your city");
-  if (!d.areas.length) m.push("the kind of work you do");
+  if (!d.areas.length && !d.other) m.push("the kind of work you do");
+  if (d.other && !d.otherText.trim()) m.push("your field (or untick Other)");
   if (!d.helps.length) m.push("at least one major you'll help");
   if (!d.offers.length) m.push("at least one thing you can offer");
   if (!d.note.trim()) m.push("a line for students");
@@ -699,8 +701,8 @@ function needJoin(){
 }
 function draftAlum(){
   const d = S.draft;
-  return {name:d.name.trim().replace(/\s+/g, " "), year:Number(d.year), major:d.major, job:d.job.trim(), at:d.at.trim(), city:d.city.trim(),
-          areas:d.areas.slice(), helps:d.helps.slice(), offers:sortOffers(d.offers),
+  return {name:d.name.trim().replace(/\s+/g, " "), year:Number(d.year), major:canonMajor(d.major) || d.major.trim(), job:d.job.trim(), at:d.at.trim(), city:d.city.trim(),
+          areas:d.areas.slice(), field:d.other ? d.otherText.trim() : "", helps:d.helps.slice(), offers:sortOffers(d.offers),
           fit:d.fit.map(x => x.trim()).filter(Boolean), note:d.note.trim(), mine:true};
 }
 const txt = (id, label, val, attrs = "") => `<div class="field"><label for="${id}">${label}</label>
@@ -711,16 +713,16 @@ function joinView(){
   header("Raise your hand", "Tell Xavier students who you'll help and what you can give. They see your card and send you their questions.");
   view.innerHTML = `<form id="jf" novalidate>
     ${txt("jn", "Your name", d.name, 'maxlength="60" autocomplete="name"')}
-    <div class="two">
-      ${txt("jy", "Class year", d.year, 'maxlength="4" inputmode="numeric" placeholder="2016"')}
-      <div class="field"><label for="jm">Major you graduated with</label>
-        <select id="jm"><option value="">Pick one</option>${MAJORS.map(m => `<option ${d.major === m ? "selected" : ""}>${esc(m)}</option>`).join("")}</select></div>
-    </div>
+    <div class="field yr"><label for="jy">Class year</label>
+      <input type="text" id="jy" value="${esc(d.year)}" maxlength="4" inputmode="numeric" placeholder="2016"></div>
+    <div class="field"><label for="jm">Major you graduated with<span class="hint">Start typing and pick it from the list.</span></label>
+      <input type="text" id="jm" value="${esc(d.major)}" maxlength="80" autocomplete="off" placeholder="Like Finance or Nursing" aria-describedby="jmr" aria-autocomplete="list">
+      <div id="jmr"></div></div>
     ${txt("jt", "Job title", d.job, 'maxlength="60" placeholder="Senior Analyst"')}
     ${txt("je", "Employer", d.at, 'maxlength="60"')}
     ${txt("jc", "City", d.city, 'maxlength="40" placeholder="Cincinnati, OH"')}
-    <div class="field"><span class="lbl">What kind of work do you do?<span class="hint">Pick up to 3. Undecided students find you this way.</span></span>
-      <div class="chipset" id="ja"></div></div>
+    <div class="field"><span class="lbl">What kind of work do you do?<span class="hint">Pick up to 3. Undecided students find you this way. Not listed? Tap Other and type it.</span></span>
+      <div class="chipset" id="ja"></div><div id="jow"></div></div>
     <div class="field"><span class="lbl">Which majors will you help?<span class="hint">Any majors, not only your own. Students in these majors see your card.</span></span>
       <div class="chipset" id="jhs"></div>
       <input type="text" id="jhq" placeholder="Add a major" autocomplete="off" value="${esc(d.hq)}">
@@ -738,7 +740,8 @@ function joinView(){
   </form>`;
   const bind = (id, key) => $(id).addEventListener("input", e => { S.draft[key] = e.target.value; updateJoin(); });
   bind("jn", "name"); bind("jy", "year"); bind("jt", "job"); bind("je", "at"); bind("jc", "city"); bind("jo", "note");
-  $("jm").addEventListener("change", e => { d.major = e.target.value; if (d.major && !d.helps.includes(d.major)) d.helps.push(d.major); drawHelps(); updateJoin(); });
+  $("jm").addEventListener("input", e => { d.major = e.target.value; drawMajor(); updateJoin(); });
+  $("jm").addEventListener("change", () => { const m = canonMajor(d.major); if (m){ pickMajor(m); } });
   $("jhq").addEventListener("input", e => { d.hq = e.target.value; drawHelps(); });
   view.querySelectorAll("[data-offer]").forEach(c => c.addEventListener("change", () => {
     d.offers = [...view.querySelectorAll("[data-offer]:checked")].map(x => x.dataset.offer); updateJoin(); }));
@@ -746,10 +749,32 @@ function joinView(){
   $("jf").addEventListener("submit", e => { e.preventDefault(); if (!needJoin().length){ track("alum_preview", {majors: S.draft.helps.length, offers: S.draft.offers.join(",")}); go("preview"); } });
   drawAreas(); drawHelps(); updateJoin();
 }
+// Major they graduated with: type, then pick from matches. A major not on today's list is kept as typed.
+const canonMajor = t => MAJORS.find(m => m.toLowerCase() === t.trim().toLowerCase()) || null;
+function pickMajor(m){
+  const d = S.draft; d.major = m; $("jm").value = m;
+  if (!d.helps.includes(m)) d.helps.unshift(m);
+  $("jmr").innerHTML = ""; drawHelps(); updateJoin();
+}
+function drawMajor(){
+  const d = S.draft, q = d.major.trim().toLowerCase(), box = $("jmr");
+  if (!q || canonMajor(d.major)){ box.innerHTML = ""; return; }
+  const list = MAJORS.filter(m => m.toLowerCase().includes(q)).slice(0, 6);
+  box.innerHTML = (list.length ? `<div class="list" style="margin-top:6px">${list.map(m =>
+      `<button type="button" class="row" data-act="pickmajor" data-v="${esc(m)}"><span>${esc(m)}</span>${ico("chev","chev")}</button>`).join("")}</div>` : "")
+    + `<p class="mini">${list.length ? "Not listed? " : ""}Majors change over time. If yours isn't on today's list, keep what you typed and your card will show it.</p>`;
+}
 function drawAreas(){
-  const d = S.draft;
+  const d = S.draft, full = d.areas.length + (d.other ? 1 : 0) >= 3;
   $("ja").innerHTML = AREAS.map(a => `<button type="button" class="chip" data-act="jarea" data-v="${a.id}" aria-pressed="${d.areas.includes(a.id)}"
-    ${!d.areas.includes(a.id) && d.areas.length >= 3 ? "disabled" : ""}>${esc(a.label)}</button>`).join("");
+    ${!d.areas.includes(a.id) && full ? "disabled" : ""}>${esc(a.label)}</button>`).join("")
+    + `<button type="button" class="chip" data-act="jother" aria-pressed="${d.other}" ${!d.other && full ? "disabled" : ""}>Other</button>`;
+  const w = $("jow");
+  if (!d.other){ w.innerHTML = ""; return; }
+  if (!$("jot")){
+    w.innerHTML = `<label for="jot" class="sr">Your field</label><input type="text" id="jot" maxlength="50" value="${esc(d.otherText)}" placeholder="Type your field, like real estate or aviation">`;
+    $("jot").addEventListener("input", e => { d.otherText = e.target.value; updateJoin(); });
+  }
 }
 function drawHelps(){
   const d = S.draft, q = d.hq.trim().toLowerCase();
@@ -773,7 +798,9 @@ function previewView(){
   const a = draftAlum(), names = a.helps;
   header("Here's your card", "This is exactly what students see.");
   view.innerHTML = `<div class="cards">${card(a, "preview")}</div>
-    <p class="mini" style="margin:14px 4px">Students in ${plural(names.length, "major", "majors")} will see you: ${esc(andList(names.slice(0, 4)))}${names.length > 4 ? ` and ${names.length - 4} more` : ""}. Undecided students who pick ${esc(orList(a.areas.map(id => AREA[id].label)))} will too.</p>
+    <p class="mini" style="margin:14px 4px">Students in ${plural(names.length, "major", "majors")} will see you: ${esc(andList(names.slice(0, 4)))}${names.length > 4 ? ` and ${names.length - 4} more` : ""}.${
+      a.areas.length ? ` Undecided students who pick ${esc(orList(a.areas.map(id => AREA[id].label)))} will too.` : ""}${
+      a.field ? ` Anyone can find you by searching “${esc(a.field)}”.` : ""}</p>
     <div class="stack"><button class="btn" data-act="addme">Add me to ${esc(APP_NAME)}</button>
       <button class="btn ghost" data-act="back">Edit</button></div>`;
 }
@@ -812,7 +839,10 @@ document.addEventListener("click", e => {
     case "rmres": S.resume = null; drawResume(); updateSend(); break;
     case "toalumni": history.back(); break;
     case "restart": S.major = null; S.areas = []; S.alum = null; S.last = null; S.search = ""; go("majors", true); break;
-    case "jarea": d.areas = d.areas.includes(v) ? d.areas.filter(x => x !== v) : (d.areas.length < 3 ? AREAS.map(a => a.id).filter(id => id === v || d.areas.includes(id)) : d.areas);
+    case "pickmajor": pickMajor(v); break;
+    case "jother": d.other = !d.other; if (!d.other) d.otherText = ""; drawAreas(); updateJoin();
+      { const b = document.querySelector("[data-act=jother]"); if (b) b.focus({preventScroll:true}); if (d.other && $("jot")) $("jot").focus(); } break;
+    case "jarea": d.areas = d.areas.includes(v) ? d.areas.filter(x => x !== v) : (d.areas.length + (d.other ? 1 : 0) < 3 ? AREAS.map(a => a.id).filter(id => id === v || d.areas.includes(id)) : d.areas);
       drawAreas(); drawHelps(); updateJoin(); { const b = document.querySelector(`[data-act=jarea][data-v="${v}"]`); if (b) b.focus({preventScroll:true}); } break;
     case "addhelp": if (!d.helps.includes(v)) d.helps.push(v); d.hq = ""; $("jhq").value = ""; drawHelps(); updateJoin(); break;
     case "rmhelp": d.helps = d.helps.filter(m => m !== v); drawHelps(); updateJoin(); break;
