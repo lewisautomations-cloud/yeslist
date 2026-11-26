@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YesList at Xavier</title>
+<meta name="description" content="Xavier students find alumni who already said yes to helping them, with advice, a paid project or an internship.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..600&display=swap" rel="stylesheet">
+<style>
+/* VOICE: warm and plain, a student founder explaining a pilot to the people who would run it.
+   IDEA: the raised hand. The page shows the yes that comes before the ask.
+   PICTURE: the app itself on a phone, half in the warm hero and half on the page.
+   COLOUR and TYPE: cream paper, warm brown ink, clay accent; Source Serif 4 headings, Instrument Sans text.
+   LAYOUT: one column of sections up to 1040px; hero text beside the phone above 860px, stacked below. */
+:root{color-scheme:light dark;
+  --bg:light-dark(#F5F0E8,#1E1C19);--panel:light-dark(#FFFCF7,#292622);
+  --ink:light-dark(#29231E,#F3EEE6);--soft:light-dark(#4A4038,#D9D1C6);--muted:light-dark(#6B6158,#B0A69A);
+  --line:light-dark(#E4DBCF,#3E3832);--tint:light-dark(#F7E6DC,#47302A);--hero:light-dark(#ECE2D3,#272420);
+  --sky:light-dark(#B5532E,#E5916E);--btn:light-dark(#B5532E,#E5916E);--onbtn:light-dark(#FFFFFF,#1E1C19);
+  --btnhover:light-dark(#9C4524,#EDA585);
+  --solid:light-dark(#29231E,#F3EEE6);--onsolid:light-dark(#FFFCF7,#1E1C19);
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 "Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:clip}
+a{color:var(--sky)}
+:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 max(5vw,18px)}
+.top{background:var(--hero);color:var(--ink)}
+.bar{display:flex;align-items:center;gap:7px;min-height:60px;font-family:var(--serif);font-weight:600;font-size:19px}
+.bar svg{width:24px;height:24px;color:var(--sky)}.bar .school{font-weight:400;color:var(--muted)}
+.hero{display:grid;gap:28px;padding:28px 0 0;align-items:end}
+@media(min-width:860px){.hero{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);padding-top:40px}}
+h1{font-family:var(--serif);font-size:clamp(40px,7vw,62px);line-height:1.04;font-weight:600;letter-spacing:-.015em;margin:0 0 16px;text-wrap:balance}
+.lead{font-size:19px;color:var(--soft);max-width:34ch;margin:0 0 26px}
+.cta{display:inline-flex;align-items:center;justify-content:center;min-height:54px;padding:0 28px;border-radius:12px;background:var(--btn);color:var(--onbtn);font-weight:700;font-size:18px;text-decoration:none}
+.cta:hover{background:var(--btnhover)}
+.fine{font-size:14px;color:var(--muted);margin:12px 0 0}
+.herotext{padding-bottom:0}@media(min-width:860px){.herotext{padding-bottom:48px}}
+/* phone */
+:root{--drop:150px}@media(min-width:860px){:root{--drop:120px}}
+.stage{display:flex;justify-content:center;margin-bottom:calc(-1 * var(--drop));position:relative;z-index:1}
+.phone{width:min(310px,86vw);background:light-dark(#2A2420,#3A342E);border-radius:40px;padding:10px;box-shadow:0 30px 60px -22px rgba(60,35,20,.45),0 0 0 1px rgba(255,255,255,.06) inset}
+.screen{background:var(--bg);color:var(--ink);border-radius:31px;overflow:hidden;text-align:left}
+.sh{background:var(--bg);color:var(--ink);padding:14px 16px 14px;border-bottom:1px solid var(--line)}
+.sbar{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:600}
+.sbar span:last-child{font-weight:700}
+.sh b{display:block;font-family:var(--serif);font-weight:600;font-size:27px;line-height:1.1;margin:10px 0 4px}
+.sh p{margin:0;font-size:13px;color:var(--muted)}
+.scard{background:var(--panel);margin:12px;border:1px solid var(--line);border-radius:16px;padding:14px}
+.scard strong{font-family:var(--serif);font-weight:600;font-size:18px;display:block}
+.scard .m{font-size:13px;color:var(--muted);margin:1px 0 6px}
+.scard .j{font-size:14px;margin:0}
+.scard .c{font-size:13px;color:var(--muted);margin:2px 0 8px}
+.scard .n{font-family:var(--serif);font-size:15px;font-style:italic;margin:0 0 10px}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{display:inline-block;font-size:13px;font-weight:600;padding:3px 10px;border-radius:999px;border:1.5px solid transparent;white-space:nowrap}
+.t-advice{border-color:var(--sky);color:var(--ink)}.t-project{background:var(--tint);color:var(--ink)}.t-intern{background:var(--solid);color:var(--onsolid)}
+.sbtn{margin-top:12px;background:var(--btn);color:var(--onbtn);border-radius:10px;text-align:center;font-weight:700;font-size:15px;padding:10px}
+.scard2{opacity:.55;margin-top:0;padding-bottom:8px}
+/* sections */
+main.wrap{padding-top:calc(var(--drop) + 8px)}
+section{padding:44px 0;border-top:1px solid var(--line)}
+section:first-child{border-top:0;padding-top:24px}
+h2{font-family:var(--serif);font-size:clamp(30px,4.4vw,40px);line-height:1.1;font-weight:600;letter-spacing:-.01em;margin:0 0 14px;text-wrap:balance}
+.intro{max-width:62ch;margin:0 0 22px}
+.split{display:grid;gap:28px}
+@media(min-width:860px){.split{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}}
+.bars{display:grid;gap:18px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px}
+.brow p{margin:0 0 6px;display:flex;justify-content:space-between;gap:16px;font-size:16px}
+.brow b{white-space:nowrap;font-size:18px;flex:none}
+.track{height:12px;border-radius:999px;background:var(--tint);overflow:hidden}
+.fill{height:100%;border-radius:999px;background:var(--sky)}
+.cap{font-size:14px;color:var(--muted);margin:2px 0 0}
+.story{margin:0;font-family:var(--serif);font-style:italic;font-size:21px;line-height:1.5;max-width:42ch}
+.story small{display:block;margin-top:12px;font-family:"Instrument Sans",system-ui,sans-serif;font-style:normal;font-size:14px;color:var(--muted)}
+ol.steps{list-style:none;counter-reset:s;margin:0;padding:0;display:grid;gap:14px}
+@media(min-width:860px){ol.steps{grid-template-columns:repeat(4,minmax(0,1fr))}}
+ol.steps li{counter-increment:s;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px 18px 20px}
+ol.steps li::before{content:counter(s);display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--btn);color:var(--onbtn);font-weight:700;margin-bottom:12px}
+ol.steps b{display:block;font-family:var(--serif);font-weight:600;font-size:20px;margin-bottom:4px}
+ol.steps span{font-size:16px;color:var(--muted)}
+.tip{margin:16px 0 0;font-size:15px;color:var(--muted)}
+.offers{display:grid;gap:12px}
+@media(min-width:860px){.offers{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.offer{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px}
+.offer .tag{font-size:15px;padding:5px 14px;margin-bottom:10px}
+.offer p{margin:0}
+.diff{display:grid;gap:0;background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.diff div{display:grid;gap:4px;padding:16px 20px;border-top:1px solid var(--line)}
+.diff div:first-child{border-top:0}
+@media(min-width:700px){.diff div{grid-template-columns:220px minmax(0,1fr);gap:20px}}
+.diff b{font-family:var(--serif);font-weight:600;font-size:18px}.diff p{margin:0}
+ul.raise{margin:0 0 16px;padding-left:22px}
+ul.raise li{margin:4px 0}
+.next{background:var(--btn);color:var(--onbtn);border-radius:20px;padding:30px}
+.next h2{color:inherit}.next p{margin:0;color:inherit;max-width:60ch}
+footer{padding:28px 0 48px;color:var(--muted);font-size:14px}
+footer p{margin:4px 0}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="hand" viewBox="0 0 24 24"><path fill="currentColor" d="M8.2 3.6c.7 0 1.3.6 1.3 1.3v6h.6V3.3c0-.7.6-1.3 1.3-1.3s1.3.6 1.3 1.3v7.6h.6V4.1c0-.7.6-1.3 1.3-1.3s1.3.6 1.3 1.3v7.4h.6V6.6c0-.7.6-1.3 1.3-1.3s1.3.6 1.3 1.3v8.1c0 4-2.9 7.3-6.9 7.3-2.4 0-4.2-1-5.6-3l-3.4-4.9c-.4-.6-.3-1.4.3-1.9.6-.4 1.4-.3 1.9.2l1.9 2.2V4.9c0-.7.6-1.3 1.3-1.3z"/></symbol>
+</svg>
+
+<header class="top">
+  <div class="wrap">
+    <div class="bar"><svg aria-hidden="true"><use href="#hand"/></svg><span>YesList</span><span class="school">at Xavier</span></div>
+    <div class="hero">
+      <div class="herotext">
+        <h1>Alumni who already said yes</h1>
+        <p class="lead">A Xavier student picks their major and sees alumni who have offered to help students like them, with advice, a paid project or an internship. Then they send one alum a request with their questions.</p>
+        <a class="cta" href="app/">Try the demo</a>
+        <p class="fine">Class demo with sample alumni. Nothing a student sends leaves their phone.</p>
+      </div>
+      <div class="stage" aria-hidden="true">
+        <div class="phone"><div class="screen">
+          <div class="sh">
+            <div class="sbar"><span>‹ Back</span><span>YesList at Xavier</span></div>
+            <b>Finance</b><p>3 alumni said yes to helping Finance students.</p>
+          </div>
+          <div class="scard">
+            <strong>Maya Okafor</strong>
+            <p class="m">Class of 2015 · Finance</p>
+            <p class="j">Senior Analyst, Corporate Finance at Halvorsen Pike Advisors</p>
+            <p class="c">Cincinnati, OH</p>
+            <p class="n">“Ask me what a first-year analyst actually does all day.”</p>
+            <div class="tags"><span class="tag t-advice">Advice</span><span class="tag t-intern">Internship</span></div>
+            <div class="sbtn">Request</div>
+          </div>
+          <div class="scard scard2"><strong>Daniel Reyes</strong><p class="m">Class of 2011 · Accountancy</p></div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section>
+    <h2>The problem</h2>
+    <p class="intro">Xavier students know alumni work in their field. They can't tell which ones are open to hearing from a student, so many never ask.</p>
+    <div class="split">
+      <div class="bars" role="list" aria-label="Survey results">
+        <div class="brow" role="listitem"><p><span>Had never contacted a single Xavier alum</span><b>4 of 12</b></p><div class="track"><div class="fill" style="width:33.3%"></div></div></div>
+        <div class="brow" role="listitem"><p><span>Students who did ask: alumni they had already met who replied</span><b>24 of 28</b></p><div class="track"><div class="fill" style="width:85.7%"></div></div></div>
+        <div class="brow" role="listitem"><p><span>Asked what they would use an app like this for, picked internships</span><b>9 of 12</b></p><div class="track"><div class="fill" style="width:75%"></div></div></div>
+        <p class="cap">Survey of 12 Xavier students, Nov 18–20, 2026.</p>
+      </div>
+      <p class="story">When I applied to Goldman Sachs, I messaged 4 Xavier alumni who work there. None answered. When I messaged 4 alumni who already knew me, all 4 did. Students worry about that first silence before they ever hit send.
+        <small>Yohan Lewis, Xavier student and builder of YesList</small></p>
+    </div>
+  </section>
+
+  <section>
+    <h2>How a student uses it</h2>
+    <ol class="steps">
+      <li><b>Pick your major.</b><span>Or tap Undecided and pick the areas you're interested in. Or search for a major, a company, a job or a city.</span></li>
+      <li><b>Read the cards.</b><span>Each alum shows where they work, a short note in their own words, and what they offer.</span></li>
+      <li><b>Tap Request.</b><span>Pick what you're asking about and write your questions. Asking about an internship? Attach your résumé (PDF or Word).</span></li>
+      <li><b>Tap Send request.</b><span>You'll see a copy of exactly what the alum sees.</span></li>
+    </ol>
+    <p class="tip">Testing it? Save your résumé to your phone first, in case you ask about an internship.</p>
+  </section>
+
+  <section>
+    <h2>What alumni offer</h2>
+    <div class="offers">
+      <div class="offer"><span class="tag t-advice">Advice</span><p>A short call to answer your questions.</p></div>
+      <div class="offer"><span class="tag t-project">Paid project</span><p>A short paid task, roughly <span style="white-space:nowrap">20–40 hours</span>, done around classes.</p></div>
+      <div class="offer"><span class="tag t-intern">Internship</span><p>A summer or semester internship where the alum works.</p></div>
+    </div>
+    <p class="tip">Each alum offers any mix of the three. Every alum offers at least one.</p>
+  </section>
+
+  <section>
+    <h2>How it's different</h2>
+    <div class="diff">
+      <div><b>Handshake</b><p>Lists jobs. It doesn't show which Xavier alumni will talk to you.</p></div>
+      <div><b>LinkedIn</b><p>Shows who went to Xavier, not who is open to hearing from a student.</p></div>
+      <div><b>Xavier's Flash Mentoring Program</b><p>Connects students with professionals in any field for a conversation. YesList shows Xavier alumni, sorted by your major, who have already said what they'll give: advice, a paid project or an internship.</p></div>
+      <div><b>BrewChat</b><p>Lets students ask professionals and alumni from anywhere for a coffee chat; the person says yes or no after the student asks. On YesList, every alum has said yes to Xavier students before anyone asks.</p></div>
+      <div><b>Ten Thousand Coffees</b><p>Some universities offer it to their students and alumni; it introduces them to each other for career conversations. On YesList, each alum says up front what they'll give: advice, a paid project or an internship.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>For alumni: raising your hand</h2>
+    <div class="split">
+      <div>
+        <p class="intro" style="margin-bottom:10px">In a real version, an alum would sign up and say:</p>
+        <ul class="raise">
+          <li>which majors they'll help (any majors, not only their own),</li>
+          <li>the kind of work they do,</li>
+          <li>what they can offer: advice, a paid project, an internship, or a mix,</li>
+          <li>one line in their own words about what students can ask them.</li>
+        </ul>
+      </div>
+      <p class="intro">Students only see alumni who have done this, so every request goes to someone who already said yes. The alumni side is not built yet; this demo uses sample alumni.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="next">
+      <h2>Starting at Xavier</h2>
+      <p>YesList starts with one school. If Xavier students send requests and alumni answer, other schools get their own YesList, and their students see only their own alumni.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <p>Built by Yohan Lewis for MGMT 342 at Xavier University, fall 2026.</p>
+  <p>Survey: 12 Xavier students, Nov 18–20, 2026; details in the project's evidence file. Sample alumni and employers in the demo are invented.</p>
+</footer>
+</body>
+</html>

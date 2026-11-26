@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YesList at Xavier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..600&display=swap" rel="stylesheet">
+<style>
+/* VOICE: warm and unhurried, like a friend who already asked the alum for you.
+   IDEA: a raised hand. Every alum here has already said "I'll take a Xavier student."
+   PICTURE: the working app itself on warm paper, the raised-hand mark in clay.
+   COLOUR and TYPE: cream paper, warm brown ink, clay accent; Source Serif 4 for headings and notes, Instrument Sans for the rest.
+   LAYOUT: one phone-width column; on a laptop it sits centred on the same paper. */
+:root{color-scheme:light dark;
+  --bg:light-dark(#F5F0E8,#1E1C19);--panel:light-dark(#FFFCF7,#292622);
+  --ink:light-dark(#29231E,#F3EEE6);--muted:light-dark(#6B6158,#B0A69A);
+  --line:light-dark(#E4DBCF,#3E3832);--tint:light-dark(#F7E6DC,#47302A);
+  --sky:light-dark(#B5532E,#E5916E);--band:var(--bg);
+  --solid:light-dark(#29231E,#F3EEE6);--onsolid:light-dark(#FFFCF7,#1E1C19);
+  --btn:light-dark(#B5532E,#E5916E);--onbtn:light-dark(#FFFFFF,#1E1C19);
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:clip}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.col{max-width:480px;margin:0 auto;padding:0 18px}
+header{background:var(--band);color:var(--ink);padding:12px 0 20px;border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;min-height:44px;gap:12px}
+.brand{display:flex;align-items:center;gap:7px;font-weight:600;font-size:17px;font-family:var(--serif)}
+.brand svg{width:22px;height:22px;flex:none;color:var(--sky)}.brand .school{font-weight:400;color:var(--muted);margin-left:-1px}
+.back{display:inline-flex;align-items:center;gap:4px;background:none;border:0;color:var(--ink);padding:10px 8px 10px 0;min-height:44px;font-weight:600}
+.back svg{width:18px;height:18px}
+h1{font-family:var(--serif);font-size:clamp(30px,8.5vw,38px);line-height:1.08;font-weight:600;letter-spacing:-.01em;margin:14px 0 6px;text-wrap:balance}
+.sub{margin:0;color:var(--muted);font-size:16px;max-width:38ch}
+main{padding:18px 0 40px}
+.undecided{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;background:var(--tint);border:1.5px solid var(--sky);border-radius:14px;padding:14px 16px;min-height:60px;margin-bottom:18px}
+.undecided b{display:block;font-size:17px}.undecided span{color:var(--muted);font-size:14px}
+.letter{font-size:13px;font-weight:700;color:var(--muted);margin:16px 4px 6px}
+.list{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.row{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:13px 16px;min-height:52px;font-size:16px}
+.row:first-child{border-top:0}
+.row:active{background:var(--tint)}
+.chev{width:16px;height:16px;flex:none;color:var(--muted)}
+.areas{display:grid;gap:10px}
+.area{display:flex;gap:12px;align-items:flex-start;text-align:left;background:var(--panel);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;min-height:60px}
+.area[aria-pressed=true]{border-color:var(--sky);background:var(--tint)}
+.area b{display:block;font-size:17px;margin-bottom:2px}.area span{color:var(--muted);font-size:14px;line-height:1.4}
+.box{flex:none;width:24px;height:24px;border-radius:7px;border:2px solid var(--line);margin-top:2px;display:grid;place-items:center}
+.area[aria-pressed=true] .box{background:var(--sky);border-color:var(--sky)}
+.box svg{width:14px;height:14px;color:var(--onbtn);opacity:0}.area[aria-pressed=true] .box svg{opacity:1}
+.dock{position:sticky;bottom:0;background:linear-gradient(transparent,var(--bg) 30%);padding:22px 0 16px;margin-top:6px}
+.dock small{display:block;text-align:center;color:var(--muted);margin-top:8px;font-size:14px}
+.btn{width:100%;min-height:50px;border:0;border-radius:12px;background:var(--btn);color:var(--onbtn);font-weight:700;font-size:17px}
+.btn:disabled{background:var(--line);color:var(--muted);cursor:not-allowed}
+.btn.ghost{background:none;border:1.5px solid var(--line);color:var(--ink)}
+.key{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:grid;gap:8px;font-size:14px;color:var(--muted)}
+.key div{display:grid;grid-template-columns:112px minmax(0,1fr);gap:10px;align-items:start}
+.demo{font-size:13px;color:var(--muted);margin:10px 4px 14px}
+.cards{display:grid;gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}
+.card h2{font-family:var(--serif);font-weight:600;font-size:21px;margin:0;line-height:1.2}
+.meta{color:var(--muted);font-size:14px;margin:2px 0 8px}
+.job{margin:0;font-size:15px}
+.city{display:flex;align-items:center;gap:5px;color:var(--muted);font-size:14px;margin:2px 0 10px}
+.city svg{width:14px;height:14px;flex:none}
+.note{margin:0 0 12px;font-family:var(--serif);font-size:16px;font-style:italic}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.tag{display:inline-block;font-size:13px;font-weight:600;padding:4px 10px;border-radius:999px;border:1.5px solid transparent;white-space:nowrap;justify-self:start}
+.t-advice{border-color:var(--sky);color:var(--ink)}
+.t-project{background:var(--tint);color:var(--ink)}
+.t-intern{background:var(--solid);color:var(--onsolid)}
+.req{min-height:46px;font-size:16px}
+.who{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:18px}
+.who h2{font-family:var(--serif);font-weight:600;font-size:20px;margin:0}.who p{margin:2px 0 10px;color:var(--muted);font-size:14px}
+.who .tags{margin:0}
+label,.lbl{display:block;font-weight:700;font-size:16px;margin:0 0 6px}
+.hint{display:block;font-weight:400;color:var(--muted);font-size:14px}
+.field{margin-bottom:18px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:44px;padding:8px 16px;border-radius:999px;border:1.5px solid var(--line);background:var(--panel);font-weight:600}
+.chip[aria-checked=true]{background:var(--solid);color:var(--onsolid);border-color:var(--solid)}
+input[type=text],textarea{width:100%;font-size:16px;background:var(--panel);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px}
+input[type=text]:focus,textarea:focus{border-color:var(--sky);outline:none;box-shadow:0 0 0 3px var(--tint)}
+textarea{min-height:150px;resize:vertical;line-height:1.45}
+.count{text-align:right;font-size:13px;color:var(--muted);margin-top:4px}
+.ctx{font-size:14px;color:var(--muted);margin:0 0 16px}
+.done{display:grid;justify-items:center;text-align:center;padding:8px 0 4px}
+.done svg{width:76px;height:76px}
+.ring{stroke:var(--sky)}.tick{stroke:var(--sky);stroke-dasharray:60;stroke-dashoffset:0;animation:draw .5s ease-out .1s both}
+@keyframes draw{from{stroke-dashoffset:60}}
+@media (prefers-reduced-motion:reduce){.tick{animation:none}}
+.copy{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin:16px 0 10px}
+.copy dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;font-size:15px}
+.copy dt{color:var(--muted)}.copy dd{margin:0}
+.copy .q{margin:12px 0 0;padding-top:12px;border-top:1px solid var(--line);white-space:pre-wrap;overflow-wrap:anywhere}
+.stack{display:grid;gap:10px;margin-top:18px}
+.sec{font-family:var(--serif);font-weight:600;font-size:20px;margin:26px 4px 4px;line-height:1.25}
+.secp{margin:0 4px 12px;color:var(--muted);font-size:14px}
+.empty{background:var(--panel);border:1px dashed var(--line);border-radius:14px;padding:18px;color:var(--muted)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.searchbar{position:sticky;top:0;z-index:3;background:var(--bg);padding:12px 0;margin:-18px 0 6px}
+.sbox{position:relative}
+.sbox input{width:100%;min-height:50px;padding:12px 46px 12px 44px;border-radius:12px;border:1.5px solid var(--line);background:var(--panel);font-size:16px;-webkit-appearance:none;appearance:none}
+.sbox input:focus{border-color:var(--sky);outline:none;box-shadow:0 0 0 3px var(--tint)}
+input[type=search]::-webkit-search-cancel-button{display:none}
+.sico{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:19px;height:19px;color:var(--muted);pointer-events:none}
+.clear{position:absolute;right:3px;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;background:none;color:var(--muted);display:grid;place-items:center;border-radius:10px}
+.clear svg{width:16px;height:16px}.clear[hidden]{display:none}
+.rcount{font-size:14px;color:var(--muted);margin:4px 4px 0}
+.upl{display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
+.upl svg{width:18px;height:18px}
+.upl:has(+ input:focus-visible){outline:3px solid var(--sky);outline-offset:2px}
+.file{display:flex;align-items:center;gap:12px;background:var(--panel);border:1.5px solid var(--sky);border-radius:12px;padding:8px 6px 8px 14px}
+.file>div{flex:1}.file b{display:block;font-size:15px;overflow-wrap:anywhere}.file span{font-size:13px;color:var(--muted)}
+.file svg{width:22px;height:22px;flex:none;color:var(--sky)}
+.link{background:none;border:0;color:var(--sky);font-weight:700;min-height:44px;padding:0 10px}
+.err{color:light-dark(#B42318,#FF8A80);font-size:14px;margin:6px 0 0}.err:empty{display:none}
+.need{font-size:14px;color:var(--muted);text-align:center;margin:8px 0 0}.need:empty{display:none}
+</style>
+</head>
+<body>
+<header><div class="col" id="head"></div></header>
+<main><div class="col" id="view"></div></main>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="hand" viewBox="0 0 24 24"><path fill="currentColor" d="M8.2 3.6c.7 0 1.3.6 1.3 1.3v6h.6V3.3c0-.7.6-1.3 1.3-1.3s1.3.6 1.3 1.3v7.6h.6V4.1c0-.7.6-1.3 1.3-1.3s1.3.6 1.3 1.3v7.4h.6V6.6c0-.7.6-1.3 1.3-1.3s1.3.6 1.3 1.3v8.1c0 4-2.9 7.3-6.9 7.3-2.4 0-4.2-1-5.6-3l-3.4-4.9c-.4-.6-.3-1.4.3-1.9.6-.4 1.4-.3 1.9.2l1.9 2.2V4.9c0-.7.6-1.3 1.3-1.3z"/></symbol>
+  <symbol id="chev" viewBox="0 0 16 16"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="left" viewBox="0 0 16 16"><path d="M10 3L5 8l5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="pin" viewBox="0 0 16 16"><path fill="currentColor" d="M8 1.5a4.8 4.8 0 0 0-4.8 4.8c0 3.4 4.2 7.8 4.4 8a.6.6 0 0 0 .8 0c.2-.2 4.4-4.6 4.4-8A4.8 4.8 0 0 0 8 1.5zm0 6.6a1.8 1.8 0 1 1 0-3.6 1.8 1.8 0 0 1 0 3.6z"/></symbol>
+  <symbol id="search" viewBox="0 0 20 20"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="x" viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="doc" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M6 2.8h8l4.2 4.2v14.2H6z"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M14 2.8V7h4.2M9 12h6M9 15.5h6"/></symbol>
+  <symbol id="up" viewBox="0 0 20 20"><path d="M10 13V3.5M6 7.5l4-4 4 4M4 13v3.5h12V13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="check" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+<script>
+{
+// App name and school. Each school gets its own YesList; this one is Xavier's.
+const APP_NAME = "YesList";
+const SCHOOL = "Xavier";
+
+const AREAS = [
+  {id:"AME", label:"Arts, Media & Entertainment", desc:"Create, perform or produce art, music, theatre, film, TV, video games and news."},
+  {id:"BM",  label:"Business & Marketing", desc:"Help companies sell, advertise, hire and grow, from big brands and consulting firms to small startups."},
+  {id:"FA",  label:"Finance & Accounting", desc:"Track, protect and grow money for people and companies at banks, accounting firms, investment firms and insurance companies."},
+  {id:"HC",  label:"Healthcare", desc:"Care for patients, or help run the hospitals, clinics and therapy practices that treat them."},
+  {id:"LG",  label:"Law & Government", desc:"Practice or enforce the law, or serve the public in government, from city hall to federal agencies, the military and embassies abroad."},
+  {id:"NSS", label:"Nonprofits & Social Services", desc:"Help people and communities in need through charities, social service agencies, foundations and churches."},
+  {id:"ST",  label:"Schools & Teaching", desc:"Teach and support students in preschools, elementary, middle and high schools, and colleges."},
+  {id:"SE",  label:"Science & Environment", desc:"Run experiments in labs, help develop new medicines and products, or protect air, water, land and wildlife."},
+  {id:"SF",  label:"Sports & Fitness", desc:"Work for teams, athletic departments, gyms and sports companies, on the field or behind the scenes."},
+  {id:"TE",  label:"Tech & Engineering", desc:"Build software and AI, analyze data, protect computer systems, or design machines and products."}
+];
+
+const MAJORS = [
+  "3D Animation and Immersive Game Design","Accountancy","Actuarial Science","Applied Physics",
+  "Applied Physics (Pre-Engineering)","Art","Artificial Intelligence","Biology","Biochemistry",
+  "Biomedical Sciences (Pre-Med)","Biological Sciences for Business","Biophysics",
+  "Business Analytics & Information Systems","Chemistry","Classical Humanities","Communication Studies",
+  "Computer Science","Criminal Justice","Cybersecurity","Digital Innovation, Film, and Television",
+  "Digital and Strategic Communication","Economics (Bachelor of Arts)","Economics (Business)",
+  "Economics, Sustainability and Society","Education: P-5 Primary","Education: Middle Childhood",
+  "Education: Special","Engineering","English","Entrepreneurship and Innovation","Environmental Management",
+  "Environmental Science","Exercise Science","Finance","Fine Arts","Gender & Diversity Studies",
+  "General Science","Genetics","Graphic Design","Health Administration","Health Science and Wellness",
+  "History","International Business","International Studies","Liberal Arts (APEX only)",
+  "Life Sciences for Business","Management","Marketing","Mathematics","Medical and Health Humanities",
+  "Microbiology","Music","Musical Theatre","Neuroscience","Nonprofit Management","Nursing",
+  "Occupational Therapy","Organizational Leadership","Pharmaceutical Science","Philosophy","Physics",
+  "Political Science","Psychology","Social Work","Sociology","Spanish",
+  "Speech, Language and Communicative Behavior","Sport Management","Sport Marketing","Theatre","Theology"
+];
+
+// Invented people and invented employers for a class demo. No real people, no real companies.
+const ALUMNI = [
+  {name:"Maya Okafor", year:2015, major:"Finance", job:"Senior Analyst, Corporate Finance", at:"Halvorsen Pike Advisors", city:"Cincinnati, OH",
+   areas:["FA"], offers:["Advice","Internship"],
+   helps:["Finance","Accountancy","Economics (Business)","Economics (Bachelor of Arts)","Actuarial Science"],
+   note:"Ask me what a first-year analyst actually does all day."},
+  {name:"Daniel Reyes", year:2011, major:"Accountancy", job:"Audit Manager", at:"Corbel & Wainwright CPAs", city:"Columbus, OH",
+   areas:["FA","BM"], offers:["Advice","Paid project","Internship"],
+   helps:["Accountancy","Finance","Economics (Business)","Business Analytics & Information Systems","Management","Entrepreneurship and Innovation"],
+   note:"I can walk you through the CPA path and what busy season is really like."},
+  {name:"Priya Nandakumar", year:2018, major:"Actuarial Science", job:"Actuarial Analyst", at:"Lantern Mutual Insurance", city:"Indianapolis, IN",
+   areas:["FA","TE"], offers:["Advice","Internship"],
+   helps:["Actuarial Science","Mathematics","Finance","Economics (Bachelor of Arts)","Business Analytics & Information Systems","Computer Science"],
+   note:"Happy to talk exams, Excel, and how to land an actuarial internship."},
+  {name:"Marcus Bell", year:2013, major:"Marketing", job:"Brand Manager", at:"Fernway Home Goods", city:"Cincinnati, OH",
+   areas:["BM"], offers:["Advice","Paid project"],
+   helps:["Marketing","Management","Communication Studies","Digital and Strategic Communication","Graphic Design","International Business","Sport Marketing"],
+   note:"Bring me a brand you love and we'll talk about why it works."},
+  {name:"Sofia Marchetti", year:2017, major:"Entrepreneurship and Innovation", job:"Founder and CEO", at:"Tidewell Coffee Co.", city:"Cincinnati, OH",
+   areas:["BM"], offers:["Paid project","Internship"],
+   helps:["Entrepreneurship and Innovation","Management","Marketing","Organizational Leadership","Philosophy","Liberal Arts (APEX only)","Economics (Business)"],
+   note:"Small team. You'd own a real project from week one."},
+  {name:"Kevin Tran", year:2012, major:"International Business", job:"Supply Chain Manager", at:"Arcwick Logistics", city:"Louisville, KY",
+   areas:["BM"], offers:["Advice","Internship"],
+   helps:["International Business","Management","Economics (Business)","Business Analytics & Information Systems","Economics, Sustainability and Society","Spanish"],
+   note:"Ask me about logistics careers nobody tells you about."},
+  {name:"Hannah Whitfield", year:2016, major:"Communication Studies", job:"Talent Acquisition Lead", at:"Thistlegate Staffing", city:"Chicago, IL",
+   areas:["BM"], offers:["Advice"],
+   helps:["Communication Studies","Organizational Leadership","Management","Psychology","Liberal Arts (APEX only)","Philosophy"],
+   note:"I read hundreds of résumés a month. Ask me what makes one stand out."},
+  {name:"Rachel Kim", year:2019, major:"Biological Sciences for Business", job:"Product Specialist", at:"Sablewood Diagnostics", city:"Cincinnati, OH",
+   areas:["BM","SE"], offers:["Advice","Paid project","Internship"],
+   helps:["Biological Sciences for Business","Life Sciences for Business","Biology","Chemistry","Marketing","Economics, Sustainability and Society"],
+   note:"Science plus business is a real job. I can show you where to find it."},
+  {name:"Jamal Pierce", year:2014, major:"Digital Innovation, Film, and Television", job:"Producer", at:"Lockhart Lane Media", city:"Cincinnati, OH",
+   areas:["AME"], offers:["Advice","Paid project"],
+   helps:["Digital Innovation, Film, and Television","Communication Studies","Digital and Strategic Communication","English","Theatre","Musical Theatre"],
+   note:"I bring students onto shoot days when the budget allows."},
+  {name:"Elena Vasquez", year:2018, major:"Graphic Design", job:"Senior Designer", at:"Kitefoil Creative", city:"Columbus, OH",
+   areas:["AME","BM"], offers:["Advice","Paid project","Internship"],
+   helps:["Graphic Design","Art","Fine Arts","3D Animation and Immersive Game Design","Marketing","Digital and Strategic Communication","Digital Innovation, Film, and Television"],
+   note:"Send me your portfolio questions. I'll be honest."},
+  {name:"Tyler Brooks", year:2016, major:"Computer Science", job:"Gameplay Engineer", at:"Quarry Fox Games", city:"Cleveland, OH",
+   areas:["AME","TE"], offers:["Advice","Internship"],
+   helps:["3D Animation and Immersive Game Design","Computer Science","Artificial Intelligence","Art","Mathematics"],
+   note:"Games are software first. Ask me how to break in."},
+  {name:"Grace Holloway", year:2010, major:"English", job:"Senior Editor", at:"Quillfern Press", city:"Cincinnati, OH",
+   areas:["AME","ST"], offers:["Advice","Paid project"],
+   helps:["English","Classical Humanities","History","Communication Studies","Philosophy","Theology"],
+   note:"Writers: ask me how to get paid for it."},
+  {name:"Andre Coleman", year:2009, major:"Music", job:"Music Director", at:"Lumen Hall Performing Arts Center", city:"Dayton, OH",
+   areas:["AME","ST"], offers:["Advice","Internship"],
+   helps:["Music","Musical Theatre","Theatre","Fine Arts","Art","Education: P-5 Primary"],
+   note:"Performing and teaching can be one career. Ask me how."},
+  {name:"Nicole Adeyemi", year:2012, major:"Nursing", job:"Nurse Manager", at:"Ashmere Regional Hospital", city:"Cincinnati, OH",
+   areas:["HC"], offers:["Advice","Internship"],
+   helps:["Nursing","Health Administration","Biology","Health Science and Wellness","Psychology","Medical and Health Humanities"],
+   note:"Ask me what clinicals don't teach you."},
+  {name:"Samuel Ortiz", year:2008, major:"Biology", job:"Family Physician", at:"Fennimore Family Medicine", city:"Cincinnati, OH",
+   areas:["HC","SE"], offers:["Advice"],
+   helps:["Biomedical Sciences (Pre-Med)","Biology","Biochemistry","Neuroscience","Chemistry","Medical and Health Humanities","Genetics"],
+   note:"Pre-med? Ask me what I'd do differently."},
+  {name:"Lauren Fischer", year:2015, major:"Occupational Therapy", job:"Occupational Therapist", at:"Pinwheel Therapy Group", city:"Louisville, KY",
+   areas:["HC"], offers:["Advice","Internship"],
+   helps:["Occupational Therapy","Exercise Science","Health Science and Wellness","Psychology","Speech, Language and Communicative Behavior"],
+   note:"I take a student intern every semester."},
+  {name:"Brian Mensah", year:2014, major:"Health Administration", job:"Director of Clinic Operations", at:"Harrowgate Health Network", city:"Columbus, OH",
+   areas:["HC","BM"], offers:["Advice","Paid project","Internship"],
+   helps:["Health Administration","Management","Liberal Arts (APEX only)","Nursing","Business Analytics & Information Systems","Medical and Health Humanities"],
+   note:"Hospitals are businesses too. I'll show you that side."},
+  {name:"Aisha Rahman", year:2017, major:"Psychology", job:"Mental Health Counselor", at:"Lamplit Counseling Collective", city:"Cincinnati, OH",
+   areas:["HC","NSS"], offers:["Advice"],
+   helps:["Psychology","Social Work","Neuroscience","Sociology","Gender & Diversity Studies","Speech, Language and Communicative Behavior"],
+   note:"Ask me about grad school paths into counseling."},
+  {name:"Megan Doyle", year:2016, major:"Speech, Language and Communicative Behavior", job:"Speech-Language Pathologist", at:"Little Lanterns Pediatric Therapy", city:"Dayton, OH",
+   areas:["HC","ST"], offers:["Advice","Internship"],
+   helps:["Speech, Language and Communicative Behavior","Education: Special","Psychology","Occupational Therapy","Education: P-5 Primary"],
+   note:"Curious about speech therapy? Come see a day in the clinic."},
+  {name:"Wei Zhang", year:2012, major:"Chemistry", job:"Research Scientist", at:"Kestrelbrook Pharmaceuticals", city:"Cincinnati, OH",
+   areas:["SE","HC"], offers:["Advice","Internship"],
+   helps:["Chemistry","Biochemistry","Pharmaceutical Science","Microbiology","Biophysics","Genetics","General Science"],
+   note:"Lab internships start with one email. Send it."},
+  {name:"Olivia Hart", year:2019, major:"Environmental Science", job:"Environmental Consultant", at:"Mossgate Environmental", city:"Columbus, OH",
+   areas:["SE"], offers:["Paid project","Internship"],
+   helps:["Environmental Science","Environmental Management","Economics, Sustainability and Society","Biology","Chemistry","Life Sciences for Business"],
+   note:"I have field projects every summer."},
+  {name:"Ben Adler", year:2013, major:"Environmental Management", job:"Sustainability Manager", at:"Harlow & Finch Manufacturing", city:"Cincinnati, OH",
+   areas:["SE","BM"], offers:["Advice","Paid project"],
+   helps:["Environmental Management","Environmental Science","Economics, Sustainability and Society","Biological Sciences for Business","Life Sciences for Business","Engineering"],
+   note:"Companies are hiring for sustainability. Ask me what they look for."},
+  {name:"Isaac Feldman", year:2011, major:"Physics", job:"Optical Engineer", at:"Halcyonwood Optics", city:"Dayton, OH",
+   areas:["SE","TE"], offers:["Advice","Internship"],
+   helps:["Physics","Applied Physics","Applied Physics (Pre-Engineering)","Biophysics","Engineering","Mathematics"],
+   note:"Physics opens more doors than you think. Ask me which ones."},
+  {name:"Carmen Delgado", year:2016, major:"Biology", job:"Clinical Research Coordinator", at:"Wrenfield Clinical Research", city:"Cincinnati, OH",
+   areas:["SE","HC"], offers:["Advice","Paid project","Internship"],
+   helps:["Biology","Microbiology","Neuroscience","Genetics","General Science","Pharmaceutical Science","Biomedical Sciences (Pre-Med)","Nursing"],
+   note:"Clinical research is a great gap year before med school."},
+  {name:"Ethan Kowalski", year:2017, major:"Computer Science", job:"Software Engineer", at:"Parsec Grove Software", city:"Chicago, IL",
+   areas:["TE"], offers:["Advice"],
+   helps:["Computer Science","Artificial Intelligence","Cybersecurity","Mathematics","Business Analytics & Information Systems"],
+   note:"Ask me how to prep for technical interviews."},
+  {name:"Jasmine Wright", year:2018, major:"Business Analytics & Information Systems", job:"Data Analyst", at:"Copperwren Analytics", city:"Cincinnati, OH",
+   areas:["TE","BM"], offers:["Advice","Paid project","Internship"],
+   helps:["Business Analytics & Information Systems","Computer Science","Artificial Intelligence","Economics (Business)","Mathematics","Marketing"],
+   note:"Learn a little SQL, then message me."},
+  {name:"Rafael Santos", year:2014, major:"Computer Science", job:"Security Analyst", at:"Ironhollow Cyber", city:"Columbus, OH",
+   areas:["TE","LG"], offers:["Advice","Internship"],
+   helps:["Cybersecurity","Computer Science","Criminal Justice","Business Analytics & Information Systems","Mathematics"],
+   note:"Cybersecurity needs people from every background. Ask me how I got in."},
+  {name:"Natalie Ross", year:2013, major:"Applied Physics (Pre-Engineering)", job:"Mechanical Engineer", at:"Talonworks Aerospace", city:"Dayton, OH",
+   areas:["TE"], offers:["Advice","Internship"],
+   helps:["Engineering","Applied Physics (Pre-Engineering)","Applied Physics","Physics","Mathematics"],
+   note:"Ask me what engineers actually build day to day."},
+  {name:"Thomas Greene", year:2007, major:"Political Science", job:"Partner", at:"Ashby Morrow LLP", city:"Cincinnati, OH",
+   areas:["LG"], offers:["Advice","Internship"],
+   helps:["Political Science","Philosophy","History","Economics (Bachelor of Arts)","Criminal Justice","Classical Humanities","International Studies"],
+   note:"Thinking about law school? Talk to me first."},
+  {name:"Danielle Moore", year:2015, major:"Criminal Justice", job:"Probation Officer", at:"Ridgemont County Court Services", city:"Dayton, OH",
+   areas:["LG","NSS"], offers:["Advice","Internship"],
+   helps:["Criminal Justice","Sociology","Psychology","Social Work","Political Science"],
+   note:"Ask me what working in the courts is really like."},
+  {name:"Victor Nguyen", year:2012, major:"International Studies", job:"Policy Advisor", at:"Larkmoor Policy Institute", city:"Washington, DC",
+   areas:["LG","NSS"], offers:["Advice","Paid project"],
+   helps:["International Studies","Political Science","Economics (Bachelor of Arts)","Spanish","History","Gender & Diversity Studies","Sociology"],
+   note:"I need research help on short projects a few times a year."},
+  {name:"Teresa Alvarez", year:2010, major:"Social Work", job:"Program Director", at:"Northside Hearth Family Services", city:"Cincinnati, OH",
+   areas:["NSS","HC"], offers:["Advice","Internship"],
+   helps:["Social Work","Psychology","Sociology","Nonprofit Management","Spanish","Gender & Diversity Studies"],
+   note:"Our field placements turn into jobs. Ask me how."},
+  {name:"Michael Osei", year:2014, major:"Theology", job:"Campus Minister", at:"St. Aldric High School", city:"Cincinnati, OH",
+   areas:["NSS","ST"], offers:["Advice","Paid project","Internship"],
+   helps:["Theology","Philosophy","Classical Humanities","Nonprofit Management","History","Education: Middle Childhood"],
+   note:"Ministry, teaching and nonprofit work overlap more than you'd think."},
+  {name:"Laura Bennett", year:2016, major:"Organizational Leadership", job:"Director of Development", at:"Wickerline Food Alliance", city:"Cincinnati, OH",
+   areas:["NSS","BM"], offers:["Advice","Paid project","Internship"],
+   helps:["Nonprofit Management","Organizational Leadership","Communication Studies","Management","Marketing","International Studies"],
+   note:"Fundraising is sales with a mission. I'll teach you both."},
+  {name:"Jessica Turner", year:2011, major:"Education: Middle Childhood", job:"Seventh-Grade Math Teacher", at:"Hollis Grove Middle School", city:"Cincinnati, OH",
+   areas:["ST"], offers:["Advice","Internship"],
+   helps:["Education: Middle Childhood","Education: P-5 Primary","Education: Special","Mathematics","English","History","Spanish"],
+   note:"Come sit in on a class before you student-teach."},
+  {name:"Robert Chen", year:2009, major:"Mathematics", job:"Assistant Dean of Admissions", at:"Brennock College", city:"Columbus, OH",
+   areas:["ST"], offers:["Advice"],
+   helps:["Mathematics","Classical Humanities","Education: Special","Education: P-5 Primary","Music","English","Spanish"],
+   note:"Ask me about careers in college admissions and student life."},
+  {name:"Chris Donovan", year:2014, major:"Sport Management", job:"Director of Ticket Sales", at:"Queen City Kestrels", city:"Cincinnati, OH",
+   areas:["SF","BM"], offers:["Advice","Internship"],
+   helps:["Sport Management","Sport Marketing","Marketing","Management","Communication Studies"],
+   note:"Every front office starts in sales. Ask me why that's a good thing."},
+  {name:"Alicia Monroe", year:2017, major:"Exercise Science", job:"Head Strength Coach", at:"Marlow Ridge University Athletics", city:"Dayton, OH",
+   areas:["SF","HC"], offers:["Advice","Internship"],
+   helps:["Exercise Science","Health Science and Wellness","Sport Management","Biomedical Sciences (Pre-Med)","Psychology"],
+   note:"I hire student coaches every fall."},
+  {name:"Derrick Hayes", year:2019, major:"Sport Marketing", job:"Partnerships Manager", at:"Ninth Inning Partners", city:"Indianapolis, IN",
+   areas:["SF","BM"], offers:["Paid project","Internship"],
+   helps:["Sport Marketing","Sport Management","Marketing","Digital and Strategic Communication","Graphic Design","Entrepreneurship and Innovation"],
+   note:"We pay students to help with sponsorship decks."}
+];
+
+// Where graduates of each major most often work (majors.md, "Interest areas" column).
+// Used to show alumni in related fields when a major has few or no alumni.
+const MAJOR_AREAS = {
+  "3D Animation and Immersive Game Design":["AME","TE"],"Accountancy":["FA"],"Actuarial Science":["FA"],
+  "Applied Physics":["TE","SE"],"Applied Physics (Pre-Engineering)":["TE"],"Art":["AME"],"Artificial Intelligence":["TE"],
+  "Biology":["HC","SE"],"Biochemistry":["SE","HC"],"Biomedical Sciences (Pre-Med)":["HC","SE"],
+  "Biological Sciences for Business":["BM","SE"],"Biophysics":["SE","HC"],"Business Analytics & Information Systems":["TE","BM"],
+  "Chemistry":["SE","HC"],"Classical Humanities":["ST","LG"],"Communication Studies":["BM","AME"],"Computer Science":["TE"],
+  "Criminal Justice":["LG"],"Cybersecurity":["TE"],"Digital Innovation, Film, and Television":["AME"],
+  "Digital and Strategic Communication":["BM","AME"],"Economics (Bachelor of Arts)":["FA","LG"],"Economics (Business)":["FA","BM"],
+  "Economics, Sustainability and Society":["SE","BM"],"Education: P-5 Primary":["ST"],"Education: Middle Childhood":["ST"],
+  "Education: Special":["ST"],"Engineering":["TE"],"English":["AME","ST"],"Entrepreneurship and Innovation":["BM"],
+  "Environmental Management":["SE"],"Environmental Science":["SE"],"Exercise Science":["HC","SF"],"Finance":["FA"],
+  "Fine Arts":["AME"],"Gender & Diversity Studies":["NSS","LG"],"General Science":["SE","HC"],"Genetics":["SE","HC"],
+  "Graphic Design":["AME","BM"],"Health Administration":["HC"],"Health Science and Wellness":["HC","SF"],"History":["LG","ST"],
+  "International Business":["BM"],"International Studies":["LG","NSS"],"Liberal Arts (APEX only)":["BM","HC"],
+  "Life Sciences for Business":["BM","SE"],"Management":["BM"],"Marketing":["BM"],"Mathematics":["TE","ST"],
+  "Medical and Health Humanities":["HC"],"Microbiology":["SE","HC"],"Music":["AME","ST"],"Musical Theatre":["AME"],
+  "Neuroscience":["SE","HC"],"Nonprofit Management":["NSS"],"Nursing":["HC"],"Occupational Therapy":["HC"],
+  "Organizational Leadership":["BM","NSS"],"Pharmaceutical Science":["SE","HC"],"Philosophy":["LG","BM"],"Physics":["SE","TE"],
+  "Political Science":["LG"],"Psychology":["HC","NSS"],"Social Work":["NSS","HC"],"Sociology":["NSS","LG"],"Spanish":["ST","NSS"],
+  "Speech, Language and Communicative Behavior":["HC","ST"],"Sport Management":["SF"],"Sport Marketing":["SF","BM"],
+  "Theatre":["AME"],"Theology":["NSS","ST"]
+};
+
+const OFFER_INFO = [
+  ["Advice", "A short call to answer your questions."],
+  ["Paid project", "A short paid task, roughly <span style=\"white-space:nowrap\">20–40 hours</span>, done around classes."],
+  ["Internship", "A summer or semester internship where the alum works."]
+];
+const TAG = {"Advice":"t-advice","Paid project":"t-project","Internship":"t-intern"};
+const AREA = Object.fromEntries(AREAS.map(a => [a.id, a]));
+const MAX_MB = 5;
+const S = {view:"majors", search:"", major:null, areas:[], alum:null, from:null, offer:null,
+           first:"", q:"", resume:null, last:null, requested:new Set()};
+const head = document.getElementById("head"), view = document.getElementById("view");
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ico = (id, cls) => `<svg class="${cls||""}" aria-hidden="true"><use href="#${id}"/></svg>`;
+const first = n => n.split(" ")[0];
+const lastName = n => n.split(" ").slice(-1)[0];
+const byLast = (a, b) => lastName(a.name).localeCompare(lastName(b.name));
+const tags = offers => `<div class="tags">${offers.map(o => `<span class="tag ${TAG[o]}">${esc(o)}</span>`).join("")}</div>`;
+const orList = arr => arr.length < 2 ? arr.join("") : arr.slice(0, -1).join(", ") + " or " + arr[arr.length - 1];
+const fileSize = b => b < 1048576 ? `${Math.max(1, Math.round(b / 1024))} KB` : `${(b / 1048576).toFixed(1)} MB`;
+
+function matches(){
+  const list = S.major
+    ? ALUMNI.filter(a => a.helps.includes(S.major))
+    : ALUMNI.filter(a => a.areas.some(x => S.areas.includes(x)));
+  return list.slice().sort(byLast);
+}
+// What the alum sees about the student besides their name. Search results carry no major.
+function context(){
+  if (S.from === "search") return null;
+  return S.major ? `${S.major} major` : `Interested in ${S.areas.map(id => AREA[id].label).join(", ")}`;
+}
+function valid(v){
+  if (v === "majors" || v === "interests") return true;
+  if (v === "alumni") return !!S.major || S.areas.length > 0;
+  if (v === "request") return !!S.alum;
+  if (v === "sent") return !!S.last;
+  return false;
+}
+function go(v, replace){
+  S.view = v;
+  history[replace ? "replaceState" : "pushState"]({v}, "", "#" + v);
+  render(); window.scrollTo(0, 0);
+}
+window.addEventListener("popstate", e => {
+  const v = (e.state && e.state.v) || location.hash.slice(1);
+  if (valid(v)) { S.view = v; render(); }
+  else go("majors", true);
+});
+
+function header(title, sub){
+  const back = S.view === "majors" ? "<span></span>"
+    : `<button class="back" data-act="back">${ico("left")}Back</button>`;
+  head.innerHTML = `<div class="bar">${back}<div class="brand">${ico("hand")}<span>${esc(APP_NAME)}</span><span class="school">at ${esc(SCHOOL)}</span></div></div>
+    <h1>${esc(title)}</h1>${sub ? `<p class="sub">${esc(sub)}</p>` : ""}`;
+}
+
+function card(a, from){
+  const done = S.requested.has(a.name);
+  return `<article class="card"><h2>${esc(a.name)}</h2>
+    <p class="meta">Class of ${a.year} · ${esc(a.major)}</p>
+    <p class="job">${esc(a.job)} at ${esc(a.at)}</p>
+    <p class="city">${ico("pin")}${esc(a.city)}</p>
+    <p class="note">“${esc(a.note)}”</p>
+    ${tags(a.offers)}
+    <button class="btn req" data-act="request" data-from="${from}" data-v="${esc(a.name)}" ${done ? "disabled" : ""}>${done ? "Request sent" : "Request"}</button>
+  </article>`;
+}
+const majorRow = m => `<button class="row" data-act="major" data-v="${esc(m)}"><span>${esc(m)}</span>${ico("chev","chev")}</button>`;
+const undecidedRow = `<button class="undecided" data-act="undecided"><div><b>Undecided</b><span>Pick your interests instead</span></div>${ico("chev","chev")}</button>`;
+
+function majorsView(){
+  header("Pick your major", "Or search for a major, an alum, a company or a job.");
+  view.innerHTML = `<div class="searchbar" role="search"><label for="sq" class="sr">Search majors and alumni</label>
+      <div class="sbox">${ico("search","sico")}
+        <input type="search" id="sq" placeholder="Search majors, alumni, companies, jobs" value="${esc(S.search)}" autocomplete="off" enterkeyhint="search">
+        <button type="button" class="clear" data-act="clear" aria-label="Clear search">${ico("x")}</button></div></div>
+    <div id="res" aria-live="polite"></div>`;
+  const sq = $("sq");
+  sq.addEventListener("input", () => { S.search = sq.value; drawResults(); });
+  sq.addEventListener("keydown", e => { if (e.key === "Enter") sq.blur(); });
+  drawResults();
+}
+function drawResults(){
+  const res = $("res"), q = S.search.trim().toLowerCase();
+  document.querySelector(".clear").hidden = !q;
+  if (!q){
+    const groups = {};
+    MAJORS.forEach(m => { const k = /[A-Z]/i.test(m[0]) ? m[0].toUpperCase() : "#"; (groups[k] = groups[k] || []).push(m); });
+    res.innerHTML = undecidedRow + Object.entries(groups).map(([k, ms]) =>
+      `<div class="letter" aria-hidden="true">${k}</div><div class="list">${ms.map(majorRow).join("")}</div>`).join("");
+    return;
+  }
+  const toks = q.split(/\s+/);
+  const hit = text => { const h = text.toLowerCase(); return toks.every(t => h.includes(t)); };
+  const ms = MAJORS.filter(hit);
+  const as = ALUMNI.filter(a => hit([a.name, a.major, a.job, a.at, a.city, ...a.offers,
+    ...a.areas.map(id => AREA[id].label)].join(" "))).sort(byLast);
+  const und = hit("undecided interests");
+  if (!ms.length && !as.length && !und){
+    res.innerHTML = `<div class="empty">Nothing matches “${esc(S.search.trim())}”. Try a major, a company, a job like “analyst”, a city, or “internship”.</div>`;
+    return;
+  }
+  const count = [ms.length && `${ms.length} ${ms.length === 1 ? "major" : "majors"}`,
+                 as.length && `${as.length} ${as.length === 1 ? "alum" : "alumni"}`].filter(Boolean).join(" and ");
+  res.innerHTML = (count ? `<p class="rcount">${count} match</p>` : "")
+    + (und ? `<div style="margin-top:12px">${undecidedRow}</div>` : "")
+    + (ms.length ? `<div class="letter">Majors</div><div class="list">${ms.map(majorRow).join("")}</div>` : "")
+    + (as.length ? `<div class="letter">Alumni</div><p class="demo" style="margin-top:0">Sample alumni for a class demo.</p>
+        <div class="cards">${as.map(a => card(a, "search")).join("")}</div>` : "");
+}
+
+function interestsView(){
+  header("Pick your interests", "Choose one or more. You'll see alumni who work in those areas.");
+  const n = S.areas.length;
+  view.innerHTML = `<div class="areas">${AREAS.map(a => `<button class="area" data-act="area" data-v="${a.id}" aria-pressed="${S.areas.includes(a.id)}">
+      <span class="box">${ico("check")}</span><div><b>${esc(a.label)}</b><span>${esc(a.desc)}</span></div></button>`).join("")}</div>
+    <div class="dock"><button class="btn" data-act="show" ${n ? "" : "disabled"}>Show alumni</button>
+    <small>${n ? `${n} selected` : "Pick at least one"}</small></div>`;
+}
+
+// When a major has fewer than this many alumni, also show alumni in related fields.
+const FEW = 3;
+const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+
+function related(major, exclude){
+  const areas = MAJOR_AREAS[major] || [];
+  const score = a => a.areas.filter(x => areas.includes(x)).length * 2 + (a.areas.includes(areas[0]) ? 1 : 0);
+  return ALUMNI.filter(a => !exclude.includes(a) && a.areas.some(x => areas.includes(x)))
+    .sort((a, b) => score(b) - score(a) || byLast(a, b));
+}
+
+function alumniView(){
+  const list = matches();
+  let sub, more = [], areaNames = [];
+  if (S.major){
+    sub = list.length
+      ? `${plural(list.length, "alum", "alumni")} said yes to helping ${S.major} students.`
+      : `No ${S.major} alumni have raised their hand yet.`;
+    if (list.length < FEW){
+      areaNames = (MAJOR_AREAS[S.major] || []).map(id => AREA[id].label);
+      more = related(S.major, list);
+    }
+  } else {
+    sub = `${plural(list.length, "alum", "alumni")} ${list.length === 1 ? "works" : "work"} in ${orList(S.areas.map(id => AREA[id].label))}.`;
+  }
+  header(S.major || "Your interests", sub);
+  const shown = more.slice(0, 6);
+  const moreBlock = more.length ? `
+    <h2 class="sec">${list.length ? "More alumni in related fields" : "Alumni in related fields"}</h2>
+    <p class="secp">These alumni work in ${esc(orList(areaNames))}, where ${esc(S.major)} graduates often work. They've said yes to helping Xavier students in other majors.${
+      more.length > shown.length ? ` Showing ${shown.length} of ${more.length}.` : ""}</p>
+    <div class="cards">${shown.map(a => card(a, "list")).join("")}</div>` : "";
+  const empty = !list.length && !more.length
+    ? `<div class="empty">No alumni match yet. Go back and pick another option.</div>` : "";
+  view.innerHTML = `<div class="key" aria-label="What each offer means">${OFFER_INFO.map(([o, d]) =>
+      `<div><span class="tag ${TAG[o]}">${o}</span><span>${d}</span></div>`).join("")}</div>
+    <p class="demo">Sample alumni for a class demo.</p>
+    ${list.length ? `<div class="cards">${list.map(a => card(a, "list")).join("")}</div>` : ""}
+    ${moreBlock}${empty}`;
+}
+
+function missing(){
+  const m = [];
+  if (!S.offer) m.push("what you're asking about");
+  if (!S.first.trim()) m.push("your first name");
+  if (!S.q.trim()) m.push("your questions");
+  if (S.offer === "Internship" && !S.resume) m.push("your résumé");
+  return m;
+}
+function updateSend(){
+  const m = missing(), send = $("send"); if (!send) return;
+  send.disabled = m.length > 0;
+  $("need").textContent = m.length ? `Still needed: ${m.join(", ")}.` : "";
+}
+function drawResume(err){
+  const rz = $("rz"); if (!rz) return;
+  if (S.offer !== "Internship"){ rz.innerHTML = ""; return; }
+  rz.innerHTML = `<div class="field"><span class="lbl">Your résumé<span class="hint">Required for internship requests. PDF or Word, up to ${MAX_MB} MB.</span></span>
+    ${S.resume
+      ? `<div class="file">${ico("doc")}<div><b>${esc(S.resume.name)}</b><span>${fileSize(S.resume.size)}</span></div>
+         <button type="button" class="link" data-act="rmres">Remove</button></div>`
+      : `<label class="btn ghost upl" for="rf">${ico("up")}Add résumé</label>
+         <input type="file" id="rf" class="sr" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">`}
+    <p class="err" role="alert">${err ? esc(err) : ""}</p></div>`;
+  const rf = $("rf");
+  if (rf) rf.addEventListener("change", () => {
+    const f = rf.files && rf.files[0]; if (!f) return;
+    if (!/\.(pdf|docx?)$/i.test(f.name)) return drawResume("That file isn't a PDF or Word document. Pick a .pdf, .doc or .docx file.");
+    if (f.size > MAX_MB * 1048576) return drawResume(`That file is ${fileSize(f.size)}. Pick one under ${MAX_MB} MB.`);
+    S.resume = {name: f.name, size: f.size};
+    drawResume(); updateSend();
+  });
+}
+
+function requestView(){
+  const a = S.alum, one = a.offers.length === 1;
+  if (one) S.offer = a.offers[0];
+  const ctx = context();
+  header(`Send ${first(a.name)} a request`, `Write the questions you want to ask. ${first(a.name)} sees them up front.`);
+  view.innerHTML = `<div class="who"><h2>${esc(a.name)}</h2><p>${esc(a.job)} at ${esc(a.at)} · ${esc(a.city)}</p>${tags(a.offers)}</div>
+    <form id="f" novalidate>
+      <div class="field"><span class="lbl" id="ol">What are you asking about?${one ? "" : '<span class="hint">Pick one.</span>'}</span>
+        <div class="chips" role="radiogroup" aria-labelledby="ol">${a.offers.map(o =>
+          `<button type="button" class="chip" role="radio" data-act="offer" data-v="${esc(o)}" aria-checked="${S.offer === o}">${esc(o)}</button>`).join("")}</div></div>
+      <div class="field"><label for="fn">Your first name</label>
+        <input type="text" id="fn" maxlength="40" autocomplete="given-name" value="${esc(S.first)}"></div>
+      <div class="field"><label for="qs">Your questions for ${esc(first(a.name))}</label>
+        <textarea id="qs" maxlength="500" placeholder="Example: How did you land your first internship? What should I learn before I apply? Could we set up a 15-minute call?">${esc(S.q)}</textarea>
+        <div class="count" id="qc">${S.q.length} / 500</div></div>
+      <div id="rz"></div>
+      ${ctx ? `<p class="ctx">${esc(first(a.name))} will also see: ${esc(ctx)}.</p>` : ""}
+      <button class="btn" id="send" type="submit">Send request</button>
+      <p class="need" id="need"></p>
+    </form>`;
+  const fn = $("fn"), qs = $("qs");
+  const sync = () => { S.first = fn.value; S.q = qs.value; $("qc").textContent = `${S.q.length} / 500`; updateSend(); };
+  fn.addEventListener("input", sync); qs.addEventListener("input", sync);
+  drawResume(); updateSend();
+  $("f").addEventListener("submit", e => { e.preventDefault(); if (missing().length) return;
+    S.last = {alum:a, offer:S.offer, first:S.first.trim(), q:S.q.trim(), ctx,
+              resume: S.offer === "Internship" ? S.resume : null};
+    S.requested.add(a.name); S.q = ""; S.offer = null;
+    go("sent", true); });
+}
+
+function sentView(){
+  const L = S.last;
+  header(`Request sent to ${L.alum.name}`, `Here's a copy of what ${first(L.alum.name)} sees.`);
+  view.innerHTML = `<div class="done"><svg viewBox="0 0 76 76" aria-hidden="true"><circle class="ring" cx="38" cy="38" r="34" fill="none" stroke-width="4"/>
+      <path class="tick" d="M24 39l9 9 19-20" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="copy"><dl><dt>To</dt><dd>${esc(L.alum.name)}, ${esc(L.alum.job)} at ${esc(L.alum.at)}</dd>
+      <dt>From</dt><dd>${esc(L.first)}</dd><dt>Asking about</dt><dd>${esc(L.offer)}</dd>
+      ${L.ctx ? `<dt>Also sent</dt><dd>${esc(L.ctx)}</dd>` : ""}
+      ${L.resume ? `<dt>Résumé</dt><dd>${esc(L.resume.name)}</dd>` : ""}</dl>
+      <p class="q">${esc(L.q)}</p></div>
+    <p class="demo">Class demo: nothing was actually sent${L.resume ? ", and your résumé never left this phone" : ""}.</p>
+    <div class="stack"><button class="btn" data-act="toalumni">${L.ctx ? "Back to alumni" : "Back to search"}</button>
+      <button class="btn ghost" data-act="restart">Start over</button></div>`;
+}
+
+function render(){
+  document.title = `${APP_NAME} at ${SCHOOL}`;
+  ({majors:majorsView, interests:interestsView, alumni:alumniView, request:requestView, sent:sentView}[S.view] || majorsView)();
+}
+
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-act]"); if (!t) return;
+  const v = t.dataset.v;
+  switch (t.dataset.act){
+    case "back": history.back(); break;
+    case "clear": S.search = ""; $("sq").value = ""; drawResults(); $("sq").focus(); break;
+    case "undecided": S.major = null; go("interests"); break;
+    case "major": S.major = v; S.areas = []; go("alumni"); break;
+    case "area": S.areas = S.areas.includes(v) ? S.areas.filter(x => x !== v) : AREAS.map(a => a.id).filter(id => id === v || S.areas.includes(id));
+      interestsView(); { const b = document.querySelector(`.area[data-v="${v}"]`); if (b) b.focus({preventScroll:true}); } break;
+    case "show": if (S.areas.length) go("alumni"); break;
+    case "request": S.alum = ALUMNI.find(a => a.name === v); S.from = t.dataset.from; S.offer = null; go("request"); break;
+    case "offer": S.offer = v; document.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-checked", c.dataset.v === v));
+      drawResume(); updateSend(); break;
+    case "rmres": S.resume = null; drawResume(); updateSend(); break;
+    case "toalumni": history.back(); break;
+    case "restart": S.major = null; S.areas = []; S.alum = null; S.last = null; S.search = ""; go("majors", true); break;
+  }
+});
+
+history.replaceState({v:"majors"}, "", "#majors");
+render();
+}
+</script>
+</body>
+</html>
