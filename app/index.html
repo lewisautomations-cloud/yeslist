@@ -151,6 +151,13 @@ select{width:100%;font-size:16px;background:var(--panel);border:1.5px solid var(
 label .hint{font-weight:400}
 .spots{font-size:13px;color:var(--muted);margin:0 0 10px}.spots.full{color:var(--ink);font-weight:600}
 .chip[role=radio][aria-checked=true]{background:var(--solid);color:var(--onsolid);border-color:var(--solid)}
+.optl{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;margin:-4px 0 10px;color:var(--ink)}
+.optl svg,.optf svg{width:15px;height:15px;flex:none}
+.optf{display:inline-flex;align-items:center;gap:6px;margin:12px 0 0}
+.minebar{width:100%;display:flex;align-items:center;gap:10px;text-align:left;background:var(--panel);border:1.5px solid var(--ink);border-radius:14px;padding:12px 16px;min-height:52px;margin:0 0 12px;font-weight:600}
+.minebar span:first-child{flex:1}.minebar .cnt{background:var(--mark);color:var(--ink);border-radius:999px;padding:1px 9px;font-size:14px}
+.status{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:10px}
+.pill{font-size:13px;font-weight:600;padding:4px 10px;border-radius:999px}.pill.wait{background:var(--tint);color:var(--ink)}
 .need{font-size:14px;color:var(--muted);text-align:center;margin:8px 0 0}.need:empty{display:none}
 </style>
 </head>
@@ -176,6 +183,7 @@ if (window.POSTHOG_KEY) {
   <symbol id="x" viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
   <symbol id="doc" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M6 2.8h8l4.2 4.2v14.2H6z"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M14 2.8V7h4.2M9 12h6M9 15.5h6"/></symbol>
   <symbol id="up" viewBox="0 0 20 20"><path d="M10 13V3.5M6 7.5l4-4 4 4M4 13v3.5h12V13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="globe" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M1.8 8h12.4M8 1.8c1.8 1.9 2.6 4 2.6 6.2S9.8 12.3 8 14.2M8 1.8C6.2 3.7 5.4 5.8 5.4 8s.8 4.3 2.6 6.2" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
   <symbol id="plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
   <symbol id="check" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 </svg>
@@ -223,11 +231,11 @@ const ALUMNI = [
    areas:["FA"], cap:3, used:0, offers:["Advice", "Internship"],
    helps:["Finance","Accountancy","Economics (Business)","Economics (Bachelor of Arts)","Actuarial Science"],
    fit:["are curious about finance", "want to learn Excel"], note:"Ask me what a first-year analyst actually does all day."},
-  {name:"Daniel Reyes", year:2011, major:"Accountancy", job:"Audit Manager", at:"Corbel & Wainwright CPAs", city:"Columbus, OH",
+  {name:"Daniel Reyes", year:2011, major:"Accountancy", job:"Audit Manager", at:"Corbel & Wainwright CPAs", city:"Columbus, OH", opt:"yes",
    areas:["FA","BM"], cap:5, used:2, offers:["Advice", "Paid project", "Internship"],
    helps:["Accountancy","Finance","Economics (Business)","Business Analytics & Information Systems","Management","Entrepreneurship and Innovation"],
    fit:["are thinking about the CPA", "like solving number puzzles"], note:"I can walk you through the CPA path and what busy season is really like."},
-  {name:"Priya Nandakumar", year:2018, major:"Actuarial Science", job:"Actuarial Analyst", at:"Lantern Mutual Insurance", city:"Indianapolis, IN",
+  {name:"Priya Nandakumar", year:2018, major:"Actuarial Science", job:"Actuarial Analyst", at:"Lantern Mutual Insurance", city:"Indianapolis, IN", opt:"yes",
    areas:["FA","TE"], cap:3, used:2, offers:["Advice", "Internship"],
    helps:["Actuarial Science","Mathematics","Finance","Economics (Bachelor of Arts)","Business Analytics & Information Systems","Computer Science"],
    fit:["like math and probability"], note:"Happy to talk exams, Excel, and how to land an actuarial internship."},
@@ -239,7 +247,7 @@ const ALUMNI = [
    areas:["BM"], cap:5, used:3, offers:["Job shadow", "Paid project", "Internship"],
    helps:["Entrepreneurship and Innovation","Management","Marketing","Organizational Leadership","Philosophy","Liberal Arts (APEX only)","Economics (Business)"],
    fit:["want to start something", "like a fast pace"], note:"Small team. You'd own a real project from week one."},
-  {name:"Kevin Tran", year:2012, major:"International Business", job:"Supply Chain Manager", at:"Arcwick Logistics", city:"Louisville, KY",
+  {name:"Kevin Tran", year:2012, major:"International Business", job:"Supply Chain Manager", at:"Arcwick Logistics", city:"Louisville, KY", opt:"yes",
    areas:["BM"], cap:3, used:2, offers:["Advice", "Internship"],
    helps:["International Business","Management","Economics (Business)","Business Analytics & Information Systems","Economics, Sustainability and Society","Spanish"],
    fit:["are curious about global trade"], note:"Ask me about logistics careers nobody tells you about."},
@@ -247,7 +255,7 @@ const ALUMNI = [
    areas:["BM"], cap:3, used:3, offers:["Advice"],
    helps:["Communication Studies","Organizational Leadership","Management","Psychology","Liberal Arts (APEX only)","Philosophy"],
    fit:["want to know what recruiters look for"], note:"I read hundreds of résumés a month. Ask me what makes one stand out."},
-  {name:"Rachel Kim", year:2019, major:"Biological Sciences for Business", job:"Product Specialist", at:"Sablewood Diagnostics", city:"Cincinnati, OH",
+  {name:"Rachel Kim", year:2019, major:"Biological Sciences for Business", job:"Product Specialist", at:"Sablewood Diagnostics", city:"Cincinnati, OH", opt:"yes",
    areas:["BM","SE"], cap:3, used:1, offers:["Advice", "Job shadow", "Paid project", "Internship"],
    helps:["Biological Sciences for Business","Life Sciences for Business","Biology","Chemistry","Marketing","Economics, Sustainability and Society"],
    fit:["like science and people"], note:"Science plus business is a real job. I can show you where to find it."},
@@ -259,7 +267,7 @@ const ALUMNI = [
    areas:["AME","BM"], cap:5, used:3, offers:["Advice", "Paid project", "Internship"],
    helps:["Graphic Design","Art","Fine Arts","3D Animation and Immersive Game Design","Marketing","Digital and Strategic Communication","Digital Innovation, Film, and Television"],
    fit:["are building a portfolio"], note:"Send me your portfolio questions. I'll be honest."},
-  {name:"Tyler Brooks", year:2016, major:"Computer Science", job:"Gameplay Engineer", at:"Quarry Fox Games", city:"Cleveland, OH",
+  {name:"Tyler Brooks", year:2016, major:"Computer Science", job:"Gameplay Engineer", at:"Quarry Fox Games", city:"Cleveland, OH", opt:"yes",
    areas:["AME","TE"], cap:3, used:1, offers:["Advice", "Internship"],
    helps:["3D Animation and Immersive Game Design","Computer Science","Artificial Intelligence","Art","Mathematics"],
    fit:["love games", "are learning to code"], note:"Games are software first. Ask me how to break in."},
@@ -295,7 +303,7 @@ const ALUMNI = [
    areas:["HC","ST"], cap:10, used:6, offers:["Advice", "Job shadow", "Internship"],
    helps:["Speech, Language and Communicative Behavior","Education: Special","Psychology","Occupational Therapy","Education: P-5 Primary"],
    fit:["are curious about speech therapy"], note:"Curious about speech therapy? Come see a day in the clinic."},
-  {name:"Wei Zhang", year:2012, major:"Chemistry", job:"Research Scientist", at:"Kestrelbrook Pharmaceuticals", city:"Cincinnati, OH",
+  {name:"Wei Zhang", year:2012, major:"Chemistry", job:"Research Scientist", at:"Kestrelbrook Pharmaceuticals", city:"Cincinnati, OH", opt:"yes",
    areas:["SE","HC"], cap:5, used:3, offers:["Advice", "Internship"],
    helps:["Chemistry","Biochemistry","Pharmaceutical Science","Microbiology","Biophysics","Genetics","General Science"],
    fit:["want lab experience"], note:"Lab internships start with one email. Send it."},
@@ -307,7 +315,7 @@ const ALUMNI = [
    areas:["SE","BM"], cap:5, used:2, offers:["Advice", "Job shadow", "Paid project"],
    helps:["Environmental Management","Environmental Science","Economics, Sustainability and Society","Biological Sciences for Business","Life Sciences for Business","Engineering"],
    fit:["care about sustainability"], note:"Companies are hiring for sustainability. Ask me what they look for."},
-  {name:"Isaac Feldman", year:2011, major:"Physics", job:"Optical Engineer", at:"Halcyonwood Optics", city:"Dayton, OH",
+  {name:"Isaac Feldman", year:2011, major:"Physics", job:"Optical Engineer", at:"Halcyonwood Optics", city:"Dayton, OH", opt:"yes",
    areas:["SE","TE"], cap:3, used:1, offers:["Advice", "Internship"],
    helps:["Physics","Applied Physics","Applied Physics (Pre-Engineering)","Biophysics","Engineering","Mathematics"],
    fit:["like physics and building things"], note:"Physics opens more doors than you think. Ask me which ones."},
@@ -315,15 +323,15 @@ const ALUMNI = [
    areas:["SE","HC"], cap:10, used:1, offers:["Advice", "Paid project", "Internship"],
    helps:["Biology","Microbiology","Neuroscience","Genetics","General Science","Pharmaceutical Science","Biomedical Sciences (Pre-Med)","Nursing"],
    fit:["want research experience"], note:"Clinical research is a great gap year before med school."},
-  {name:"Ethan Kowalski", year:2017, major:"Computer Science", job:"Software Engineer", at:"Parsec Grove Software", city:"Chicago, IL",
+  {name:"Ethan Kowalski", year:2017, major:"Computer Science", job:"Software Engineer", at:"Parsec Grove Software", city:"Chicago, IL", opt:"yes",
    areas:["TE"], cap:5, used:3, offers:["Advice"],
    helps:["Computer Science","Artificial Intelligence","Cybersecurity","Mathematics","Business Analytics & Information Systems"],
    fit:["are learning to code"], note:"Ask me how to prep for technical interviews."},
-  {name:"Jasmine Wright", year:2018, major:"Business Analytics & Information Systems", job:"Data Analyst", at:"Copperwren Analytics", city:"Cincinnati, OH",
+  {name:"Jasmine Wright", year:2018, major:"Business Analytics & Information Systems", job:"Data Analyst", at:"Copperwren Analytics", city:"Cincinnati, OH", opt:"yes",
    areas:["TE","BM"], cap:3, used:1, offers:["Advice", "Paid project", "Internship"],
    helps:["Business Analytics & Information Systems","Computer Science","Artificial Intelligence","Economics (Business)","Mathematics","Marketing"],
    fit:["like data", "want to learn SQL or Excel"], note:"Learn a little SQL, then message me."},
-  {name:"Rafael Santos", year:2014, major:"Computer Science", job:"Security Analyst", at:"Ironhollow Cyber", city:"Columbus, OH",
+  {name:"Rafael Santos", year:2014, major:"Computer Science", job:"Security Analyst", at:"Ironhollow Cyber", city:"Columbus, OH", opt:"yes",
    areas:["TE","LG"], cap:5, used:2, offers:["Advice", "Job shadow", "Internship"],
    helps:["Cybersecurity","Computer Science","Criminal Justice","Business Analytics & Information Systems","Mathematics"],
    fit:["are curious about cybersecurity"], note:"Cybersecurity needs people from every background. Ask me how I got in."},
@@ -412,13 +420,13 @@ const OFFERS = [
 const ORDER = OFFERS.map(x => x.o);
 const TAG = Object.fromEntries(OFFERS.map(x => [x.o, x.cls]));
 const RESUME_FOR = ["Internship"];   // requests that need a résumé attached
-const STUDENT_VIEWS = ["majors", "interests", "alumni", "request", "sent"];
+const STUDENT_VIEWS = ["majors", "interests", "alumni", "request", "sent", "mine"];
 const ALUM_VIEWS = ["join", "preview", "joined"];
 const AREA = Object.fromEntries(AREAS.map(a => [a.id, a]));
 const MAX_MB = 5, THIS_YEAR = 2026;
-const blankDraft = () => ({name:"", year:"", major:"", job:"", at:"", city:"", areas:[], other:false, otherText:"", helps:[], offers:[], fit:["","",""], note:"", hq:"", cap:3});
+const blankDraft = () => ({name:"", year:"", major:"", job:"", at:"", city:"", areas:[], other:false, otherText:"", helps:[], offers:[], fit:["","",""], note:"", hq:"", cap:3, opt:"unsure"});
 const S = {view:"welcome", search:"", major:null, areas:[], alum:null, from:null, offer:null,
-           first:"", year:"", q:"", tried:"", resume:null, last:null, requested:new Set(), draft:blankDraft(), joined:null};
+           first:"", year:"", q:"", tried:"", resume:null, last:null, requested:new Set(), sent:[], optOnly:false, draft:blankDraft(), joined:null};
 const head = document.getElementById("head"), view = document.getElementById("view");
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -462,7 +470,7 @@ const fullContext = () => [context(), S.year && S.year.toLowerCase()].filter(Boo
 function drawCtx(){ const el = $("ctx"); if (!el || !S.alum) return; const c = fullContext();
   el.hidden = !c; el.textContent = c ? `${first(S.alum.name)} will also see: ${c}.` : ""; }
 function valid(v){
-  if (["welcome", "majors", "interests", "join"].includes(v)) return true;
+  if (["welcome", "majors", "interests", "join", "mine"].includes(v)) return true;
   if (v === "alumni") return !!S.major || S.areas.length > 0;
   if (v === "request") return !!S.alum;
   if (v === "sent") return !!S.last;
@@ -505,6 +513,7 @@ function card(a, from){
     <p class="job">${esc(a.job)} at ${esc(a.at)}</p>
     ${a.field ? `<p class="meta" style="margin:2px 0 0">Field: ${esc(a.field)}</p>` : ""}
     <p class="city">${ico("pin")}${esc(a.city)}</p>
+    ${a.opt === "yes" ? `<p class="optl">${ico("globe")}OPT/CPT friendly, as far as ${esc(first(a.name))} knows</p>` : ""}
     <p class="note">“${esc(a.note)}”</p>
     ${fit.length ? `<p class="fit"><b>Good fit if you</b> ${esc(orList(fit))}.</p>` : ""}
     ${tags(a.offers)}
@@ -540,6 +549,7 @@ function majorsView(){
       <div class="sbox">${ico("search","sico")}
         <input type="search" id="sq" placeholder="Search majors, alumni, companies, jobs" value="${esc(S.search)}" autocomplete="off" enterkeyhint="search">
         <button type="button" class="clear" data-act="clear" aria-label="Clear search">${ico("x")}</button></div></div>
+    ${S.sent.length ? `<button class="minebar" data-act="mine"><span>My requests</span><span class="cnt">${S.sent.length}</span>${ico("chev","chev")}</button>` : ""}
     <div id="res" aria-live="polite"></div>`;
   const sq = $("sq");
   sq.addEventListener("input", () => { S.search = sq.value; drawResults(); });
@@ -559,7 +569,7 @@ function drawResults(){
   const toks = q.split(/\s+/);
   const hit = text => { const h = text.toLowerCase(); return toks.every(t => h.includes(t)); };
   const ms = MAJORS.filter(hit);
-  const as = ALUMNI.filter(a => hit([a.name, a.major, a.job, a.at, a.city, a.field || "", ...a.offers, ...(a.fit || []),
+  const as = ALUMNI.filter(a => hit([a.name, a.major, a.job, a.at, a.city, a.field || "", a.opt === "yes" ? "OPT CPT OPT/CPT international" : "", ...a.offers, ...(a.fit || []),
     ...a.areas.map(id => AREA[id].label)].join(" "))).sort(byLast);
   const und = hit("undecided interests");
   if (!ms.length && !as.length && !und){
@@ -591,7 +601,8 @@ function related(major, exclude){
     .sort((a, b) => (isOpen(b) - isOpen(a)) || score(b) - score(a) || byLast(a, b));
 }
 function alumniView(){
-  const list = matches();
+  const optOk = a => !S.optOnly || a.opt === "yes";
+  const list = matches().filter(optOk);
   let sub, more = [], areaNames = [];
   if (S.major){
     sub = list.length
@@ -599,12 +610,11 @@ function alumniView(){
       : `No ${S.major} alumni have raised their hand yet.`;
     if (list.filter(isOpen).length < FEW){
       areaNames = (MAJOR_AREAS[S.major] || []).map(id => AREA[id].label);
-      more = related(S.major, list);
+      more = related(S.major, list).filter(optOk);
     }
   } else {
     sub = `${plural(list.length, "alum", "alumni")} ${list.length === 1 ? "works" : "work"} in ${orList(S.areas.map(id => AREA[id].label))}.`;
   }
-  header(S.major || "Your interests", sub);
   const shown = more.slice(0, 6);
   const moreBlock = more.length ? `
     <h2 class="sec">${list.length ? "More alumni in related fields" : "Alumni in related fields"}</h2>
@@ -612,8 +622,12 @@ function alumniView(){
       more.length > shown.length ? ` Showing ${shown.length} of ${more.length}.` : ""}</p>
     <div class="cards">${shown.map(a => card(a, "list")).join("")}</div>` : "";
   const empty = !list.length && !more.length
-    ? `<div class="empty">No alumni match yet. Go back and pick another option.</div>` : "";
-  view.innerHTML = `${offerKey()}${demoLine}
+    ? `<div class="empty">${S.optOnly ? "None of these alumni have said their employer hires on OPT/CPT yet. Turn off the filter to see everyone." : "No alumni match yet. Go back and pick another option."}</div>` : "";
+  if (S.optOnly) sub += " Showing OPT/CPT friendly only.";
+  header(S.major || "Your interests", sub);
+  view.innerHTML = `${offerKey()}
+    <button class="chip optf" data-act="optonly" aria-pressed="${S.optOnly}">${ico("globe")}Only OPT/CPT friendly</button>
+    ${demoLine}
     ${list.length ? `<div class="cards">${list.map(a => card(a, "list")).join("")}</div>` : ""}
     ${moreBlock}${empty}`;
 }
@@ -686,6 +700,7 @@ function requestView(){
     S.last = {alum:a, offer:S.offer, first:S.first.trim(), q:S.q.trim(), tried:S.tried.trim(), ctx:fullContext(), fromSearch: S.from === "search",
               resume: RESUME_FOR.includes(S.offer) ? S.resume : null};
     S.requested.add(a.name); a.used = (a.used || 0) + 1;
+    S.sent.unshift({name:a.name, job:a.job, emp:a.at, offer:S.offer, time:new Date()});
     track("send_request", {offer: S.offer, from: S.from, resume: !!S.last.resume, tried: !!S.last.tried, year: !!S.year}); S.q = ""; S.tried = ""; S.offer = null;
     go("sent", true); });
 }
@@ -703,7 +718,23 @@ function sentView(){
       <p class="q">${esc(L.q)}</p></div>
     <p class="demo">Class demo: nothing was actually sent${L.resume ? ", and your résumé never left this phone" : ""}.</p>
     <div class="stack"><button class="btn" data-act="toalumni">${L.fromSearch ? "Back to search" : "Back to alumni"}</button>
+      <button class="btn ghost" data-act="mine">See my requests</button>
       <button class="btn ghost" data-act="restart">Start over</button></div>`;
+}
+
+/* ---------- My requests ---------- */
+const fmtTime = d => d.toLocaleTimeString([], {hour:"numeric", minute:"2-digit"});
+function mineView(){
+  const n = S.sent.length;
+  header("My requests", n ? `${plural(n, "request", "requests")} sent from this phone.` : "Requests you send show up here.");
+  view.innerHTML = n ? `<div class="cards">${S.sent.map(r => `<article class="card">
+        <h2>${esc(r.name)}</h2><p class="meta">${esc(r.job)} at ${esc(r.emp)}</p>
+        <p class="job">Asking about: ${esc(r.offer)}</p>
+        <div class="status"><span class="pill wait">Waiting for ${esc(first(r.name))}</span><span class="mini" style="margin:0">Sent ${fmtTime(r.time)}</span></div>
+      </article>`).join("")}</div>
+      <p class="demo">Class demo: alumni don't receive these, so they stay at Waiting. In the real app, each request moves to Accepted, Declined or Full this month, so you're never left wondering.</p>`
+    : `<div class="empty">No requests yet. Pick your major to find an alum who already said yes.</div>
+      <div class="stack"><button class="btn" data-act="tostudents">Find alumni</button></div>`;
 }
 
 /* ---------- Alumni side: raise your hand ---------- */
@@ -726,7 +757,7 @@ function draftAlum(){
   const d = S.draft;
   return {name:d.name.trim().replace(/\s+/g, " "), year:Number(d.year), major:canonMajor(d.major) || d.major.trim(), job:d.job.trim(), at:d.at.trim(), city:d.city.trim(),
           areas:d.areas.slice(), field:d.other ? d.otherText.trim() : "", helps:d.helps.slice(), offers:sortOffers(d.offers),
-          fit:d.fit.map(x => x.trim()).filter(Boolean), note:d.note.trim(), cap:d.cap, used:0, mine:true};
+          fit:d.fit.map(x => x.trim()).filter(Boolean), note:d.note.trim(), cap:d.cap, used:0, opt:d.opt, mine:true};
 }
 const txt = (id, label, val, attrs = "") => `<div class="field"><label for="${id}">${label}</label>
   <input type="text" id="${id}" value="${esc(val)}" ${attrs}></div>`;
@@ -760,6 +791,9 @@ function joinView(){
     <div class="field"><span class="lbl" id="capl">How many requests a month can you take?<span class="hint">When you hit it, your card shows "Full this month" until next month.</span></span>
       <div class="chipset" role="radiogroup" aria-labelledby="capl">${[1,3,5,10].map(n =>
         `<button type="button" class="chip" role="radio" data-act="jcap" data-v="${n}" aria-checked="${d.cap === n}">${n}</button>`).join("")}</div></div>
+    <div class="field"><span class="lbl" id="optlb">Does your employer hire international students on OPT or CPT?<span class="hint">OPT and CPT let international students work in their field during or after school. If you say yes, your card shows "OPT/CPT friendly, as far as you know."</span></span>
+      <div class="chipset" role="radiogroup" aria-labelledby="optlb">${[["yes","Yes"],["no","No"],["unsure","Not sure"]].map(([v, l]) =>
+        `<button type="button" class="chip" role="radio" data-act="jopt" data-v="${v}" aria-checked="${d.opt === v}">${l}</button>`).join("")}</div></div>
     <p class="info"><b>Open to every year.</b> YesList doesn't let alumni pick which class years can ask. Freshmen through seniors all see your card.</p>
     <button class="btn" id="jp" type="submit">Preview my card</button>
     <p class="need" id="jneed"></p>
@@ -842,7 +876,7 @@ function joinedView(){
 function render(){
   document.title = `${APP_NAME} at ${SCHOOL}`;
   ({welcome:welcomeView, majors:majorsView, interests:interestsView, alumni:alumniView, request:requestView, sent:sentView,
-    join:joinView, preview:previewView, joined:joinedView}[S.view] || welcomeView)();
+    mine:mineView, join:joinView, preview:previewView, joined:joinedView}[S.view] || welcomeView)();
 }
 
 document.addEventListener("click", e => {
@@ -853,6 +887,9 @@ document.addEventListener("click", e => {
     case "tostudents": track("door_student"); go("majors"); break;
     case "tojoin": track("door_alum"); go("join"); break;
     case "home": S.joined = null; go("welcome", true); break;
+    case "mine": track("view_my_requests", {count: S.sent.length}); go("mine"); break;
+    case "optonly": S.optOnly = !S.optOnly; track("filter_opt", {on: S.optOnly}); alumniView(); { const b = document.querySelector("[data-act=optonly]"); if (b) b.focus({preventScroll:true}); } break;
+    case "jopt": d.opt = v; document.querySelectorAll("[data-act=jopt]").forEach(c => c.setAttribute("aria-checked", c.dataset.v === v)); break;
     case "clear": S.search = ""; $("sq").value = ""; drawResults(); $("sq").focus(); break;
     case "undecided": track("pick_undecided"); S.major = null; go("interests"); break;
     case "major": track("pick_major", {major: v}); S.major = v; S.areas = []; go("alumni"); break;
