@@ -149,6 +149,8 @@ select{width:100%;font-size:16px;background:var(--panel);border:1.5px solid var(
 .info{background:var(--tint);border-radius:14px;padding:14px 16px;font-size:15px;margin:0 0 18px}
 .mini{font-size:14px;color:var(--muted);margin:6px 4px}
 label .hint{font-weight:400}
+.spots{font-size:13px;color:var(--muted);margin:0 0 10px}.spots.full{color:var(--ink);font-weight:600}
+.chip[role=radio][aria-checked=true]{background:var(--solid);color:var(--onsolid);border-color:var(--solid)}
 .need{font-size:14px;color:var(--muted);text-align:center;margin:8px 0 0}.need:empty{display:none}
 </style>
 </head>
@@ -218,159 +220,159 @@ const MAJORS = [
 // Invented people and invented employers for a class demo. No real people, no real companies.
 const ALUMNI = [
   {name:"Maya Okafor", year:2015, major:"Finance", job:"Senior Analyst, Corporate Finance", at:"Halvorsen Pike Advisors", city:"Cincinnati, OH",
-   areas:["FA"], offers:["Advice", "Internship"],
+   areas:["FA"], cap:3, used:0, offers:["Advice", "Internship"],
    helps:["Finance","Accountancy","Economics (Business)","Economics (Bachelor of Arts)","Actuarial Science"],
    fit:["are curious about finance", "want to learn Excel"], note:"Ask me what a first-year analyst actually does all day."},
   {name:"Daniel Reyes", year:2011, major:"Accountancy", job:"Audit Manager", at:"Corbel & Wainwright CPAs", city:"Columbus, OH",
-   areas:["FA","BM"], offers:["Advice", "Paid project", "Internship"],
+   areas:["FA","BM"], cap:5, used:2, offers:["Advice", "Paid project", "Internship"],
    helps:["Accountancy","Finance","Economics (Business)","Business Analytics & Information Systems","Management","Entrepreneurship and Innovation"],
    fit:["are thinking about the CPA", "like solving number puzzles"], note:"I can walk you through the CPA path and what busy season is really like."},
   {name:"Priya Nandakumar", year:2018, major:"Actuarial Science", job:"Actuarial Analyst", at:"Lantern Mutual Insurance", city:"Indianapolis, IN",
-   areas:["FA","TE"], offers:["Advice", "Internship"],
+   areas:["FA","TE"], cap:3, used:2, offers:["Advice", "Internship"],
    helps:["Actuarial Science","Mathematics","Finance","Economics (Bachelor of Arts)","Business Analytics & Information Systems","Computer Science"],
    fit:["like math and probability"], note:"Happy to talk exams, Excel, and how to land an actuarial internship."},
   {name:"Marcus Bell", year:2013, major:"Marketing", job:"Brand Manager", at:"Fernway Home Goods", city:"Cincinnati, OH",
-   areas:["BM"], offers:["Advice", "Job shadow", "Paid project"],
+   areas:["BM"], cap:10, used:1, offers:["Advice", "Job shadow", "Paid project"],
    helps:["Marketing","Management","Communication Studies","Digital and Strategic Communication","Graphic Design","International Business","Sport Marketing"],
    fit:["love brands and ads"], note:"Bring me a brand you love and we'll talk about why it works."},
   {name:"Sofia Marchetti", year:2017, major:"Entrepreneurship and Innovation", job:"Founder and CEO", at:"Tidewell Coffee Co.", city:"Cincinnati, OH",
-   areas:["BM"], offers:["Job shadow", "Paid project", "Internship"],
+   areas:["BM"], cap:5, used:3, offers:["Job shadow", "Paid project", "Internship"],
    helps:["Entrepreneurship and Innovation","Management","Marketing","Organizational Leadership","Philosophy","Liberal Arts (APEX only)","Economics (Business)"],
    fit:["want to start something", "like a fast pace"], note:"Small team. You'd own a real project from week one."},
   {name:"Kevin Tran", year:2012, major:"International Business", job:"Supply Chain Manager", at:"Arcwick Logistics", city:"Louisville, KY",
-   areas:["BM"], offers:["Advice", "Internship"],
+   areas:["BM"], cap:3, used:2, offers:["Advice", "Internship"],
    helps:["International Business","Management","Economics (Business)","Business Analytics & Information Systems","Economics, Sustainability and Society","Spanish"],
    fit:["are curious about global trade"], note:"Ask me about logistics careers nobody tells you about."},
   {name:"Hannah Whitfield", year:2016, major:"Communication Studies", job:"Talent Acquisition Lead", at:"Thistlegate Staffing", city:"Chicago, IL",
-   areas:["BM"], offers:["Advice"],
+   areas:["BM"], cap:3, used:3, offers:["Advice"],
    helps:["Communication Studies","Organizational Leadership","Management","Psychology","Liberal Arts (APEX only)","Philosophy"],
    fit:["want to know what recruiters look for"], note:"I read hundreds of résumés a month. Ask me what makes one stand out."},
   {name:"Rachel Kim", year:2019, major:"Biological Sciences for Business", job:"Product Specialist", at:"Sablewood Diagnostics", city:"Cincinnati, OH",
-   areas:["BM","SE"], offers:["Advice", "Job shadow", "Paid project", "Internship"],
+   areas:["BM","SE"], cap:3, used:1, offers:["Advice", "Job shadow", "Paid project", "Internship"],
    helps:["Biological Sciences for Business","Life Sciences for Business","Biology","Chemistry","Marketing","Economics, Sustainability and Society"],
    fit:["like science and people"], note:"Science plus business is a real job. I can show you where to find it."},
   {name:"Jamal Pierce", year:2014, major:"Digital Innovation, Film, and Television", job:"Producer", at:"Lockhart Lane Media", city:"Cincinnati, OH",
-   areas:["AME"], offers:["Advice", "Job shadow", "Paid project"],
+   areas:["AME"], cap:10, used:6, offers:["Advice", "Job shadow", "Paid project"],
    helps:["Digital Innovation, Film, and Television","Communication Studies","Digital and Strategic Communication","English","Theatre","Musical Theatre"],
    fit:["want to work on a set"], note:"I bring students onto shoot days when the budget allows."},
   {name:"Elena Vasquez", year:2018, major:"Graphic Design", job:"Senior Designer", at:"Kitefoil Creative", city:"Columbus, OH",
-   areas:["AME","BM"], offers:["Advice", "Paid project", "Internship"],
+   areas:["AME","BM"], cap:5, used:3, offers:["Advice", "Paid project", "Internship"],
    helps:["Graphic Design","Art","Fine Arts","3D Animation and Immersive Game Design","Marketing","Digital and Strategic Communication","Digital Innovation, Film, and Television"],
    fit:["are building a portfolio"], note:"Send me your portfolio questions. I'll be honest."},
   {name:"Tyler Brooks", year:2016, major:"Computer Science", job:"Gameplay Engineer", at:"Quarry Fox Games", city:"Cleveland, OH",
-   areas:["AME","TE"], offers:["Advice", "Internship"],
+   areas:["AME","TE"], cap:3, used:1, offers:["Advice", "Internship"],
    helps:["3D Animation and Immersive Game Design","Computer Science","Artificial Intelligence","Art","Mathematics"],
    fit:["love games", "are learning to code"], note:"Games are software first. Ask me how to break in."},
   {name:"Grace Holloway", year:2010, major:"English", job:"Senior Editor", at:"Quillfern Press", city:"Cincinnati, OH",
-   areas:["AME","ST"], offers:["Advice", "Paid project"],
+   areas:["AME","ST"], cap:5, used:2, offers:["Advice", "Paid project"],
    helps:["English","Classical Humanities","History","Communication Studies","Philosophy","Theology"],
    fit:["love to write"], note:"Writers: ask me how to get paid for it."},
   {name:"Andre Coleman", year:2009, major:"Music", job:"Music Director", at:"Lumen Hall Performing Arts Center", city:"Dayton, OH",
-   areas:["AME","ST"], offers:["Advice", "Job shadow", "Internship"],
+   areas:["AME","ST"], cap:3, used:0, offers:["Advice", "Job shadow", "Internship"],
    helps:["Music","Musical Theatre","Theatre","Fine Arts","Art","Education: P-5 Primary"],
    fit:["want to perform or teach music"], note:"Performing and teaching can be one career. Ask me how."},
   {name:"Nicole Adeyemi", year:2012, major:"Nursing", job:"Nurse Manager", at:"Ashmere Regional Hospital", city:"Cincinnati, OH",
-   areas:["HC"], offers:["Advice", "Job shadow", "Internship"],
+   areas:["HC"], cap:10, used:1, offers:["Advice", "Job shadow", "Internship"],
    helps:["Nursing","Health Administration","Biology","Health Science and Wellness","Psychology","Medical and Health Humanities"],
    fit:["are thinking about nursing"], note:"Ask me what clinicals don't teach you."},
   {name:"Samuel Ortiz", year:2008, major:"Biology", job:"Family Physician", at:"Fennimore Family Medicine", city:"Cincinnati, OH",
-   areas:["HC","SE"], offers:["Advice", "Job shadow"],
+   areas:["HC","SE"], cap:5, used:3, offers:["Advice", "Job shadow"],
    helps:["Biomedical Sciences (Pre-Med)","Biology","Biochemistry","Neuroscience","Chemistry","Medical and Health Humanities","Genetics"],
    fit:["are thinking about med school"], note:"Pre-med? Ask me what I'd do differently."},
   {name:"Lauren Fischer", year:2015, major:"Occupational Therapy", job:"Occupational Therapist", at:"Pinwheel Therapy Group", city:"Louisville, KY",
-   areas:["HC"], offers:["Advice", "Job shadow", "Internship"],
+   areas:["HC"], cap:3, used:0, offers:["Advice", "Job shadow", "Internship"],
    helps:["Occupational Therapy","Exercise Science","Health Science and Wellness","Psychology","Speech, Language and Communicative Behavior"],
    fit:["are curious about therapy careers"], note:"I take a student intern every semester."},
   {name:"Brian Mensah", year:2014, major:"Health Administration", job:"Director of Clinic Operations", at:"Harrowgate Health Network", city:"Columbus, OH",
-   areas:["HC","BM"], offers:["Advice", "Paid project", "Internship"],
+   areas:["HC","BM"], cap:5, used:2, offers:["Advice", "Paid project", "Internship"],
    helps:["Health Administration","Management","Liberal Arts (APEX only)","Nursing","Business Analytics & Information Systems","Medical and Health Humanities"],
    fit:["like healthcare and business"], note:"Hospitals are businesses too. I'll show you that side."},
   {name:"Aisha Rahman", year:2017, major:"Psychology", job:"Mental Health Counselor", at:"Lamplit Counseling Collective", city:"Cincinnati, OH",
-   areas:["HC","NSS"], offers:["Advice"],
+   areas:["HC","NSS"], cap:3, used:2, offers:["Advice"],
    helps:["Psychology","Social Work","Neuroscience","Sociology","Gender & Diversity Studies","Speech, Language and Communicative Behavior"],
    fit:["are thinking about counseling"], note:"Ask me about grad school paths into counseling."},
   {name:"Megan Doyle", year:2016, major:"Speech, Language and Communicative Behavior", job:"Speech-Language Pathologist", at:"Little Lanterns Pediatric Therapy", city:"Dayton, OH",
-   areas:["HC","ST"], offers:["Advice", "Job shadow", "Internship"],
+   areas:["HC","ST"], cap:10, used:6, offers:["Advice", "Job shadow", "Internship"],
    helps:["Speech, Language and Communicative Behavior","Education: Special","Psychology","Occupational Therapy","Education: P-5 Primary"],
    fit:["are curious about speech therapy"], note:"Curious about speech therapy? Come see a day in the clinic."},
   {name:"Wei Zhang", year:2012, major:"Chemistry", job:"Research Scientist", at:"Kestrelbrook Pharmaceuticals", city:"Cincinnati, OH",
-   areas:["SE","HC"], offers:["Advice", "Internship"],
+   areas:["SE","HC"], cap:5, used:3, offers:["Advice", "Internship"],
    helps:["Chemistry","Biochemistry","Pharmaceutical Science","Microbiology","Biophysics","Genetics","General Science"],
    fit:["want lab experience"], note:"Lab internships start with one email. Send it."},
   {name:"Olivia Hart", year:2019, major:"Environmental Science", job:"Environmental Consultant", at:"Mossgate Environmental", city:"Columbus, OH",
-   areas:["SE"], offers:["Paid project", "Internship"],
+   areas:["SE"], cap:3, used:2, offers:["Paid project", "Internship"],
    helps:["Environmental Science","Environmental Management","Economics, Sustainability and Society","Biology","Chemistry","Life Sciences for Business"],
    fit:["like working outdoors"], note:"I have field projects every summer."},
   {name:"Ben Adler", year:2013, major:"Environmental Management", job:"Sustainability Manager", at:"Harlow & Finch Manufacturing", city:"Cincinnati, OH",
-   areas:["SE","BM"], offers:["Advice", "Job shadow", "Paid project"],
+   areas:["SE","BM"], cap:5, used:2, offers:["Advice", "Job shadow", "Paid project"],
    helps:["Environmental Management","Environmental Science","Economics, Sustainability and Society","Biological Sciences for Business","Life Sciences for Business","Engineering"],
    fit:["care about sustainability"], note:"Companies are hiring for sustainability. Ask me what they look for."},
   {name:"Isaac Feldman", year:2011, major:"Physics", job:"Optical Engineer", at:"Halcyonwood Optics", city:"Dayton, OH",
-   areas:["SE","TE"], offers:["Advice", "Internship"],
+   areas:["SE","TE"], cap:3, used:1, offers:["Advice", "Internship"],
    helps:["Physics","Applied Physics","Applied Physics (Pre-Engineering)","Biophysics","Engineering","Mathematics"],
    fit:["like physics and building things"], note:"Physics opens more doors than you think. Ask me which ones."},
   {name:"Carmen Delgado", year:2016, major:"Biology", job:"Clinical Research Coordinator", at:"Wrenfield Clinical Research", city:"Cincinnati, OH",
-   areas:["SE","HC"], offers:["Advice", "Paid project", "Internship"],
+   areas:["SE","HC"], cap:10, used:1, offers:["Advice", "Paid project", "Internship"],
    helps:["Biology","Microbiology","Neuroscience","Genetics","General Science","Pharmaceutical Science","Biomedical Sciences (Pre-Med)","Nursing"],
    fit:["want research experience"], note:"Clinical research is a great gap year before med school."},
   {name:"Ethan Kowalski", year:2017, major:"Computer Science", job:"Software Engineer", at:"Parsec Grove Software", city:"Chicago, IL",
-   areas:["TE"], offers:["Advice"],
+   areas:["TE"], cap:5, used:3, offers:["Advice"],
    helps:["Computer Science","Artificial Intelligence","Cybersecurity","Mathematics","Business Analytics & Information Systems"],
    fit:["are learning to code"], note:"Ask me how to prep for technical interviews."},
   {name:"Jasmine Wright", year:2018, major:"Business Analytics & Information Systems", job:"Data Analyst", at:"Copperwren Analytics", city:"Cincinnati, OH",
-   areas:["TE","BM"], offers:["Advice", "Paid project", "Internship"],
+   areas:["TE","BM"], cap:3, used:1, offers:["Advice", "Paid project", "Internship"],
    helps:["Business Analytics & Information Systems","Computer Science","Artificial Intelligence","Economics (Business)","Mathematics","Marketing"],
    fit:["like data", "want to learn SQL or Excel"], note:"Learn a little SQL, then message me."},
   {name:"Rafael Santos", year:2014, major:"Computer Science", job:"Security Analyst", at:"Ironhollow Cyber", city:"Columbus, OH",
-   areas:["TE","LG"], offers:["Advice", "Job shadow", "Internship"],
+   areas:["TE","LG"], cap:5, used:2, offers:["Advice", "Job shadow", "Internship"],
    helps:["Cybersecurity","Computer Science","Criminal Justice","Business Analytics & Information Systems","Mathematics"],
    fit:["are curious about cybersecurity"], note:"Cybersecurity needs people from every background. Ask me how I got in."},
   {name:"Natalie Ross", year:2013, major:"Applied Physics (Pre-Engineering)", job:"Mechanical Engineer", at:"Talonworks Aerospace", city:"Dayton, OH",
-   areas:["TE"], offers:["Advice", "Job shadow", "Internship"],
+   areas:["TE"], cap:3, used:0, offers:["Advice", "Job shadow", "Internship"],
    helps:["Engineering","Applied Physics (Pre-Engineering)","Applied Physics","Physics","Mathematics"],
    fit:["like building things"], note:"Ask me what engineers actually build day to day."},
   {name:"Thomas Greene", year:2007, major:"Political Science", job:"Partner", at:"Ashby Morrow LLP", city:"Cincinnati, OH",
-   areas:["LG"], offers:["Advice", "Job shadow", "Internship"],
+   areas:["LG"], cap:1, used:1, offers:["Advice", "Job shadow", "Internship"],
    helps:["Political Science","Philosophy","History","Economics (Bachelor of Arts)","Criminal Justice","Classical Humanities","International Studies"],
    fit:["are thinking about law school"], note:"Thinking about law school? Talk to me first."},
   {name:"Danielle Moore", year:2015, major:"Criminal Justice", job:"Probation Officer", at:"Ridgemont County Court Services", city:"Dayton, OH",
-   areas:["LG","NSS"], offers:["Advice", "Job shadow", "Internship"],
+   areas:["LG","NSS"], cap:5, used:3, offers:["Advice", "Job shadow", "Internship"],
    helps:["Criminal Justice","Sociology","Psychology","Social Work","Political Science"],
    fit:["are curious about the courts"], note:"Ask me what working in the courts is really like."},
   {name:"Victor Nguyen", year:2012, major:"International Studies", job:"Policy Advisor", at:"Larkmoor Policy Institute", city:"Washington, DC",
-   areas:["LG","NSS"], offers:["Advice", "Paid project"],
+   areas:["LG","NSS"], cap:3, used:0, offers:["Advice", "Paid project"],
    helps:["International Studies","Political Science","Economics (Bachelor of Arts)","Spanish","History","Gender & Diversity Studies","Sociology"],
    fit:["like policy and research"], note:"I need research help on short projects a few times a year."},
   {name:"Teresa Alvarez", year:2010, major:"Social Work", job:"Program Director", at:"Northside Hearth Family Services", city:"Cincinnati, OH",
-   areas:["NSS","HC"], offers:["Advice", "Job shadow", "Internship"],
+   areas:["NSS","HC"], cap:5, used:2, offers:["Advice", "Job shadow", "Internship"],
    helps:["Social Work","Psychology","Sociology","Nonprofit Management","Spanish","Gender & Diversity Studies"],
    fit:["want to help families"], note:"Our field placements turn into jobs. Ask me how."},
   {name:"Michael Osei", year:2014, major:"Theology", job:"Campus Minister", at:"St. Aldric High School", city:"Cincinnati, OH",
-   areas:["NSS","ST"], offers:["Advice", "Paid project", "Internship"],
+   areas:["NSS","ST"], cap:3, used:2, offers:["Advice", "Paid project", "Internship"],
    helps:["Theology","Philosophy","Classical Humanities","Nonprofit Management","History","Education: Middle Childhood"],
    fit:["care about faith and service"], note:"Ministry, teaching and nonprofit work overlap more than you'd think."},
   {name:"Laura Bennett", year:2016, major:"Organizational Leadership", job:"Director of Development", at:"Wickerline Food Alliance", city:"Cincinnati, OH",
-   areas:["NSS","BM"], offers:["Advice", "Paid project", "Internship"],
+   areas:["NSS","BM"], cap:10, used:1, offers:["Advice", "Paid project", "Internship"],
    helps:["Nonprofit Management","Organizational Leadership","Communication Studies","Management","Marketing","International Studies"],
    fit:["like nonprofits", "want to build sales skills"], note:"Fundraising is sales with a mission. I'll teach you both."},
   {name:"Jessica Turner", year:2011, major:"Education: Middle Childhood", job:"Seventh-Grade Math Teacher", at:"Hollis Grove Middle School", city:"Cincinnati, OH",
-   areas:["ST"], offers:["Advice", "Job shadow", "Internship"],
+   areas:["ST"], cap:5, used:3, offers:["Advice", "Job shadow", "Internship"],
    helps:["Education: Middle Childhood","Education: P-5 Primary","Education: Special","Mathematics","English","History","Spanish"],
    fit:["are thinking about teaching"], note:"Come sit in on a class before you student-teach."},
   {name:"Robert Chen", year:2009, major:"Mathematics", job:"Assistant Dean of Admissions", at:"Brennock College", city:"Columbus, OH",
-   areas:["ST"], offers:["Advice"],
+   areas:["ST"], cap:3, used:2, offers:["Advice"],
    helps:["Mathematics","Classical Humanities","Education: Special","Education: P-5 Primary","Music","English","Spanish"],
    fit:["are curious about jobs at a college"], note:"Ask me about careers in college admissions and student life."},
   {name:"Chris Donovan", year:2014, major:"Sport Management", job:"Director of Ticket Sales", at:"Queen City Kestrels", city:"Cincinnati, OH",
-   areas:["SF","BM"], offers:["Advice", "Job shadow", "Internship"],
+   areas:["SF","BM"], cap:3, used:3, offers:["Advice", "Job shadow", "Internship"],
    helps:["Sport Management","Sport Marketing","Marketing","Management","Communication Studies"],
    fit:["love sports", "are open to sales"], note:"Every front office starts in sales. Ask me why that's a good thing."},
   {name:"Alicia Monroe", year:2017, major:"Exercise Science", job:"Head Strength Coach", at:"Marlow Ridge University Athletics", city:"Dayton, OH",
-   areas:["SF","HC"], offers:["Advice", "Job shadow", "Internship"],
+   areas:["SF","HC"], cap:3, used:1, offers:["Advice", "Job shadow", "Internship"],
    helps:["Exercise Science","Health Science and Wellness","Sport Management","Biomedical Sciences (Pre-Med)","Psychology"],
    fit:["are into fitness and coaching"], note:"I hire student coaches every fall."},
   {name:"Derrick Hayes", year:2019, major:"Sport Marketing", job:"Partnerships Manager", at:"Ninth Inning Partners", city:"Indianapolis, IN",
-   areas:["SF","BM"], offers:["Paid project", "Internship"],
+   areas:["SF","BM"], cap:10, used:6, offers:["Paid project", "Internship"],
    helps:["Sport Marketing","Sport Management","Marketing","Digital and Strategic Communication","Graphic Design","Entrepreneurship and Innovation"],
    fit:["love sports marketing"], note:"We pay students to help with sponsorship decks."}
 ];
@@ -414,9 +416,10 @@ const STUDENT_VIEWS = ["majors", "interests", "alumni", "request", "sent"];
 const ALUM_VIEWS = ["join", "preview", "joined"];
 const AREA = Object.fromEntries(AREAS.map(a => [a.id, a]));
 const MAX_MB = 5, THIS_YEAR = 2026;
-const blankDraft = () => ({name:"", year:"", major:"", job:"", at:"", city:"", areas:[], other:false, otherText:"", helps:[], offers:[], fit:["","",""], note:"", hq:""});
+const MIN_Q = 30, MIN_TRIED = 20;   // effort bar: minimum characters for questions and "already tried"
+const blankDraft = () => ({name:"", year:"", major:"", job:"", at:"", city:"", areas:[], other:false, otherText:"", helps:[], offers:[], fit:["","",""], note:"", hq:"", cap:3});
 const S = {view:"welcome", search:"", major:null, areas:[], alum:null, from:null, offer:null,
-           first:"", q:"", resume:null, last:null, requested:new Set(), draft:blankDraft(), joined:null};
+           first:"", q:"", tried:"", resume:null, last:null, requested:new Set(), draft:blankDraft(), joined:null};
 const head = document.getElementById("head"), view = document.getElementById("view");
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -439,11 +442,15 @@ function track(event, props = {}){
 }
 const fileSize = b => b < 1048576 ? `${Math.max(1, Math.round(b / 1024))} KB` : `${(b / 1048576).toFixed(1)} MB`;
 
+// Each alum sets how many requests a month they'll take; "used" is this month's count so far.
+const spotsLeft = a => Math.max(0, (a.cap || 3) - (a.used || 0));
+const isOpen = a => spotsLeft(a) > 0;
+const openFirst = (a, b) => (isOpen(b) - isOpen(a)) || byLast(a, b);
 function matches(){
   const list = S.major
     ? ALUMNI.filter(a => a.helps.includes(S.major))
     : ALUMNI.filter(a => a.areas.some(x => S.areas.includes(x)));
-  return list.slice().sort(byLast);
+  return list.slice().sort(openFirst);
 }
 // What the alum sees about the student besides their name. Search results carry no major.
 function context(){
@@ -482,9 +489,13 @@ function header(title, sub){
 function card(a, from){
   const done = S.requested.has(a.name);
   const fit = (a.fit || []).filter(Boolean);
+  const left = spotsLeft(a), cap = a.cap || 3;
+  const spots = from === "preview" ? `<p class="spots">Takes up to ${cap} ${cap === 1 ? "request" : "requests"} a month</p>`
+    : left ? `<p class="spots">${left} of ${cap} ${cap === 1 ? "spot" : "spots"} left this month</p>`
+    : `<p class="spots full">Full this month. Check back next month.</p>`;
   const action = from === "preview"
     ? `<p class="mini" style="margin:0">Students tap Request here to send you their questions.</p>`
-    : `<button class="btn req" data-act="request" data-from="${from}" data-v="${esc(a.name)}" ${done ? "disabled" : ""}>${done ? "Request sent" : "Request"}</button>`;
+    : `<button class="btn req" data-act="request" data-from="${from}" data-v="${esc(a.name)}" ${done || !left ? "disabled" : ""}>${done ? "Request sent" : left ? "Request" : "Full this month"}</button>`;
   return `<article class="card"><h2><span class="mk">${esc(a.name)}</span></h2>
     <p class="meta">Class of ${a.year} · ${esc(a.major)}</p>
     <p class="job">${esc(a.job)} at ${esc(a.at)}</p>
@@ -493,6 +504,7 @@ function card(a, from){
     <p class="note">“${esc(a.note)}”</p>
     ${fit.length ? `<p class="fit"><b>Good fit if you</b> ${esc(orList(fit))}.</p>` : ""}
     ${tags(a.offers)}
+    ${spots}
     ${action}
   </article>`;
 }
@@ -572,7 +584,7 @@ function related(major, exclude){
   const areas = MAJOR_AREAS[major] || [];
   const score = a => a.areas.filter(x => areas.includes(x)).length * 2 + (a.areas.includes(areas[0]) ? 1 : 0);
   return ALUMNI.filter(a => !exclude.includes(a) && a.areas.some(x => areas.includes(x)))
-    .sort((a, b) => score(b) - score(a) || byLast(a, b));
+    .sort((a, b) => (isOpen(b) - isOpen(a)) || score(b) - score(a) || byLast(a, b));
 }
 function alumniView(){
   const list = matches();
@@ -581,7 +593,7 @@ function alumniView(){
     sub = list.length
       ? `${plural(list.length, "alum", "alumni")} said yes to helping ${S.major} students.`
       : `No ${S.major} alumni have raised their hand yet.`;
-    if (list.length < FEW){
+    if (list.filter(isOpen).length < FEW){
       areaNames = (MAJOR_AREAS[S.major] || []).map(id => AREA[id].label);
       more = related(S.major, list);
     }
@@ -606,7 +618,9 @@ function missing(){
   const m = [];
   if (!S.offer) m.push("what you're asking about");
   if (!S.first.trim()) m.push("your first name");
-  if (!S.q.trim()) m.push("your questions");
+  const ql = S.q.trim().length, tl = S.tried.trim().length;
+  if (!ql) m.push("your questions"); else if (ql < MIN_Q) m.push(`a bit more in your questions (${MIN_Q - ql} more characters)`);
+  if (!tl) m.push("what you've already tried"); else if (tl < MIN_TRIED) m.push(`a bit more on what you've tried (${MIN_TRIED - tl} more characters)`);
   if (RESUME_FOR.includes(S.offer) && !S.resume) m.push("your résumé");
   return m;
 }
@@ -649,21 +663,27 @@ function requestView(){
       <div class="field"><label for="fn">Your first name</label>
         <input type="text" id="fn" maxlength="40" autocomplete="given-name" value="${esc(S.first)}"></div>
       <div class="field"><label for="qs">Your questions for ${esc(first(a.name))}</label>
+        <span class="hint" style="margin:-2px 0 6px">At least ${MIN_Q} characters.</span>
         <textarea id="qs" maxlength="500" placeholder="Example: How did you land your first internship? What should I learn before I apply? Could we set up a 15-minute call?">${esc(S.q)}</textarea>
         <div class="count" id="qc">${S.q.length} / 500</div></div>
+      <div class="field"><label for="tr">What have you already tried?<span class="hint">So ${esc(first(a.name))} knows where to start. At least ${MIN_TRIED} characters.</span></label>
+        <textarea id="tr" maxlength="300" style="min-height:96px" placeholder="Example: I read the careers page, applied to two programs and talked to my advisor.">${esc(S.tried)}</textarea>
+        <div class="count" id="tc">${S.tried.length} / 300</div></div>
       <div id="rz"></div>
       ${ctx ? `<p class="ctx">${esc(first(a.name))} will also see: ${esc(ctx)}.</p>` : ""}
       <button class="btn" id="send" type="submit">Send request</button>
       <p class="need" id="need"></p>
     </form>`;
-  const fn = $("fn"), qs = $("qs");
-  const sync = () => { S.first = fn.value; S.q = qs.value; $("qc").textContent = `${S.q.length} / 500`; updateSend(); };
-  fn.addEventListener("input", sync); qs.addEventListener("input", sync);
+  const fn = $("fn"), qs = $("qs"), tr = $("tr");
+  const sync = () => { S.first = fn.value; S.q = qs.value; S.tried = tr.value;
+    $("qc").textContent = `${S.q.length} / 500`; $("tc").textContent = `${S.tried.length} / 300`; updateSend(); };
+  fn.addEventListener("input", sync); qs.addEventListener("input", sync); tr.addEventListener("input", sync);
   drawResume(); updateSend();
   $("f").addEventListener("submit", e => { e.preventDefault(); if (missing().length) return;
-    S.last = {alum:a, offer:S.offer, first:S.first.trim(), q:S.q.trim(), ctx,
+    S.last = {alum:a, offer:S.offer, first:S.first.trim(), q:S.q.trim(), tried:S.tried.trim(), ctx,
               resume: RESUME_FOR.includes(S.offer) ? S.resume : null};
-    S.requested.add(a.name); track("send_request", {offer: S.offer, from: S.from, resume: !!S.last.resume}); S.q = ""; S.offer = null;
+    S.requested.add(a.name); a.used = (a.used || 0) + 1;
+    track("send_request", {offer: S.offer, from: S.from, resume: !!S.last.resume}); S.q = ""; S.tried = ""; S.offer = null;
     go("sent", true); });
 }
 
@@ -674,7 +694,7 @@ function sentView(){
   header(`Request sent to ${L.alum.name}`, `Here's a copy of what ${first(L.alum.name)} sees.`);
   view.innerHTML = `${tick}
     <div class="copy"><dl><dt>To</dt><dd>${esc(L.alum.name)}, ${esc(L.alum.job)} at ${esc(L.alum.at)}</dd>
-      <dt>From</dt><dd>${esc(L.first)}</dd><dt>Asking about</dt><dd>${esc(L.offer)}</dd>
+      <dt>From</dt><dd>${esc(L.first)}</dd><dt>Asking about</dt><dd>${esc(L.offer)}</dd><dt>Already tried</dt><dd>${esc(L.tried)}</dd>
       ${L.ctx ? `<dt>Also sent</dt><dd>${esc(L.ctx)}</dd>` : ""}
       ${L.resume ? `<dt>Résumé</dt><dd>${esc(L.resume.name)}</dd>` : ""}</dl>
       <p class="q">${esc(L.q)}</p></div>
@@ -703,7 +723,7 @@ function draftAlum(){
   const d = S.draft;
   return {name:d.name.trim().replace(/\s+/g, " "), year:Number(d.year), major:canonMajor(d.major) || d.major.trim(), job:d.job.trim(), at:d.at.trim(), city:d.city.trim(),
           areas:d.areas.slice(), field:d.other ? d.otherText.trim() : "", helps:d.helps.slice(), offers:sortOffers(d.offers),
-          fit:d.fit.map(x => x.trim()).filter(Boolean), note:d.note.trim(), mine:true};
+          fit:d.fit.map(x => x.trim()).filter(Boolean), note:d.note.trim(), cap:d.cap, used:0, mine:true};
 }
 const txt = (id, label, val, attrs = "") => `<div class="field"><label for="${id}">${label}</label>
   <input type="text" id="${id}" value="${esc(val)}" ${attrs}></div>`;
@@ -734,6 +754,9 @@ function joinView(){
       ${[0,1,2].map(i => `<input type="text" class="fitin" data-i="${i}" maxlength="40" value="${esc(d.fit[i])}" placeholder="${["are curious about finance","want to learn Excel","love sports"][i]}" aria-label="Good fit phrase ${i + 1}" style="margin-bottom:8px">`).join("")}</div>
     <div class="field"><label for="jo">One line for students<span class="hint">What they can ask you about, in your own words.</span></label>
       <input type="text" id="jo" maxlength="90" value="${esc(d.note)}" placeholder="Ask me how I got from Xavier to my first job."></div>
+    <div class="field"><span class="lbl" id="capl">How many requests a month can you take?<span class="hint">When you hit it, your card shows "Full this month" until next month.</span></span>
+      <div class="chipset" role="radiogroup" aria-labelledby="capl">${[1,3,5,10].map(n =>
+        `<button type="button" class="chip" role="radio" data-act="jcap" data-v="${n}" aria-checked="${d.cap === n}">${n}</button>`).join("")}</div></div>
     <p class="info"><b>Open to every year.</b> YesList doesn't let alumni pick which class years can ask. Freshmen through seniors all see your card.</p>
     <button class="btn" id="jp" type="submit">Preview my card</button>
     <p class="need" id="jneed"></p>
@@ -800,7 +823,7 @@ function previewView(){
   view.innerHTML = `<div class="cards">${card(a, "preview")}</div>
     <p class="mini" style="margin:14px 4px">Students in ${plural(names.length, "major", "majors")} will see you: ${esc(andList(names.slice(0, 4)))}${names.length > 4 ? ` and ${names.length - 4} more` : ""}.${
       a.areas.length ? ` Undecided students who pick ${esc(orList(a.areas.map(id => AREA[id].label)))} will too.` : ""}${
-      a.field ? ` Anyone can find you by searching “${esc(a.field)}”.` : ""}</p>
+      a.field ? ` Anyone can find you by searching “${esc(a.field)}”.` : ""} You'll get at most ${plural(a.cap, "request", "requests")} a month.</p>
     <div class="stack"><button class="btn" data-act="addme">Add me to ${esc(APP_NAME)}</button>
       <button class="btn ghost" data-act="back">Edit</button></div>`;
 }
@@ -840,6 +863,7 @@ document.addEventListener("click", e => {
     case "toalumni": history.back(); break;
     case "restart": S.major = null; S.areas = []; S.alum = null; S.last = null; S.search = ""; go("majors", true); break;
     case "pickmajor": pickMajor(v); break;
+    case "jcap": d.cap = +v; document.querySelectorAll("[data-act=jcap]").forEach(c => c.setAttribute("aria-checked", c.dataset.v === v)); break;
     case "jother": d.other = !d.other; if (!d.other) d.otherText = ""; drawAreas(); updateJoin();
       { const b = document.querySelector("[data-act=jother]"); if (b) b.focus({preventScroll:true}); if (d.other && $("jot")) $("jot").focus(); } break;
     case "jarea": d.areas = d.areas.includes(v) ? d.areas.filter(x => x !== v) : (d.areas.length + (d.other ? 1 : 0) < 3 ? AREAS.map(a => a.id).filter(id => id === v || d.areas.includes(id)) : d.areas);
