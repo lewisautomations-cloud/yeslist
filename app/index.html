@@ -416,7 +416,6 @@ const STUDENT_VIEWS = ["majors", "interests", "alumni", "request", "sent"];
 const ALUM_VIEWS = ["join", "preview", "joined"];
 const AREA = Object.fromEntries(AREAS.map(a => [a.id, a]));
 const MAX_MB = 5, THIS_YEAR = 2026;
-const MIN_Q = 30, MIN_TRIED = 20;   // effort bar: minimum characters for questions and "already tried"
 const blankDraft = () => ({name:"", year:"", major:"", job:"", at:"", city:"", areas:[], other:false, otherText:"", helps:[], offers:[], fit:["","",""], note:"", hq:"", cap:3});
 const S = {view:"welcome", search:"", major:null, areas:[], alum:null, from:null, offer:null,
            first:"", q:"", tried:"", resume:null, last:null, requested:new Set(), draft:blankDraft(), joined:null};
@@ -618,9 +617,7 @@ function missing(){
   const m = [];
   if (!S.offer) m.push("what you're asking about");
   if (!S.first.trim()) m.push("your first name");
-  const ql = S.q.trim().length, tl = S.tried.trim().length;
-  if (!ql) m.push("your questions"); else if (ql < MIN_Q) m.push(`a bit more in your questions (${MIN_Q - ql} more characters)`);
-  if (!tl) m.push("what you've already tried"); else if (tl < MIN_TRIED) m.push(`a bit more on what you've tried (${MIN_TRIED - tl} more characters)`);
+  if (!S.q.trim()) m.push("your questions");
   if (RESUME_FOR.includes(S.offer) && !S.resume) m.push("your résumé");
   return m;
 }
@@ -663,10 +660,9 @@ function requestView(){
       <div class="field"><label for="fn">Your first name</label>
         <input type="text" id="fn" maxlength="40" autocomplete="given-name" value="${esc(S.first)}"></div>
       <div class="field"><label for="qs">Your questions for ${esc(first(a.name))}</label>
-        <span class="hint" style="margin:-2px 0 6px">At least ${MIN_Q} characters.</span>
         <textarea id="qs" maxlength="500" placeholder="Example: How did you land your first internship? What should I learn before I apply? Could we set up a 15-minute call?">${esc(S.q)}</textarea>
         <div class="count" id="qc">${S.q.length} / 500</div></div>
-      <div class="field"><label for="tr">What have you already tried?<span class="hint">So ${esc(first(a.name))} knows where to start. At least ${MIN_TRIED} characters.</span></label>
+      <div class="field"><label for="tr">What have you already tried? <span style="font-weight:400;color:var(--muted)">(optional)</span><span class="hint">Helps ${esc(first(a.name))} know where to start.</span></label>
         <textarea id="tr" maxlength="300" style="min-height:96px" placeholder="Example: I read the careers page, applied to two programs and talked to my advisor.">${esc(S.tried)}</textarea>
         <div class="count" id="tc">${S.tried.length} / 300</div></div>
       <div id="rz"></div>
@@ -694,7 +690,7 @@ function sentView(){
   header(`Request sent to ${L.alum.name}`, `Here's a copy of what ${first(L.alum.name)} sees.`);
   view.innerHTML = `${tick}
     <div class="copy"><dl><dt>To</dt><dd>${esc(L.alum.name)}, ${esc(L.alum.job)} at ${esc(L.alum.at)}</dd>
-      <dt>From</dt><dd>${esc(L.first)}</dd><dt>Asking about</dt><dd>${esc(L.offer)}</dd><dt>Already tried</dt><dd>${esc(L.tried)}</dd>
+      <dt>From</dt><dd>${esc(L.first)}</dd><dt>Asking about</dt><dd>${esc(L.offer)}</dd>${L.tried ? `<dt>Already tried</dt><dd>${esc(L.tried)}</dd>` : ""}
       ${L.ctx ? `<dt>Also sent</dt><dd>${esc(L.ctx)}</dd>` : ""}
       ${L.resume ? `<dt>Résumé</dt><dd>${esc(L.resume.name)}</dd>` : ""}</dl>
       <p class="q">${esc(L.q)}</p></div>
